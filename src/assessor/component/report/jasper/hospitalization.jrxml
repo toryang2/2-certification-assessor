@@ -1,0 +1,180 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="hospitalization_certificate" language="java" columnCount="1" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="443" leftMargin="82" rightMargin="70" topMargin="57" bottomMargin="57" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mySQL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50.0" bold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18.0" bold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14.0" bold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle mode="Opaque" backcolor="#F0EFEF">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<parameter name="SelectedIDs" class="java.lang.List"/>
+	<query language="sql"><![CDATA[SELECT id,
+	`MaritalStatus`,
+	`ParentGuardian`,
+	`ParentGuardian2`,
+    /* New computed column */
+    CASE 
+        WHEN `ParentGuardian2` IS NOT NULL AND TRIM(`ParentGuardian2`) <> ''
+        THEN CONCAT(COALESCE(`ParentGuardian`, ''), ' AND ', `ParentGuardian2`)
+        ELSE COALESCE(`ParentGuardian`, '')
+    END AS `ParentDisplay`,
+	`ParentSexIfSingle`,
+	`Barangay`,
+	`Patient`,
+	`Hospital`,
+	`Relationship`,
+	`HospitalAddress`,
+	`CertificationDate`,
+	`CertificationTime`,
+	`AmountPaid`,
+	`ReceiptNo`,
+	`ReceiptDateIssued`,
+	`PlaceIssued`,
+	`Type`,
+	`Guardian`,
+	`userInitials`,
+	`Signatory`
+FROM certificationdb.reports
+WHERE $X{IN, id, SelectedIDs}]]></query>
+	<field name="MaritalStatus" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MaritalStatus"/>
+		<property name="com.jaspersoft.studio.field.name" value="MaritalStatus"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value=""/>
+	</field>
+	<field name="ParentGuardian" class="java.lang.String"/>
+	<field name="ParentGuardian2" class="java.lang.String"/>
+	<field name="ParentDisplay" class="java.lang.String"/>
+	<field name="ParentSexIfSingle" class="java.lang.String"/>
+	<field name="Barangay" class="java.lang.String"/>
+	<field name="Patient" class="java.lang.String"/>
+	<field name="Hospital" class="java.lang.String"/>
+	<field name="Relationship" class="java.lang.String"/>
+	<field name="HospitalAddress" class="java.lang.String"/>
+	<field name="CertificationDate" class="java.sql.Date"/>
+	<field name="CertificationTime" class="java.sql.Time"/>
+	<field name="AmountPaid" class="java.lang.String"/>
+	<field name="ReceiptNo" class="java.lang.String"/>
+	<field name="ReceiptDateIssued" class="java.sql.Date"/>
+	<field name="PlaceIssued" class="java.lang.String"/>
+	<field name="Type" class="java.lang.String"/>
+	<field name="Guardian" class="java.lang.String"/>
+	<field name="userInitials" class="java.lang.String"/>
+	<field name="Signatory" class="java.lang.String"/>
+	<background height="214" splitType="Stretch"/>
+	<title height="71" splitType="Stretch">
+		<element kind="frame" uuid="4ba5b306-2a93-4ff1-bf1c-24aa5cda4036" x="0" y="0" width="443" height="60">
+			<element kind="staticText" uuid="f1931209-6297-4723-b540-3b616fcc399b" x="0" y="10" width="443" height="50" fontName="Bookman Old Style" fontSize="14.0" hTextAlign="Center">
+				<text><![CDATA[Republic of the Philippines
+PROVINCE OF BUKIDNON
+Municipality of Kitaotao]]></text>
+			</element>
+			<element kind="image" uuid="32d31038-a3a6-463a-bcf8-f41d01a38add" x="0" y="10" width="50" height="50">
+				<expression><![CDATA["assessor/component/report/jasper/icon/kitaotao.png"]]></expression>
+			</element>
+			<element kind="image" uuid="50c18bab-3416-4296-873a-103a70967c2f" x="393" y="10" width="50" height="50">
+				<expression><![CDATA["assessor/component/report/jasper/icon/bagongpilipinas.png"]]></expression>
+			</element>
+			<element kind="line" uuid="d8fd2dd8-f9a7-45a9-99fb-d677a8574455" x="0" y="65" width="443" height="2"/>
+		</element>
+	</title>
+	<pageHeader splitType="Stretch"/>
+	<columnHeader height="60" splitType="Stretch">
+		<element kind="staticText" uuid="4542ecbb-4d61-4270-b170-5ed16e7518a2" x="0" y="12" width="443" height="18" fontName="Berlin Sans FB" fontSize="14.0" hTextAlign="Center">
+			<text><![CDATA[OFFICE OF THE MUNICIPAL ASSESSOR]]></text>
+		</element>
+		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="25" fontName="Bernard MT Condensed" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[CERTIFICATION]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="440" splitType="Stretch">
+			<element kind="textField" uuid="9e453b17-a0a1-41a4-aa00-2bc257c14c72" stretchType="NoStretch" x="0" y="71" width="443" height="229" markup="styled" fontName="Bookman Old Style" fontSize="12.0" linkTarget="Self" hTextAlign="Justified">
+				<paragraph firstLineIndent="20"/>
+				<expression><![CDATA["THIS IS TO CERTIFY that " + 
+"<style isBold=\"true\">" + 
+(assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}).isEmpty() 
+    ? "" 
+    : assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}) + " "
+) + " " +  $F{ParentDisplay} + "</style> " + 
+" of Barangay " + $F{Barangay} +  
+" this municipality has no declared real property ownership such as building, land, and machinery as far as our record is concerned.\n\n" +
+
+"THIS CERTIFICATION is being done to facilitate their request for financial/medical assistance of " + 
+(assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}).isEmpty() 
+    ? "" 
+    : assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}) + " "
+) +
+(($F{Relationship} == null || $F{Relationship}.isEmpty()) ? "" : $F{Relationship} + " ") + 
+"  <style isBold=\"true\">" + $F{Patient} + " (Patient)</style> at " + $F{Hospital} + " – " + $F{HospitalAddress} + ".\n\n" +
+
+"Done and Given this " + 
+( ($F{CertificationDate} != null) ? 
+    assessor.component.report.DateUtil.formatCertificationDate($F{CertificationDate}) : 
+    "[DATE MISSING]"
+) +
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon."
+]]></expression>
+				<property name="net.sf.jasperreports.awt.justify.last.line" value="false"/>
+				<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+			</element>
+			<element kind="staticText" uuid="24cccd8c-34bd-4632-8b8f-36b325f835f2" x="0" y="40" width="443" height="15" fontName="Bookman Old Style" fontSize="12.0">
+				<text><![CDATA[TO WHOM IT MAY CONCERN:]]></text>
+			</element>
+			<element kind="textField" uuid="4fc81109-490d-4764-9b03-9a3d5028d34d" x="220" y="320" width="223" height="13" fontName="Bookman Old Style" linkType="None" linkTarget="Self" bold="true" hTextAlign="Center">
+				<expression><![CDATA[$F{Signatory}]]></expression>
+			</element>
+			<element kind="staticText" uuid="fd42a9f8-83dd-4b93-bc43-d524f4871537" x="220" y="333" width="223" height="16" fontName="Bookman Old Style" fontSize="12.0" hTextAlign="Center">
+				<text><![CDATA[Municipal Assessor]]></text>
+			</element>
+			<element kind="staticText" uuid="d26b1d10-c2eb-458b-a4d1-b4c3db4d391f" x="0" y="370" width="70" height="70" fontName="Times New Roman" fontSize="12.0">
+				<text><![CDATA[Amount Paid
+Receipt No.
+Date Issued
+Place Issued
+Prepared By]]></text>
+			</element>
+			<element kind="textField" uuid="1f2580b7-9386-4721-a0bc-bb6a23d0ac41" x="70" y="370" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+				<expression><![CDATA[": " + $F{AmountPaid}]]></expression>
+			</element>
+			<element kind="textField" uuid="2069c0a1-a46e-45cb-b569-3b6acb68c6e8" x="70" y="384" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+				<expression><![CDATA[": " + ($F{ReceiptNo} == null ? "" : $F{ReceiptNo})]]></expression>
+			</element>
+			<element kind="textField" uuid="da4d1b1a-bd2b-46c5-86f9-83498f8a3193" x="70" y="398" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="false">
+				<expression><![CDATA[": " + ($F{ReceiptDateIssued} == null ? "" : $F{ReceiptDateIssued})]]></expression>
+			</element>
+			<element kind="textField" uuid="d549d644-60bd-44cb-85cc-29cd15e0b8e4" x="70" y="412" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+				<expression><![CDATA[": " + ($F{PlaceIssued} == null ? "" : $F{PlaceIssued})]]></expression>
+			</element>
+			<element kind="textField" uuid="24d06479-0959-4133-b63d-620f92afde50" x="70" y="426" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+				<expression><![CDATA[": " + $F{userInitials} +" " +  $F{CertificationDate}   + " @ " + 
+( ($F{CertificationTime} != null) ? 
+    new java.text.SimpleDateFormat("hh:mm a").format($F{CertificationTime}) : 
+    "[TIME MISSING]"
+)]]></expression>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="30" splitType="Stretch">
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</columnFooter>
+	<pageFooter height="36" splitType="Stretch">
+		<element kind="staticText" uuid="a6f9a8b6-6bb9-437f-b0fc-496bd182eb19" x="0" y="0" width="443" height="20" fontName="Times New Roman" fontSize="12.0">
+			<text><![CDATA[Note: This certification is not valid if it has a mark of erasure or alteration.]]></text>
+		</element>
+	</pageFooter>
+	<summary splitType="Stretch"/>
+</jasperReport>
