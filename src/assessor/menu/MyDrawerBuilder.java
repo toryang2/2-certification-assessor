@@ -75,17 +75,22 @@ private static void showHospitalizationModal() {
         .setAnimationEnabled(true)
         .setCloseOnPressedEscape(true)
         .setBackgroundClickType(Option.BackgroundClickType.CLOSE_MODAL);
-        option.getLayoutOption()
-            .setLocation(Location.CENTER, Location.CENTER)
-            .setAnimateDistance(0, 0);
+    option.getLayoutOption()
+        .setLocation(Location.CENTER, Location.CENTER)
+        .setAnimateDistance(0, 0);
 
     HospitalizationForm form = new HospitalizationForm();
     form.setSaveCallback(success -> {
         if (success) {
+            // Get or create FormTable instance
             FormTable formTable = FormManager.getActiveForm(FormTable.class);
-            if (formTable != null) {
-                formTable.reloadData();
+            if (formTable == null) {
+                // Create through your existing form system
+                formTable = (FormTable) AllForms.getForm(FormTable.class);
             }
+            // Show the instance
+            FormManager.showForm(formTable);
+            formTable.reloadData();
         }
     });
 

@@ -23,10 +23,23 @@ public class ReportLoader {
         this.model = model;
         this.callbacks = callbacks;
     }
+    
+    public void clearCache() {
+        // Reset the model to force fresh data load
+        SwingUtilities.invokeLater(() -> {
+            model.setColumnIdentifiers(new Object[0]);
+            model.setRowCount(0);
+        });
+    }
 
     public void loadData() {
         if (refreshInProgress) return;
         refreshInProgress = true;
+        
+        SwingUtilities.invokeLater(() -> {
+        model.setRowCount(0);
+        model.setColumnIdentifiers(new Object[]{"Loading..."});
+    });
         
         new SwingWorker<Void, Void>() {
             @Override
@@ -80,6 +93,7 @@ public class ReportLoader {
                             model.addRow(row);
                         }
                         callbacks.onLoadComplete();
+                        model.fireTableDataChanged();
                     });
                     
                 } catch (SQLException ex) {
@@ -107,6 +121,6 @@ public class ReportLoader {
         }.execute();
     }
     public boolean hasActiveRefresh() {
-        return refreshInProgress;
+        return refreshInProgress && this.model != null;
     }
 }

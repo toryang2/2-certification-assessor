@@ -675,18 +675,22 @@ public SimpleModalBorder createCustomBorder() {
     return new SimpleModalBorder(
         this, 
         "Hospitalization", 
-        SimpleModalBorder.OK_CANCEL_OPTION,  // Use standard option type
+        SimpleModalBorder.OK_CANCEL_OPTION,
         (controller, action) -> {
             if (action == SimpleModalBorder.OK_OPTION) {
                 saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
                 if (saveSuccessful) {
                     controller.close();
-            FormTable formTable = FormManager.getActiveForm(FormTable.class);
-            if (formTable != null) {
-                formTable.reloadData();
-            }
-                } else {
-                    controller.consume();
+                    SwingUtilities.invokeLater(() -> {
+                        FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                        if (formTable != null) {
+                            // Full refresh sequence
+                            formTable.hardRefresh();
+                            formTable.tabb.setSelectedIndex(0); // Focus on certification tab
+                            formTable.revalidate();
+                            formTable.repaint();
+                        }
+                    });
                 }
             }
         }

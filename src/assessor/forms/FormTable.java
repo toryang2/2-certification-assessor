@@ -2,7 +2,7 @@ package assessor.forms;
 
 import assessor.component.report.GenerateReport;
 import assessor.component.report.util.ConfigHelper;
-import assessor.component.report.ReportLoader;
+import assessor.component.report.util.ReportLoader;
 import assessor.component.report.util.*;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -38,19 +38,57 @@ import javax.swing.table.TableColumnModel;
 
 @SystemForm(name = "Table", description = "table is a user interface component", tags = {"list"})
 public class FormTable extends Form {
-    private JTabbedPane tabb;
-    private ReportLoader reportLoader;
+    public JTabbedPane tabb;
+    public ReportLoader reportLoader;
     private boolean autoGenerateReport = false;
 
-    public void reloadData() {
-        if (reportLoader != null) {
-            autoGenerateReport = true;
+    // Add this method to properly reset the loader
+public void hardRefresh() {
+    if (reportLoader != null) {
+        SwingUtilities.invokeLater(() -> {
+            // Clear existing data
+            DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) tabb.getComponentAt(0)).getViewport().getView()).getModel();
+            model.setRowCount(0);
+            model.setColumnIdentifiers(new Object[]{"Loading..."});
+
+            // Reset loader state
+            reportLoader.clearCache();
+            
+            // Trigger fresh load
             reportLoader.loadData();
-        }
+            
+            // Force UI update
+            tabb.revalidate();
+            tabb.repaint();
+        });
     }
+}
+
+    // Modify existing reloadData() to call hardRefresh
+public void reloadData() {
+    if (reportLoader != null) {
+        SwingUtilities.invokeLater(() -> {
+            // Clear existing data
+            DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) tabb.getComponentAt(0)).getViewport().getView()).getModel();
+            model.setRowCount(0);
+            model.setColumnIdentifiers(new Object[]{"Loading..."});
+
+            // Reset loader state
+            reportLoader.clearCache();
+            
+            // Trigger fresh load
+            reportLoader.loadData();
+            
+            // Force UI update
+            tabb.revalidate();
+            tabb.repaint();
+        });
+    }
+}
 
     public FormTable() {
         init();
+        initializeReportLoader();
     }
 
     private void init() {
@@ -58,6 +96,118 @@ public class FormTable extends Form {
         add(createInfo("Custom Table", "A table is a user interface component that displays a collection of records in a structured, tabular format. It allows users to view, sort, and manage data or other resources.", 1));
         add(createTab(), "gapx 7 7");
     }
+    
+public void initializeReportLoader() {
+    try {
+        // Get the first tab component
+        Component tabComponent = tabb.getComponentAt(0);
+        
+        if (tabComponent instanceof Container) {
+            Container container = (Container) tabComponent;
+            
+            // Find the first JScrollPane in the container
+            for (Component comp : container.getComponents()) {
+                if (comp instanceof JScrollPane) {
+                    JScrollPane scrollPane = (JScrollPane) comp;
+                    javax.swing.JViewport viewport = scrollPane.getViewport();
+                    
+                    // Get the table from the viewport
+                    if (viewport.getView() instanceof JTable) {
+                        JTable table = (JTable) viewport.getView();
+                        DefaultTableModel model = (DefaultTableModel) table.getModel();
+                        
+                        // Initialize the report loader
+                        reportLoader = new ReportLoader(model, new ReportLoader.LoadCallbacks() {
+                            private JComponent loadingOverlay;
+                            
+                            @Override
+                            public void onLoadStart() {
+                                SwingUtilities.invokeLater(() -> {
+                                    model.setRowCount(0);
+                                    model.setColumnIdentifiers(new Object[]{"Loading..."});
+                                    if (loadingOverlay == null) {
+                                        loadingOverlay = createLoadingOverlay();
+                                        ((Container) tabComponent).add(loadingOverlay, "pos 0 0 100% 100%");
+                                    }
+                                    revalidate();
+                                    repaint();
+                                });
+                            }
+                            
+                            @Override
+                            public void onLoadComplete() {
+                                SwingUtilities.invokeLater(() -> {
+                                    try {
+                                        configureColumns(table);
+                                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                                        table.setAutoCreateRowSorter(true);
+                                        table.getTableHeader().setReorderingAllowed(false);
+                                        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                                    } finally {
+                                        if (loadingOverlay != null) {
+                                            ((Container) tabComponent).remove(loadingOverlay);
+                                            revalidate();
+                                            repaint();
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            @Override
+                            public void onLoadError(String message) {
+                                SwingUtilities.invokeLater(() -> {
+                                    model.setColumnIdentifiers(new Object[]{"Error Loading Data"});
+                                    model.setRowCount(0);
+                                    JOptionPane.showMessageDialog(FormTable.this,
+                                        "Database Error: " + message,
+                                        "Loading Failed",
+                                        JOptionPane.ERROR_MESSAGE);
+                                });
+                            }
+                            
+                            private void configureColumns(JTable table) {
+                                // Your existing column configuration logic
+                                TableColumnModel columnModel = table.getColumnModel();
+                                DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+                                for (int i = 0; i < model.getColumnCount(); i++) {
+                                    TableColumn column = columnModel.getColumn(i);
+                                    String colName = model.getColumnName(i).toLowerCase();
+                                    
+                                    // Your existing column configuration cases
+                                    switch (colName) {
+                                        case "id":
+                                            column.setHeaderValue("ID");
+                                            column.setCellRenderer(new TableRightRenderer());
+                                            setColumnWidth(column, 50, 50, 50);
+                                            break;
+                                        // ... rest of your column cases ...
+                                    }
+                                }
+                            }
+                            
+                            private void setColumnWidth(TableColumn column, int pref, int max, int min) {
+                                column.setPreferredWidth(pref);
+                                column.setMaxWidth(max);
+                                column.setMinWidth(min);
+                            }
+                        });
+                        return;
+                    }
+                }
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    // Fallback initialization
+    reportLoader = new ReportLoader(new DefaultTableModel(), new ReportLoader.LoadCallbacks() {
+        @Override public void onLoadStart() {}
+        @Override public void onLoadComplete() {}
+        @Override public void onLoadError(String message) {}
+    });
+}
 
     private JPanel createInfo(String title, String description, int level) {
         JPanel panel = new JPanel(new MigLayout("fillx,wrap", "[fill]"));
@@ -307,6 +457,8 @@ public class FormTable extends Form {
                     table.setAutoCreateRowSorter(true);
                     table.getTableHeader().setReorderingAllowed(false);
                     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    
+                    model.fireTableDataChanged();
                 } finally {
                     if (loadingOverlay != null) {
                         panelTable.remove(loadingOverlay);
@@ -419,6 +571,7 @@ public class FormTable extends Form {
             });
         }
     });
+    reportLoader.loadData();
 
     // Verify database configuration
     System.out.println("Database Config:");
