@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimeSeriesChart extends DefaultChartPanel {
@@ -49,7 +50,7 @@ public class TimeSeriesChart extends DefaultChartPanel {
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         DateAxis domain = (DateAxis) plot.getDomainAxis();
 
-        range.setNumberFormatOverride(NumberFormat.getCurrencyInstance());
+        range.setNumberFormatOverride(NumberFormat.getNumberInstance());
         range.setAxisLineVisible(false);
         range.setTickMarksVisible(false);
         range.setUpperMargin(0.2);
@@ -98,9 +99,15 @@ public class TimeSeriesChart extends DefaultChartPanel {
         XYPlot plot = (XYPlot) chartPanel.getChart().getPlot();
         MultiXYTextAnnotation annotation = new MultiXYTextAnnotation();
 
-        DateFormat titleFormat = DateFormat.getDateInstance();
-        NumberFormat valueFormat = NumberFormat.getCurrencyInstance();
-        annotation.setTitleGenerator(xValue -> titleFormat.format(new Date((long) xValue)));
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        NumberFormat valueFormat = NumberFormat.getIntegerInstance();
+        annotation.setTitleGenerator(xValue -> {
+            // Handle timestamp conversion properly
+            if (xValue > Long.MAX_VALUE) {
+                return "N/A";
+            }
+            return titleFormat.format(new Date((long) xValue));
+        });
         annotation.setNumberFormat(valueFormat);
 
         plot.addAnnotation(annotation);

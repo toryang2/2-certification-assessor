@@ -5,10 +5,13 @@
 package assessor.component.report.input;
 
 import assessor.component.report.util.DatabaseSaveHelper;
+import assessor.forms.FormTable;
 import assessor.system.Form;
+import assessor.system.FormManager;
 import com.formdev.flatlaf.extras.FlatSVGUtils;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GridBagLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -36,15 +39,23 @@ import javax.swing.text.*;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
+import java.util.logging.*;
+import raven.modal.component.SimpleModalBorder;
 
 /**
  *
  * @author Toryang
  */
 public class HospitalizationForm extends Form {
+    private static final Logger logger = Logger.getLogger(HospitalizationForm.class.getName());
     private Consumer<Boolean> saveCallback;
     private DatePicker datePicker;
     private Timer messageTimer;
+    private boolean saveSuccessful = false;
+
+    public boolean isSaveSuccessful() {
+        return saveSuccessful;
+    }
     
 //    @Override
 //    public void dispose(){
@@ -58,8 +69,9 @@ public class HospitalizationForm extends Form {
      * Creates new form Input
      */
     public HospitalizationForm() {
+        setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
-        setupActions();
+//        setupActions();
         setupAmountField();
         setupReceiptNoField();
 //        setTitle("Hospitalization");
@@ -186,7 +198,7 @@ public class HospitalizationForm extends Form {
         removeAll();
 
         // Set up MigLayout
-        setLayout(new MigLayout(
+        JPanel contentPanel = new JPanel(new MigLayout(
             "insets 20 30 20 30, gap 5 15",
             // 6-column layout: [labels][field1][field2][labels][field3][fill]
             "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100]", 
@@ -194,67 +206,69 @@ public class HospitalizationForm extends Form {
         ));
 
         // Row 0: Title
-        add(labelTitle, "span 7, center, wrap");
+        contentPanel.add(labelTitle, "span 7, center, wrap");
 
         // Row 1: Marital Status
         JPanel maritalPanel = new JPanel(new MigLayout("gap 15, insets 0, align center"));
         maritalPanel.add(checkBoxMarried);
         maritalPanel.add(checkBoxSingle);
         maritalPanel.add(checkBoxGuardian);
-        add(maritalPanel, "span 7, center, wrap");
+        contentPanel.add(maritalPanel, "span 7, center, wrap");
 
         // Row 2: Parent/Guardian
-        add(labelParentGuardian, "cell 0 2");
-        add(jLabelMandatoryParentGuardian);
-        add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
-        add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelParentGuardian, "cell 0 2");
+        contentPanel.add(jLabelMandatoryParentGuardian);
+        contentPanel.add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
+        contentPanel.add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
 
         // Row 3: Parent/Guardian 2
-        add(labelParentGuardian2, "cell 0 3");
-        add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelParentGuardian2, "cell 0 3");
+        contentPanel.add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
 
         // Row 4: Patient/Student
-        add(labelPatientStudent);
-        add(jLabelMandatoryParentStudent);
-        add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelPatientStudent);
+        contentPanel.add(jLabelMandatoryParentStudent);
+        contentPanel.add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
 
         // Row 5: Address
-        add(labelAddress);
-        add(jLabelMandatoryAddress);
-        add(txtAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
-        add(labelRelationship, "cell 5 5");
-        add(comboRelationship, "cell 6 5, growx, wrap");
+        contentPanel.add(labelAddress);
+        contentPanel.add(jLabelMandatoryAddress);
+        contentPanel.add(txtAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelRelationship, "cell 5 5");
+        contentPanel.add(comboRelationship, "cell 6 5, growx, wrap");
 
         // Row 6: Hospital
-        add(labelHospital, "cell 0 6");
-        add(jLabelMandatoryHospital);
-        add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelHospital, "cell 0 6");
+        contentPanel.add(jLabelMandatoryHospital);
+        contentPanel.add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
 
         // Row 7: Hospital Address
-        add(labelHospitalAddress, "cell 0 7");
-        add(jLabelMandatoryHospitalAddress);
-        add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelHospitalAddress, "cell 0 7");
+        contentPanel.add(jLabelMandatoryHospitalAddress);
+        contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
 
         // Row 8: Amount & Receipt
-        add(labelAmount, "cell 0 8");
-        add(txtAmount, "cell 2 8 3 1, w 120");
-        add(labelReceiptNo, "cell 5 8");
-        add(txtReceiptNo, "cell 6 8, growx, wrap");
+        contentPanel.add(labelAmount, "cell 0 8");
+        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
+        contentPanel.add(labelReceiptNo, "cell 5 8");
+        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
 
         // Row 9: Date & Place
-        add(labelDateIssued, "cell 0 9");
-        add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
-        add(labelPlaceIssued, "cell 4 9");
-        add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 9");
+        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
+        contentPanel.add(labelPlaceIssued, "cell 4 9");
+        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
 
         // Row 10: Buttons
-        JPanel buttonPanel = new JPanel(new MigLayout("insets 0, align right"));
-        add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
-        buttonPanel.add(btnSave);
-        buttonPanel.add(btnCancel);
-        add(buttonPanel, "span 6, right");
+        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
+//        buttonPanel.add(btnSave);
+//        buttonPanel.add(btnCancel);
+//        contentPanel.add(buttonPanel, "span 6, right");
 
-//        pack();
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(contentPanel);
+        
+        add(wrapper);
     }
     
     public void cleanup() {
@@ -416,17 +430,18 @@ public class HospitalizationForm extends Form {
     private double parseDouble(String text) throws NumberFormatException {
         try {
             String cleaned = text.replace("₱", "")
-                                .replaceAll(",", "") // Remove commas before parsing
+                                .replaceAll(",", "")
                                 .replaceAll("[^\\d.]", "");
             
-            if (cleaned.isEmpty()) throw new NumberFormatException("Empty amount");
-            if (cleaned.startsWith(".")) cleaned = "0" + cleaned;
-            if (cleaned.endsWith(".")) cleaned += "0";
+            if (cleaned.isEmpty()) {
+                logger.log(Level.WARNING, "Empty amount field");
+                throw new NumberFormatException("Empty amount");
+            }
             
             return new BigDecimal(cleaned).doubleValue();
         } catch (NumberFormatException | ArithmeticException e) {
-//            showValidationError("Invalid amount format");
-            throw new NumberFormatException();
+            logger.log(Level.SEVERE, "Error parsing amount: {0}", text);
+            throw new NumberFormatException("Invalid amount format: " + text);
         }
     }
     
@@ -492,6 +507,7 @@ public class HospitalizationForm extends Form {
             try {
                 txtReceiptNo.commitEdit();
             } catch (ParseException ex) {
+                logger.log(Level.WARNING, "Invalid receipt number format", ex);
                 txtReceiptNo.setValue(null);
             }
         }
@@ -501,123 +517,192 @@ public class HospitalizationForm extends Form {
     public void setSaveCallback(Consumer<Boolean> callback) {
         this.saveCallback = callback;
     }
-    private void setupActions() {
-        btnSave.addActionListener(this::saveAction);
-        btnCancel.addActionListener(e ->  {
-            cleanup();
-            
-            Window window = SwingUtilities.getWindowAncestor(HospitalizationForm.this);
-            if (window != null) {
-                window.dispose();
-            }
-        });
-    }
+//    private void setupActions() {
+//        btnSave.addActionListener(this::saveAction);
+//        btnCancel.addActionListener(e ->  {
+//            cleanup();
+//            
+//            Window window = SwingUtilities.getWindowAncestor(HospitalizationForm.this);
+//            if (window != null) {
+//                window.dispose();
+//            }
+//        });
+//    }
     
-    private void saveAction(ActionEvent e) {
-        handleAmountFocusLost();
-        if(validateInput()) {
-            // Create report data map
-            String signatory = DatabaseSaveHelper.getAssessorName(1);
-            Map<String, Object> reportData = new HashMap<>();
-            if (signatory !=null) {
-                reportData.put("Signatory", signatory);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Default assessor not configured",
-                    "Configuration Warning",
-                    JOptionPane.WARNING_MESSAGE);                
-            }
+    public void saveAction(ActionEvent e) {
+        try {
+            handleAmountFocusLost();
+            logger.log(Level.INFO, "Starting save action...");
             
-            // Determine selected marital status
-            String maritalStatus = 
-                checkBoxMarried.isSelected() ? "MARRIED" :
-                checkBoxSingle.isSelected() ? "SINGLE" :
-                checkBoxGuardian.isSelected() ? "GUARDIAN" : 
-                "Unknown";  // Fallback if none selected
-
-            // Add to report data
-            reportData.put("MaritalStatus", maritalStatus);
-            if ("Unknown".equals(maritalStatus)) {
-                JOptionPane.showMessageDialog(this,
-                    "Please select a marital status",
-                    "Validation Error",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Map form fields to database columns
-            //
-            reportData.put("ParentGuardian", txtParentGuardian.getText());
-            //
-            String parentSex = comboParentSex.isEnabled() ? 
-               comboParentSex.getSelectedItem().toString() : 
-               checkBoxMarried.isSelected() ? "Married" : "Guardian";
-            reportData.put("ParentSexIfSingle", parentSex);
-            //
-            reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-            reportData.put("Patient", txtPatientStudent.getText());
-            reportData.put("Barangay", txtAddress.getText());
-            //
-            if (checkBoxGuardian.isSelected()) {
-                reportData.put("Relationship", "Legal Guardian");
-            } else {
-                Object relationship = comboRelationship.getSelectedItem();
-                if (relationship != null) {
-                    reportData.put("Relationship", relationship.toString());
-                }
-            }
-            //
-            reportData.put("Hospital", txtHospital.getText());
-            reportData.put("HospitalAddress", txtHospitalAddress.getText());
-            reportData.put("CertificationDate", LocalDate.now());
-            reportData.put("CertificationTime", LocalTime.now());
-            double amount = parseDouble(txtAmount.getText());
-            reportData.put("AmountPaid", formatAmount(amount));
-            //
-            
-            Object value = txtReceiptNo.getValue();
-            if (value instanceof Number) {
-                reportData.put("ReceiptNo", ((Number) value).longValue());
-            } else {
-                reportData.put("ReceiptNo", null);  // Or empty string based on your DB needs
-            }
-
-            //
-            LocalDate receiptDate = datePicker.getSelectedDate();
-            if (receiptDate != null) {
-                reportData.put("ReceiptDateIssued", receiptDate);
-            }
-            reportData.put("PlaceIssued", txtPlaceIssued.getText());
-//            reportData.put("userInitials", currentUser.getInitials());
-
-            // Add other fields as needed
-            // reportData.put("MaritalStatus", cmbMaritalStatus.getSelectedItem());
-            // reportData.put("Barangay", txtBarangay.getText());
-            try {
-                boolean success = DatabaseSaveHelper.saveReport("Hospitalization", reportData);
-
-                if(success) {
-                    if(saveCallback != null) {
-                        saveCallback.accept(true);
-                    }
-//                    dispose();
-                    
+            if (validateInput()) {
+                logger.log(Level.INFO, "Input validation passed");
+                
+                Map<String, Object> reportData = new HashMap<>();
+                String signatory = DatabaseSaveHelper.getAssessorName(1);
+                
+                if (signatory != null) {
+                    reportData.put("Signatory", signatory);
+                    logger.log(Level.INFO, "Signatory found: {0}", signatory);
                 } else {
+                    logger.log(Level.WARNING, "No default assessor configured");
                     JOptionPane.showMessageDialog(this,
-                        "Failed to save hospitalization record",
-                        "Database Error",
-                        JOptionPane.ERROR_MESSAGE);
+                        "Default assessor not configured",
+                        "Configuration Warning",
+                        JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (Exception ex) {
-                handleSaveError(ex);
+
+                // Marital status handling
+                String maritalStatus = checkBoxMarried.isSelected() ? "MARRIED" :
+                                      checkBoxSingle.isSelected() ? "SINGLE" :
+                                      checkBoxGuardian.isSelected() ? "GUARDIAN" : 
+                                      "Unknown";
+                reportData.put("MaritalStatus", maritalStatus);
+                logger.log(Level.INFO, "Marital status: {0}", maritalStatus);
+
+                // Form fields
+                try {
+                    reportData.put("ParentGuardian", txtParentGuardian.getText());
+                    reportData.put("ParentGuardian2", txtParentGuardian2.getText());
+                    reportData.put("Patient", txtPatientStudent.getText());
+                    reportData.put("Barangay", txtAddress.getText());
+                    reportData.put("Hospital", txtHospital.getText());
+                    reportData.put("HospitalAddress", txtHospitalAddress.getText());
+                    reportData.put("PlaceIssued", txtPlaceIssued.getText());
+                    
+                    logger.log(Level.INFO, "Text fields collected successfully");
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error collecting text fields", ex);
+                    throw ex;
+                }
+
+                // Parent sex handling
+                try {
+                    String parentSex = comboParentSex.isEnabled() ? 
+                        comboParentSex.getSelectedItem().toString() : 
+                        checkBoxMarried.isSelected() ? "Married" : "Guardian";
+                    reportData.put("ParentSexIfSingle", parentSex);
+                    logger.log(Level.INFO, "Parent sex: {0}", parentSex);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error getting parent sex", ex);
+                    throw new RuntimeException("Invalid parent sex selection", ex);
+                }
+
+                // Relationship handling
+                try {
+                    String relationship = checkBoxGuardian.isSelected() ? 
+                        "Legal Guardian" : 
+                        comboRelationship.getSelectedItem().toString();
+                    reportData.put("Relationship", relationship);
+                    logger.log(Level.INFO, "Relationship: {0}", relationship);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error getting relationship", ex);
+                    throw new RuntimeException("Invalid relationship selection", ex);
+                }
+
+                // Amount handling
+                try {
+                    double amount = parseDouble(txtAmount.getText());
+                    reportData.put("AmountPaid", formatAmount(amount));
+                    logger.log(Level.INFO, "Amount processed: {0}", amount);
+                } catch (NumberFormatException ex) {
+                    logger.log(Level.WARNING, "Invalid amount format, defaulting to 0.00");
+                    reportData.put("AmountPaid", "₱0.00");
+                }
+
+                // Receipt number handling
+                try {
+                    Object receiptValue = txtReceiptNo.getValue();
+                    long receiptNo = (receiptValue instanceof Number) ? 
+                        ((Number) receiptValue).longValue() : 0L;
+                    reportData.put("ReceiptNo", receiptNo);
+                    logger.log(Level.INFO, "Receipt number: {0}", receiptNo);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error processing receipt number", ex);
+                    throw new RuntimeException("Invalid receipt number", ex);
+                }
+
+                // Date handling
+                try {
+                    reportData.put("CertificationDate", LocalDate.now());
+                    reportData.put("CertificationTime", LocalTime.now());
+                    if (datePicker.getSelectedDate() != null) {
+                        reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
+                        logger.log(Level.INFO, "Receipt date: {0}", datePicker.getSelectedDate());
+                    }
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error processing dates", ex);
+                    throw new RuntimeException("Date processing error", ex);
+                }
+
+                // Database save
+                try {
+                    logger.log(Level.INFO, "Attempting to save to database...");
+                    boolean success = DatabaseSaveHelper.saveReport("Hospitalization", reportData);
+                    
+                    if (success) {
+                        saveSuccessful = true;
+                        logger.log(Level.INFO, "Database save successful");
+                        if (saveCallback != null) {
+                            saveCallback.accept(true);
+                        }
+    
+                        // Add the refresh and close logic HERE
+//                        SwingUtilities.invokeLater(() -> {
+//                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
+//                            if (formTable != null) {
+//                                formTable.reloadData();
+//                            }
+//                        });
+                    } else {
+                        logger.log(Level.WARNING, "Database save returned false");
+                        JOptionPane.showMessageDialog(this,
+                            "Failed to save hospitalization record",
+                            "Database Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Database save failed", ex);
+                    throw ex;
+                }
             }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Critical error in save action", ex);
+            handleSaveError(ex);
         }
     }
+    
+public SimpleModalBorder createCustomBorder() {
+    return new SimpleModalBorder(
+        this, 
+        "Hospitalization", 
+        SimpleModalBorder.OK_CANCEL_OPTION,  // Use standard option type
+        (controller, action) -> {
+            if (action == SimpleModalBorder.OK_OPTION) {
+                saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+                if (saveSuccessful) {
+                    controller.close();
+            FormTable formTable = FormManager.getActiveForm(FormTable.class);
+            if (formTable != null) {
+                formTable.reloadData();
+            }
+                } else {
+                    controller.consume();
+                }
+            }
+        }
+    );
+}
     
     private void handleSaveError(Exception ex) {
         String errorMessage = "Save failed: " + ex.getMessage();
-        if(ex.getCause() instanceof SQLException) {
-            errorMessage += "\nSQL State: " + ((SQLException) ex.getCause()).getSQLState();
+        logger.log(Level.SEVERE, errorMessage, ex);
+        
+        if (ex.getCause() instanceof SQLException) {
+            SQLException sqlEx = (SQLException) ex.getCause();
+            errorMessage += "\nSQL State: " + sqlEx.getSQLState();
+            logger.log(Level.SEVERE, "SQL Exception details", sqlEx);
         }
+        
         JOptionPane.showMessageDialog(this,
             errorMessage,
             "Save Error",
@@ -626,6 +711,8 @@ public class HospitalizationForm extends Form {
     
     // Update validation to match your actual form fields
     private boolean validateInput() {
+        logger.log(Level.FINE, "Starting input validation");
+        
         Object[][] requiredFields = {
             { jLabelMandatoryParentGuardian, txtParentGuardian },
             { jLabelMandatoryParentStudent, txtPatientStudent },
@@ -636,43 +723,48 @@ public class HospitalizationForm extends Form {
 
         boolean isValid = true;
         
-        if(comboParentSex.getSelectedItem() == null) {
-            // Show error for parent sex
+        // Combo box validation
+        if (comboParentSex.getSelectedItem() == null) {
+            logger.log(Level.WARNING, "Parent sex not selected");
             isValid = false;
         }
     
-        if(comboRelationship.getSelectedItem() == null) {
-            // Show error for relationship
+        if (comboRelationship.getSelectedItem() == null) {
+            logger.log(Level.WARNING, "Relationship not selected");
             isValid = false;
         }
 
-        // First: Show indicators based on current validity
+        // Text field validation
         for (Object[] pair : requiredFields) {
             JLabel mandatoryLabel = (JLabel) pair[0];
             JTextField field = (JTextField) pair[1];
             boolean isEmpty = field.getText().trim().isEmpty();
 
-            mandatoryLabel.setVisible(isEmpty);
-
-            if (isEmpty && isValid) {
-                field.requestFocus();
+            if (isEmpty) {
+                logger.log(Level.WARNING, "Required field empty: {0}", field.getName());
+                mandatoryLabel.setVisible(true);
+                if (isValid) field.requestFocus();
                 isValid = false;
             }
         }
 
-        // Handle mandatory message with timer
         if (!isValid) {
+            logger.log(Level.WARNING, "Validation failed with {0} errors", 
+                countValidationErrors(requiredFields));
             jLabelMandatoryMessage.setVisible(true);
-            btnSave.repaint();
-            
-            messageTimer.stop(); // Stop existing timer if running
             messageTimer.start();
-        } else {
-            jLabelMandatoryMessage.setVisible(false);
-            messageTimer.stop();
         }
-
+        
         return isValid;
+    }
+
+    private int countValidationErrors(Object[][] fields) {
+        int count = 0;
+        for (Object[] pair : fields) {
+            JTextField field = (JTextField) pair[1];
+            if (field.getText().trim().isEmpty()) count++;
+        }
+        return count;
     }
     
     /**
@@ -826,44 +918,6 @@ public class HospitalizationForm extends Form {
     private void comboRelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRelationshipActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboRelationshipActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HospitalizationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HospitalizationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HospitalizationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HospitalizationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HospitalizationForm().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;

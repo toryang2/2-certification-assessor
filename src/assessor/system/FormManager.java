@@ -7,12 +7,14 @@ import assessor.auth.Login;
 import assessor.component.About;
 import assessor.forms.FormDashboard;
 import assessor.utils.UndoRedo;
+import java.util.*;
 
 import javax.swing.*;
 
 public class FormManager {
 
     protected static final UndoRedo<Form> FORMS = new UndoRedo<>();
+    private static final Map<Class<? extends Form>, Form> ACTIVE_FORMS = new HashMap<>();
     private static JFrame frame;
     private static MainForm mainForm;
     private static Login login;
@@ -30,6 +32,7 @@ public class FormManager {
     public static void showForm(Form form) {
         if (form != FORMS.getCurrent()) {
             FORMS.add(form);
+            ACTIVE_FORMS.put(form.getClass(), form); // Track active form instances
             form.formCheck();
             form.formOpen();
             mainForm.setForm(form);
@@ -37,6 +40,10 @@ public class FormManager {
         }
     }
 
+    public static <T extends Form> T getActiveForm(Class<T> formClass) {
+        return formClass.cast(ACTIVE_FORMS.get(formClass));
+    }
+        
     public static void undo() {
         if (FORMS.isUndoAble()) {
             Form form = FORMS.undo();

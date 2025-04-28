@@ -23,11 +23,15 @@ import raven.modal.drawer.simple.SimpleDrawerBuilder;
 import raven.modal.drawer.simple.footer.LightDarkButtonFooter;
 import raven.modal.drawer.simple.footer.SimpleFooterData;
 import raven.modal.drawer.simple.header.SimpleHeaderData;
+import raven.modal.option.Location;
 import raven.modal.option.Option;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import raven.modal.ModalDialog;
+import raven.modal.component.SimpleModalBorder;
+import java.awt.event.ActionEvent;
 
 public class MyDrawerBuilder extends SimpleDrawerBuilder {
 
@@ -64,6 +68,33 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
     private void changeAvatarIconBorderColor(AvatarIcon icon) {
         icon.setBorderColor(new AvatarIcon.BorderColor(UIManager.getColor("Component.accentColor"), 0.7f));
     }
+    
+// Change this method in MyDrawerBuilder
+private static void showHospitalizationModal() {
+    Option option = ModalDialog.createOption()
+        .setAnimationEnabled(true)
+        .setCloseOnPressedEscape(true)
+        .setBackgroundClickType(Option.BackgroundClickType.CLOSE_MODAL);
+        option.getLayoutOption()
+            .setLocation(Location.CENTER, Location.CENTER)
+            .setAnimateDistance(0, 0);
+
+    HospitalizationForm form = new HospitalizationForm();
+    form.setSaveCallback(success -> {
+        if (success) {
+            FormTable formTable = FormManager.getActiveForm(FormTable.class);
+            if (formTable != null) {
+                formTable.reloadData();
+            }
+        }
+    });
+
+    ModalDialog.showModal(
+        FormManager.getFrame(), 
+        form.createCustomBorder(),
+        option
+    );
+}
 
     @Override
     public SimpleFooterData getSimpleFooterData() {
@@ -175,7 +206,22 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
                     return;
                 }
                 Class<? extends Form> formClass = (Class<? extends Form>) itemClass;
-                FormManager.showForm(AllForms.getForm(formClass));
+
+                // Special handling for HospitalizationForm
+                if (formClass == HospitalizationForm.class) {
+                    showHospitalizationModal();
+                    action.consume();
+                    return;
+                }
+
+                // Default handling for other forms
+                Form existingForm = FormManager.getActiveForm(formClass);
+                if (existingForm == null) {
+                    Form newForm = AllForms.getForm(formClass);
+                    FormManager.showForm(newForm);
+                } else {
+                    FormManager.showForm(existingForm);
+                }
             }
         });
 

@@ -17,6 +17,7 @@ public class DatabaseSaveHelper {
     static {
         SQL_TYPES.put(String.class, Types.VARCHAR);
         SQL_TYPES.put(Integer.class, Types.INTEGER);
+        SQL_TYPES.put(Long.class, Types.BIGINT);  // Add this line
         SQL_TYPES.put(Double.class, Types.DECIMAL);
         SQL_TYPES.put(LocalDate.class, Types.DATE);
         SQL_TYPES.put(LocalTime.class, Types.TIME);

@@ -39,6 +39,15 @@ import javax.swing.table.TableColumnModel;
 @SystemForm(name = "Table", description = "table is a user interface component", tags = {"list"})
 public class FormTable extends Form {
     private JTabbedPane tabb;
+    private ReportLoader reportLoader;
+    private boolean autoGenerateReport = false;
+
+    public void reloadData() {
+        if (reportLoader != null) {
+            autoGenerateReport = true;
+            reportLoader.loadData();
+        }
+    }
 
     public FormTable() {
         init();

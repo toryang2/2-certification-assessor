@@ -13,12 +13,14 @@ import assessor.component.chart.themes.DefaultChartTheme;
 import assessor.component.chart.utils.ToolBarCategoryOrientation;
 import assessor.component.chart.utils.ToolBarTimeSeriesChartRenderer;
 import assessor.component.dashboard.CardBox;
+import assessor.component.report.util.DashboardHelper;
 import assessor.sample.SampleData;
 import assessor.system.Form;
 import assessor.utils.SystemForm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.*;
 
 @SystemForm(name = "Dashboard", description = "dashboard form display some details")
 public class FormDashboard extends Form {
@@ -47,14 +49,61 @@ public class FormDashboard extends Form {
     }
 
     private void loadData() {
-        // load data card
-        cardBox.setValueAt(0, "1,205", "+305 new registered", "+25%", true);
+    try {
+        int totalRows = DashboardHelper.getTotalRows();
+        int todayClientsServed = DashboardHelper.getTodayClientsServed();
+        int yesterdayClientsServed = DashboardHelper.getYesterdayClientsServed();
+        
+        // Calculate percentage change
+        String percentage;
+        boolean isPositive;
+        
+        if (todayClientsServed > 0) {
+            if (yesterdayClientsServed == 0) {
+                // Handle division by zero - consider 100% increase
+                percentage = "+100%";
+                isPositive = true;
+            } else {
+                double change = ((double) todayClientsServed / yesterdayClientsServed) * 100;
+                percentage = String.format("%+.0f%%", change);
+                isPositive = change >= 0;
+            }
+        } else {
+            // No registrations today, show percentage from yesterday
+            if (yesterdayClientsServed == 0) {
+                percentage = "0%";  // No change if both days are zero
+                isPositive = false;
+            } else {
+                percentage = "-100%";
+                isPositive = false;
+            }
+        }
+
+        // Load data card with pluralization
+        cardBox.setValueAt(0, 
+            String.format("%,d", totalRows),
+            todayClientsServed > 0 ? 
+                String.format("+%d %s served", 
+                    todayClientsServed, 
+                    (todayClientsServed == 1 ? "client" : "clients")) : 
+                "No clients served",
+            percentage, 
+            isPositive
+        );
+        
+    } catch (Exception e) {
+        // Fallback to sample data if there's an error
+        cardBox.setValueAt(0, "1,205", "+305 clients served", "+25%", true);
+        Logger.getLogger(FormDashboard.class.getName())
+            .log(Level.SEVERE, "Error loading dashboard data", e);
+    }
+
         cardBox.setValueAt(1, "$52,420.55", "less then previous month", "-5%", false);
         cardBox.setValueAt(2, "$3,180.00", "more then previous month", "+12%", true);
         cardBox.setValueAt(3, "$49,240.55", "more then previous month", "+7%", true);
 
         // load data chart
-        timeSeriesChart.setDataset(SampleData.getTimeSeriesDataset());
+        timeSeriesChart.setDataset(DashboardHelper.getDailyClientsDataset());
         candlestickChart.setDataset(SampleData.getOhlcDataset());
         barChart.setDataset(SampleData.getCategoryDataset());
         spiderChart.setDataset(SampleData.getCategoryDataset());

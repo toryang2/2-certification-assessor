@@ -63,7 +63,7 @@ public class About extends JPanel {
     }
 
     private String getSystemInformationText() {
-        String text = "<b>Demo Version: </b>%s<br/>" +
+        String text = "<b>Version: </b>%s<br/>" +
                 "<b>Java: </b>%s<br/>" +
                 "<b>System: </b>%s<br/>";
 
