@@ -6,6 +6,7 @@ package assessor.component.report.input;
 
 import assessor.component.report.util.DatabaseSaveHelper;
 import assessor.forms.FormTable;
+import assessor.system.AllForms;
 import assessor.system.Form;
 import assessor.system.FormManager;
 import com.formdev.flatlaf.extras.FlatSVGUtils;
@@ -646,13 +647,29 @@ public class HospitalizationForm extends Form {
                             saveCallback.accept(true);
                         }
     
-                        // Add the refresh and close logic HERE
-//                        SwingUtilities.invokeLater(() -> {
-//                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
-//                            if (formTable != null) {
-//                                formTable.reloadData();
-//                            }
-//                        });
+                    // Use SwingWorker to refresh and generate report
+                    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                            if (formTable == null) {
+                                formTable = (FormTable) AllForms.getForm(FormTable.class);
+                            }
+                            formTable.hardRefresh();
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                            if (formTable != null) {
+                                formTable.addDataLoadListener(() ->{
+                                    formTable.handleReportGeneration(formTable.getCertificationTable());
+                                });                                
+                            }
+                        }
+                    };
+                    worker.execute();
                     } else {
                         logger.log(Level.WARNING, "Database save returned false");
                         JOptionPane.showMessageDialog(this,
@@ -684,11 +701,12 @@ public SimpleModalBorder createCustomBorder() {
                     SwingUtilities.invokeLater(() -> {
                         FormTable formTable = FormManager.getActiveForm(FormTable.class);
                         if (formTable != null) {
-                            // Full refresh sequence
+                                    // Refresh and generate report with delay
+                                    new javax.swing.Timer(500, e -> {
                             formTable.hardRefresh();
-                            formTable.tabb.setSelectedIndex(0); // Focus on certification tab
-                            formTable.revalidate();
-                            formTable.repaint();
+                                        formTable.handleReportGeneration(formTable.getCertificationTable());
+                                        ((javax.swing.Timer) e.getSource()).stop();
+                                    }).start();
                         }
                     });
                 }

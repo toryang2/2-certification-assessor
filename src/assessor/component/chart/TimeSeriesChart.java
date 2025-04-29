@@ -99,15 +99,9 @@ public class TimeSeriesChart extends DefaultChartPanel {
         XYPlot plot = (XYPlot) chartPanel.getChart().getPlot();
         MultiXYTextAnnotation annotation = new MultiXYTextAnnotation();
 
-        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        NumberFormat valueFormat = NumberFormat.getIntegerInstance();
-        annotation.setTitleGenerator(xValue -> {
-            // Handle timestamp conversion properly
-            if (xValue > Long.MAX_VALUE) {
-                return "N/A";
-            }
-            return titleFormat.format(new Date((long) xValue));
-        });
+        DateFormat titleFormat = DateFormat.getDateInstance();
+        NumberFormat valueFormat = NumberFormat.getNumberInstance();
+        annotation.setTitleGenerator(xValue -> titleFormat.format(new Date((long) xValue)));
         annotation.setNumberFormat(valueFormat);
 
         plot.addAnnotation(annotation);

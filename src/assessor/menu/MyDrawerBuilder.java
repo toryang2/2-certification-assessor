@@ -32,15 +32,19 @@ import java.util.Arrays;
 import raven.modal.ModalDialog;
 import raven.modal.component.SimpleModalBorder;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.util.logging.Logger;
 
 public class MyDrawerBuilder extends SimpleDrawerBuilder {
 
+    private static final Logger LOGGER = Logger.getLogger(MyDrawerBuilder.class.getName());
     private final int SHADOW_SIZE = 12;
 
     public MyDrawerBuilder() {
         super(createSimpleMenuOption());
         LightDarkButtonFooter lightDarkButtonFooter = (LightDarkButtonFooter) getFooter();
         lightDarkButtonFooter.addModeChangeListener(isDarkMode -> {
+            LOGGER.fine("Light/Dark mode changed to: " + isDarkMode);
             // event for light dark mode changed
         });
     }
@@ -71,6 +75,7 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
     
 // Change this method in MyDrawerBuilder
 private static void showHospitalizationModal() {
+    LOGGER.info("Showing Hospitalization modal...");
     Option option = ModalDialog.createOption()
         .setAnimationEnabled(true)
         .setCloseOnPressedEscape(true)
@@ -79,21 +84,49 @@ private static void showHospitalizationModal() {
         .setLocation(Location.CENTER, Location.CENTER)
         .setAnimateDistance(0, 0);
 
+    LOGGER.info("Creating new HospitalizationForm instance...");
     HospitalizationForm form = new HospitalizationForm();
     form.setSaveCallback(success -> {
-        if (success) {
-            // Get or create FormTable instance
-            FormTable formTable = FormManager.getActiveForm(FormTable.class);
-            if (formTable == null) {
-                // Create through your existing form system
-                formTable = (FormTable) AllForms.getForm(FormTable.class);
-            }
-            // Show the instance
-            FormManager.showForm(formTable);
-            formTable.reloadData();
+    if (success) {
+        LOGGER.info("Save successful. Refreshing table and generating report...");
+        FormTable formTable = FormManager.getActiveForm(FormTable.class);
+        if (formTable == null) {
+            LOGGER.warning("FormTable not found. Creating new instance...");
+            formTable = (FormTable) AllForms.getForm(FormTable.class);
         }
-    });
+        final FormTable finalFormTable = formTable;
 
+        LOGGER.info("Showing FormTable instance...");
+        FormManager.showForm(finalFormTable);
+
+        LOGGER.fine("Starting SwingWorker for background processing...");
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                LOGGER.fine("Worker: Refreshing table data...");
+                finalFormTable.hardRefresh();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                LOGGER.fine("Worker: Done. Adding data load listener...");
+                finalFormTable.addDataLoadListener(() -> {
+                    LOGGER.info("Data loaded. Generating report...");
+                    try {
+                        finalFormTable.handleReportGeneration(finalFormTable.getCertificationTable());
+                        LOGGER.info("Report generation completed successfully.");
+                    } catch (Exception e) {
+                        LOGGER.severe("Error generating report: " + e.getMessage());
+                    }
+                });
+            }
+        };
+        worker.execute();
+        LOGGER.fine("SwingWorker started successfully.");
+    }
+});
+    LOGGER.info("Showing modal dialog...");
     ModalDialog.showModal(
         FormManager.getFrame(), 
         form.createCustomBorder(),
@@ -124,6 +157,7 @@ private static void showHospitalizationModal() {
 
         MenuItem items[] = new MenuItem[]{
                 new Item.Label("MAIN"),
+                new Item("Hospital Certificate", HospitalizationForm.class),
                 new Item("Dashboard", "dashboard.svg", FormDashboard.class),
                 new Item.Label("SWING UI"),
                 new Item("Forms", "forms.svg")
