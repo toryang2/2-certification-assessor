@@ -639,37 +639,42 @@ public class HospitalizationForm extends Form {
                 try {
                     logger.log(Level.INFO, "Attempting to save to database...");
                     boolean success = DatabaseSaveHelper.saveReport("Hospitalization", reportData);
-                    
+
                     if (success) {
                         saveSuccessful = true;
                         logger.log(Level.INFO, "Database save successful");
+
+                        // Fetch the newest record ID after saving
+                        int newestRecordId = DatabaseSaveHelper.getNewestRecordId("Hospitalization");
+
                         if (saveCallback != null) {
                             saveCallback.accept(true);
                         }
-    
-                    // Use SwingWorker to refresh and generate report
-                    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-                        @Override
-                        protected Void doInBackground() {
-                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                            if (formTable == null) {
-                                formTable = (FormTable) AllForms.getForm(FormTable.class);
-                            }
-                            formTable.hardRefresh();
-                            return null;
-                        }
 
-                        @Override
-                        protected void done() {
-                            FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                            if (formTable != null) {
-                                formTable.addDataLoadListener(() ->{
-                                    formTable.handleReportGeneration(formTable.getCertificationTable());
-                                });                                
+                        // Use SwingWorker to refresh and generate report
+                        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                            @Override
+                            protected Void doInBackground() {
+                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                                if (formTable == null) {
+                                    formTable = (FormTable) AllForms.getForm(FormTable.class);
+                                }
+                                formTable.hardRefresh();
+                                return null;
                             }
-                        }
-                    };
-                    worker.execute();
+
+                            @Override
+                            protected void done() {
+                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                                if (formTable != null) {
+                                    formTable.addDataLoadListener(() -> {
+                                        System.out.println("Data loaded. Triggering report generation...");
+                                        formTable.handleReportGeneration(newestRecordId);
+                                    });
+                                }
+                            }
+                        };
+                        worker.execute();
                     } else {
                         logger.log(Level.WARNING, "Database save returned false");
                         JOptionPane.showMessageDialog(this,
@@ -699,16 +704,14 @@ public SimpleModalBorder createCustomBorder() {
                 if (saveSuccessful) {
                     controller.close();
                     SwingUtilities.invokeLater(() -> {
+                        // Only refresh the table, let MyDrawerBuilder handle report generation
                         FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                        if (formTable != null) {
-                                    // Refresh and generate report with delay
-                                    new javax.swing.Timer(500, e -> {
-                            formTable.hardRefresh();
-                                        formTable.handleReportGeneration(formTable.getCertificationTable());
-                                        ((javax.swing.Timer) e.getSource()).stop();
-                                    }).start();
+                        if (formTable != null && !formTable.isRefreshing()) {
+                            formTable.hardRefresh(); // Only refresh the table
                         }
                     });
+                } else {
+                    controller.consume();
                 }
             }
         }

@@ -65,6 +65,26 @@ public class DatabaseSaveHelper {
             return false;
         }
     }
+    
+    public static int getNewestRecordId(String reportType) throws SQLException {
+        String sql = "SELECT MAX(id) AS newestId FROM " + TABLE_NAME + " WHERE Type = ?";
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, reportType);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("newestId");
+                } else {
+                    throw new SQLException("No records found for report type: " + reportType);
+                }
+            }
+        }
+    }
 
     private static String buildInsertQuery(java.util.Set<String> columns) {
         StringBuilder columnsPart = new StringBuilder();

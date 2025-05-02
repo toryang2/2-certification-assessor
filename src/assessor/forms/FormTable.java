@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -42,10 +43,16 @@ public class FormTable extends Form {
     public ReportLoader reportLoader;
     private boolean autoGenerateReport = false;
     public JTable certificationTable;
-    private List<Runnable> dataLoadListeners = new ArrayList<>();
+    private List<Runnable> dataLoadListeners = new CopyOnWriteArrayList<>();
+    private boolean isRefreshing = false;
     
     public void addDataLoadListener(Runnable listener) {
-        dataLoadListeners.add(listener);
+        if (!dataLoadListeners.contains(listener)) {
+            dataLoadListeners.add(listener);
+            System.out.println("Added data load listener. Total listeners: " + dataLoadListeners.size());
+        } else {
+            System.out.println("Listener already registered. Skipping.");
+        }
     }
 
     private void configureColumns(JTable table) {
@@ -56,39 +63,40 @@ public class FormTable extends Form {
 
         for (int i = 0; i < model.getColumnCount(); i++) {
             TableColumn column = columnModel.getColumn(i);
-            String colName = model.getColumnName(i).toLowerCase();
+            String colName = model.getColumnName(i).toLowerCase(); // Convert to lowercase for case-insensitive comparison
 
+            // Dynamically configure columns based on column name
             switch (colName) {
-                case "id":
+                case "id": // Ensure the "ID" column is properly configured
                     column.setHeaderValue("ID");
-                    column.setCellRenderer(new TableRightRenderer());
-                    setColumnWidth(column, 50, 50, 50);
+                    column.setCellRenderer(new TableRightRenderer()); // Right align for readability
+                    setColumnWidth(column, 50, 50, 50); // Fixed width
                     break;
                 case "patient":
                     column.setHeaderValue("PATIENT");
-                    setColumnWidth(column, 200, 200, 200);
+                    setColumnWidth(column, 200, 200, 200); // Wider for long names
                     break;
                 case "relationship":
-                    setColumnWidth(column, 80, 80, 80);
+                    setColumnWidth(column, 80, 80, 80); // Standard width
                     break;
                 case "hospitaladdress":
                     column.setHeaderValue("Hospital Address");
-                    setColumnWidth(column, 250, 250, 250);
+                    setColumnWidth(column, 250, 250, 250); // Wider for detailed addresses
                     break;
                 case "maritalstatus":
                     column.setHeaderValue("Marital Status");
-                    setColumnWidth(column, 90, 90, 90);
+                    setColumnWidth(column, 90, 90, 90); // Standard width
                     break;
                 case "parentguardian":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 120, 200, 200);
+                    setColumnWidth(column, 120, 200, 200); // Flexible width
                     break;
                 case "parentguardian2":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 200, 200, 200);
+                    setColumnWidth(column, 200, 200, 200); // Flexible width
                     break;
                 case "parentsexifsingle":
-                    setColumnWidth(column, 0, 0, 0);
+                    setColumnWidth(column, 0, 0, 0); // Hidden column
                     column.setResizable(false);
                     break;
                 case "certificationdate":
@@ -101,21 +109,17 @@ public class FormTable extends Form {
                     column.setCellRenderer(new TimeRenderer());
                     setColumnWidth(column, 100, 120, 120);
                     break;
-                case "parent2":
-                    column.setHeaderValue("Parent");
-                    setColumnWidth(column, 200, 200, 200);
-                    break;
                 case "type":
-                    setColumnWidth(column, 100, 100, 100);
+                    setColumnWidth(column, 100, 100, 100); // Standard width for type
                     break;
                 case "amountpaid":
                     column.setHeaderValue("Amount Paid");
-                    column.setCellRenderer(new CurrencyRenderer());
+                    column.setCellRenderer(new CurrencyRenderer()); // Custom renderer for currency
                     setColumnWidth(column, 80, 80, 80);
                     break;
                 case "receiptno":
                     column.setHeaderValue("Receipt No.");
-                    column.setCellRenderer(new RedTextRenderer());
+                    column.setCellRenderer(new RedTextRenderer()); // Highlight receipts
                     setColumnWidth(column, 80, 80, 80);
                     break;
                 case "receiptdateissued":
@@ -128,7 +132,7 @@ public class FormTable extends Form {
                     setColumnWidth(column, 120, 120, 120);
                     break;
                 default:
-                    setColumnWidth(column, 200, 200, 200);
+                    setColumnWidth(column, 200, 200, 200); // Default column width
             }
         }
     }
@@ -138,15 +142,61 @@ public class FormTable extends Form {
         column.setMaxWidth(max);
         column.setMinWidth(min);
     }
-
-    public void hardRefresh() {
-        if (reportLoader != null && certificationTable != null) {
-            DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
-            model.setRowCount(0);
-            model.setColumnIdentifiers(new Object[]{"Loading..."});
-            reportLoader.loadData();
-        }
+    public boolean isRefreshing() {
+        return isRefreshing;
     }
+public void hardRefresh() {
+    if (isRefreshing) {
+        System.out.println("hardRefresh already in progress. Skipping...");
+        return;
+    }
+    isRefreshing = true;
+
+    if (reportLoader != null && certificationTable != null) {
+        DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
+        model.setRowCount(0);
+        model.setColumnIdentifiers(new Object[]{"Loading..."}); // Set temporary "Loading..." header
+        System.out.println("Table is being refreshed...");
+
+        reportLoader.loadData(() -> {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    System.out.println("Data load completed.");
+                    configureColumns(certificationTable); // Ensure columns are configured properly
+
+                    // Check if the "ID" column exists before proceeding
+                    if (certificationTable.getColumn("ID") == null) {
+                        System.err.println("Error: 'ID' column not found in certificationTable. Skipping listeners.");
+                        return; // Skip further processing if "ID" column is missing
+                    }
+
+                    // Trigger listeners only after successful header initialization
+                    for (Runnable listener : new ArrayList<>(dataLoadListeners)) {
+                        listener.run();
+                    }
+                    if (refreshCompletionListener != null) {
+                        refreshCompletionListener.run();
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error during table refresh: " + e.getMessage());
+                    e.printStackTrace();
+                } finally {
+                    isRefreshing = false; // Reset the flag even if an exception occurs
+                }
+            });
+        });
+    } else {
+        isRefreshing = false; // Reset the flag even if no loader or table is available
+        System.err.println("No reportLoader or certificationTable available. Refresh aborted.");
+    }
+}
+
+// Add a refresh completion listener
+private Runnable refreshCompletionListener;
+
+public void setRefreshCompletionListener(Runnable listener) {
+    this.refreshCompletionListener = listener;
+}
 
     public void reloadData() {
         if (reportLoader != null && !reportLoader.hasActiveRefresh()) {
@@ -246,7 +296,12 @@ public class FormTable extends Form {
                             }
                         });
 
-                        reportLoader.loadData();
+                        reportLoader.loadData(() -> {
+                            //Notify listeners after the data is fully loaded
+                            for (Runnable listener :dataLoadListeners) {
+                                listener.run();
+                            }
+                        });
                     }
                 }
             }
@@ -352,71 +407,79 @@ public class FormTable extends Form {
         return panel;
     }
 
-    public Component createCertificationTable() {
-        JPanel panelTable = new JPanel(new MigLayout("fill,wrap,insets 10 0 10 0", "[fill]", "[grow]"));
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Loading..."}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+public Component createCertificationTable() {
+    JPanel panelTable = new JPanel(new MigLayout("fill,wrap,insets 10 0 10 0", "[fill]", "[grow]"));
+    DefaultTableModel model = new DefaultTableModel(new Object[]{"Loading..."}, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    certificationTable = new JTable(model);
+    JScrollPane scrollPane = new JScrollPane(certificationTable);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+    // Add listeners for double-click and Enter key
+    certificationTable.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                handleReportGeneration(certificationTable);
             }
-        };
-        certificationTable = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(certificationTable);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        certificationTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    handleReportGeneration(certificationTable);
-                }
+        }
+    });
+    certificationTable.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                handleReportGeneration(certificationTable);
             }
-        });
-        certificationTable.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    handleReportGeneration(certificationTable);
-                }
-            }
-        });
-        certificationTable.setAutoCreateColumnsFromModel(true);
-        certificationTable.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                return label;
-            }
-        });
-        panelTable.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:20;"
-                + "background:$Table.background;");
-        certificationTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
-                + "height:30;"
-                + "hoverBackground:null;"
-                + "pressedBackground:null;"
-                + "separatorColor:$TableHeader.background;");
-        certificationTable.putClientProperty(FlatClientProperties.STYLE, ""
-                + "rowHeight:30;"
-                + "showHorizontalLines:true;"
-                + "intercellSpacing:0,1;"
-                + "cellFocusColor:$TableHeader.hoverBackground;"
-                + "selectionBackground:$TableHeader.hoverBackground;"
-                + "selectionInactiveBackground:$TableHeader.hoverBackground;"
-                + "selectionForeground:$Table.foreground;");
-        scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "trackArc:$ScrollBar.thumbArc;"
-                + "trackInsets:3,3,3,3;"
-                + "thumbInsets:3,3,3,3;"
-                + "background:$Table.background;");
-        scrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "trackArc:$ScrollBar.thumbArc;"
-                + "trackInsets:3,3,3,3;"
-                + "thumbInsets:3,3,3,3;"
-                + "background:$Table.background;");
-        panelTable.add(scrollPane, "grow, push");
-        return panelTable;
-    }
+        }
+    });
+
+    // Configure table properties
+    certificationTable.setAutoCreateColumnsFromModel(true);
+    certificationTable.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            return label;
+        }
+    });
+
+    // Apply custom styles
+    panelTable.putClientProperty(FlatClientProperties.STYLE, ""
+            + "arc:20;"
+            + "background:$Table.background;");
+    certificationTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
+            + "height:30;"
+            + "hoverBackground:null;"
+            + "pressedBackground:null;"
+            + "separatorColor:$TableHeader.background;");
+    certificationTable.putClientProperty(FlatClientProperties.STYLE, ""
+            + "rowHeight:30;"
+            + "showHorizontalLines:true;"
+            + "intercellSpacing:0,1;"
+            + "cellFocusColor:$TableHeader.hoverBackground;"
+            + "selectionBackground:$TableHeader.hoverBackground;"
+            + "selectionInactiveBackground:$TableHeader.hoverBackground;"
+            + "selectionForeground:$Table.foreground;");
+    scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
+            + "trackArc:$ScrollBar.thumbArc;"
+            + "trackInsets:3,3,3,3;"
+            + "thumbInsets:3,3,3,3;"
+            + "background:$Table.background;");
+    scrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
+            + "trackArc:$ScrollBar.thumbArc;"
+            + "trackInsets:3,3,3,3;"
+            + "thumbInsets:3,3,3,3;"
+            + "background:$Table.background;");
+
+    // Add the table to the panel
+    panelTable.add(scrollPane, "grow, push");
+    return panelTable;
+}
 
     private JComponent createLoadingOverlay() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -505,6 +568,63 @@ public void handleReportGeneration(JTable table) {
     }
 }
 
+public void handleReportGeneration(int recordId) {
+    try {
+        if (!isTableInitialized(certificationTable)) {
+            System.err.println("Error: Table is not fully initialized.");
+            JOptionPane.showMessageDialog(null,
+                    "Error generating report: Table is not fully initialized.",
+                    "Generation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int idColumn;
+        try {
+            idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: 'ID' column not found in certificationTable.");
+            JOptionPane.showMessageDialog(null,
+                    "Error generating report: 'ID' column not found in the table.",
+                    "Generation Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        System.out.println("ID Column Index: " + idColumn);
+
+        // Select the row with the matching record ID
+        DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
+        for (int row = 0; row < model.getRowCount(); row++) {
+            Object rawId = model.getValueAt(row, idColumn);
+            System.out.println("Row " + row + " ID: " + rawId);
+
+            if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
+                certificationTable.setRowSelectionInterval(row, row);
+                // Generate the report for the selected row
+                handleReportGeneration(certificationTable);
+                return;
+            }
+        }
+
+        // Log error if ID is not found
+        System.err.println("Record ID not found: " + recordId);
+        JOptionPane.showMessageDialog(null,
+                "Record ID " + recordId + " not found in the table.",
+                "Error",
+                JOptionPane.WARNING_MESSAGE);
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+                "Error generating report: " + e.getMessage(),
+                "Generation Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+private boolean isTableInitialized(JTable table) {
+    return table.getColumnCount() > 0 && table.getRowCount() > 0;
+}
 
     private void updateReportTab(JPanel reportPanel) {
         int reportIndex = -1;

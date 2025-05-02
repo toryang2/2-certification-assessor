@@ -87,51 +87,52 @@ private static void showHospitalizationModal() {
     LOGGER.info("Creating new HospitalizationForm instance...");
     HospitalizationForm form = new HospitalizationForm();
     form.setSaveCallback(success -> {
-    if (success) {
-        LOGGER.info("Save successful. Refreshing table and generating report...");
-        FormTable formTable = FormManager.getActiveForm(FormTable.class);
-        if (formTable == null) {
-            LOGGER.warning("FormTable not found. Creating new instance...");
-            formTable = (FormTable) AllForms.getForm(FormTable.class);
+        if (success) {
+            LOGGER.info("Save successful. Refreshing table and generating report...");
+            SwingUtilities.invokeLater(() -> {
+                FormTable formTable = FormManager.getActiveForm(FormTable.class);
+                if (formTable == null) {
+                    LOGGER.warning("FormTable not found. Creating new instance...");
+                    formTable = (FormTable) AllForms.getForm(FormTable.class);
+                    LOGGER.info("Showing FormTable instance...");
+                    FormManager.showForm(formTable);
+                }
+
+                final FormTable finalFormTable = formTable;
+
+                if (!finalFormTable.isRefreshing()) {
+                    LOGGER.fine("Starting SwingWorker for background processing...");
+                    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() {
+                            finalFormTable.hardRefresh();
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            SwingUtilities.invokeLater(() -> {
+                                finalFormTable.setRefreshCompletionListener(() -> {
+                                    try {
+                                        if (finalFormTable.getCertificationTable().getColumn("ID") != null) {
+                                            finalFormTable.handleReportGeneration(finalFormTable.getCertificationTable());
+                                        } else {
+                                            LOGGER.warning("ID column not found. Skipping report generation.");
+                                        }
+                                    } catch (Exception e) {
+                                        LOGGER.severe("Error generating report: " + e.getMessage());
+                                    }
+                                });
+                            });
+                        }
+                    };
+                    worker.execute();
+                }
+            });
         }
-        final FormTable finalFormTable = formTable;
+    });
 
-        LOGGER.info("Showing FormTable instance...");
-        FormManager.showForm(finalFormTable);
-
-        LOGGER.fine("Starting SwingWorker for background processing...");
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() {
-                LOGGER.fine("Worker: Refreshing table data...");
-                finalFormTable.hardRefresh();
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                LOGGER.fine("Worker: Done. Adding data load listener...");
-                finalFormTable.addDataLoadListener(() -> {
-                    LOGGER.info("Data loaded. Generating report...");
-                    try {
-                        finalFormTable.handleReportGeneration(finalFormTable.getCertificationTable());
-                        LOGGER.info("Report generation completed successfully.");
-                    } catch (Exception e) {
-                        LOGGER.severe("Error generating report: " + e.getMessage());
-                    }
-                });
-            }
-        };
-        worker.execute();
-        LOGGER.fine("SwingWorker started successfully.");
-    }
-});
-    LOGGER.info("Showing modal dialog...");
-    ModalDialog.showModal(
-        FormManager.getFrame(), 
-        form.createCustomBorder(),
-        option
-    );
+    ModalDialog.showModal(FormManager.getFrame(), form.createCustomBorder(), option);
 }
 
     @Override
@@ -157,7 +158,6 @@ private static void showHospitalizationModal() {
 
         MenuItem items[] = new MenuItem[]{
                 new Item.Label("MAIN"),
-                new Item("Hospital Certificate", HospitalizationForm.class),
                 new Item("Dashboard", "dashboard.svg", FormDashboard.class),
                 new Item.Label("SWING UI"),
                 new Item("Forms", "forms.svg")
