@@ -4,6 +4,7 @@
  */
 package assessor.component.report.input;
 
+import assessor.component.report.util.DataChangeNotifier;
 import assessor.component.report.util.DatabaseSaveHelper;
 import assessor.forms.FormTable;
 import assessor.system.AllForms;
@@ -643,6 +644,9 @@ public class HospitalizationForm extends Form {
                     if (success) {
                         saveSuccessful = true;
                         logger.log(Level.INFO, "Database save successful");
+                        
+                        
+                        DataChangeNotifier.getInstance().notifyDataChanged();
 
                         // Fetch the newest record ID after saving
                         int newestRecordId = DatabaseSaveHelper.getNewestRecordId("Hospitalization");
@@ -652,29 +656,29 @@ public class HospitalizationForm extends Form {
                         }
 
                         // Use SwingWorker to refresh and generate report
-                        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-                            @Override
-                            protected Void doInBackground() {
-                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                                if (formTable == null) {
-                                    formTable = (FormTable) AllForms.getForm(FormTable.class);
-                                }
-                                formTable.hardRefresh();
-                                return null;
-                            }
-
-                            @Override
-                            protected void done() {
-                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                                if (formTable != null) {
-                                    formTable.addDataLoadListener(() -> {
-                                        System.out.println("Data loaded. Triggering report generation...");
-                                        formTable.handleReportGeneration(newestRecordId);
-                                    });
-                                }
-                            }
-                        };
-                        worker.execute();
+//                        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+//                            @Override
+//                            protected Void doInBackground() {
+//                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
+//                                if (formTable == null) {
+//                                    formTable = (FormTable) AllForms.getForm(FormTable.class);
+//                                }
+//                                formTable.hardRefresh();
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            protected void done() {
+//                                FormTable formTable = FormManager.getActiveForm(FormTable.class);
+//                                if (formTable != null) {
+//                                    formTable.addDataLoadListener(() -> {
+//                                        System.out.println("Data loaded. Triggering report generation...");
+//                                        formTable.handleReportGeneration(newestRecordId);
+//                                    });
+//                                }
+//                            }
+//                        };
+//                        worker.execute();
                     } else {
                         logger.log(Level.WARNING, "Database save returned false");
                         JOptionPane.showMessageDialog(this,
@@ -707,7 +711,9 @@ public SimpleModalBorder createCustomBorder() {
                         // Only refresh the table, let MyDrawerBuilder handle report generation
                         FormTable formTable = FormManager.getActiveForm(FormTable.class);
                         if (formTable != null && !formTable.isRefreshing()) {
-                            formTable.hardRefresh(); // Only refresh the table
+//                            formTable.hardRefresh(); // Only refresh the table
+
+                        DataChangeNotifier.getInstance().notifyDataChanged();
                         }
                     });
                 } else {

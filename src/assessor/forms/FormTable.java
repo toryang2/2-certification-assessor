@@ -45,7 +45,41 @@ public class FormTable extends Form {
     public JTable certificationTable;
     private List<Runnable> dataLoadListeners = new CopyOnWriteArrayList<>();
     private boolean isRefreshing = false;
-    
+
+    public FormTable() {
+        init();
+        initializeReportLoader();
+
+        // Subscribe to DataChangeNotifier for real-time updates
+        DataChangeNotifier.getInstance().addListener(this::onDataChanged);
+    }
+
+    public void cleanUp() {
+        // Unsubscribe from DataChangeNotifier to avoid memory leaks
+        DataChangeNotifier.getInstance().removeListener(this::onDataChanged);
+    }
+
+
+
+    private void onDataChanged() {
+        // Trigger table reload when notified of data changes
+        SwingUtilities.invokeLater(() -> {
+            DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            String[] columnNames = new String[]{
+                "ID", "Type", "Patient", "ParentGuardian", "ParentGuardian2",
+                "Hospital", "HospitalAddress", "Barangay", "CertificationDate",
+                "CertificationTime", "AmountPaid", "ReceiptNo", "ReceiptDateIssued",
+                "PlaceIssued", "Signatory"
+            };
+            model.setColumnIdentifiers(columnNames);
+
+            // Simulate loading data from the database (replace with actual data loading logic)
+            System.out.println("Table refreshed via DataChangeNotifier.");
+        });
+    }
+
     public void addDataLoadListener(Runnable listener) {
         if (!dataLoadListeners.contains(listener)) {
             dataLoadListeners.add(listener);
@@ -142,61 +176,68 @@ public class FormTable extends Form {
         column.setMaxWidth(max);
         column.setMinWidth(min);
     }
+
     public boolean isRefreshing() {
         return isRefreshing;
     }
-public void hardRefresh() {
-    if (isRefreshing) {
-        System.out.println("hardRefresh already in progress. Skipping...");
-        return;
+
+//public void hardRefresh() {
+//    if (isRefreshing) {
+//        System.out.println("hardRefresh already in progress. Skipping...");
+//        return;
+//    }
+//    isRefreshing = true;
+//
+//    if (reportLoader != null && certificationTable != null) {
+//        DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
+//        model.setRowCount(0);
+//        model.setColumnIdentifiers(new Object[]{"Loading..."}); // Set temporary "Loading..." header
+//        System.out.println("Table is being refreshed...");
+//
+//        reportLoader.loadData(() -> {
+//            SwingUtilities.invokeLater(() -> {
+//                try {
+//                    // Ensure the table model is updated with actual column identifiers
+//                    String[] columnNames = new String[]{
+//                        "ID", "Type", "Patient", "ParentGuardian", "ParentGuardian2", "Hospital", 
+//                        "HospitalAddress", "Barangay", "CertificationDate", "CertificationTime", 
+//                        "AmountPaid", "ReceiptNo", "ReceiptDateIssued", "PlaceIssued", "Signatory"
+//                    };
+//                    model.setColumnIdentifiers(columnNames); // Update with actual column names
+//                    configureColumns(certificationTable); // Ensure columns are configured properly
+//
+//                    // Debugging: Log all column names
+//                    for (int i = 0; i < certificationTable.getColumnCount(); i++) {
+//                        System.out.println("Column Name: " + certificationTable.getColumnName(i));
+//                    }
+//
+//                    // Notify listeners that the refresh is complete
+//                    for (Runnable listener : new ArrayList<>(dataLoadListeners)) {
+//                        listener.run();
+//                    }
+//                    if (refreshCompletionListener != null) {
+//                        refreshCompletionListener.run();
+//                    }
+//                } catch (Exception e) {
+//                    System.err.println("Error during table refresh: " + e.getMessage());
+//                    e.printStackTrace();
+//                } finally {
+//                    isRefreshing = false; // Reset the flag even if an exception occurs
+//                }
+//            });
+//        });
+//    } else {
+//        isRefreshing = false; // Reset the flag even if no loader or table is available
+//        System.err.println("No reportLoader or certificationTable available. Refresh aborted.");
+//    }
+//}
+
+    // Add a refresh completion listener
+    private Runnable refreshCompletionListener;
+
+    public void setRefreshCompletionListener(Runnable listener) {
+        this.refreshCompletionListener = listener;
     }
-    isRefreshing = true;
-
-    if (reportLoader != null && certificationTable != null) {
-        DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
-        model.setRowCount(0);
-        model.setColumnIdentifiers(new Object[]{"Loading..."}); // Set temporary "Loading..." header
-        System.out.println("Table is being refreshed...");
-
-        reportLoader.loadData(() -> {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    System.out.println("Data load completed.");
-                    configureColumns(certificationTable); // Ensure columns are configured properly
-
-                    // Check if the "ID" column exists before proceeding
-                    if (certificationTable.getColumn("ID") == null) {
-                        System.err.println("Error: 'ID' column not found in certificationTable. Skipping listeners.");
-                        return; // Skip further processing if "ID" column is missing
-                    }
-
-                    // Trigger listeners only after successful header initialization
-                    for (Runnable listener : new ArrayList<>(dataLoadListeners)) {
-                        listener.run();
-                    }
-                    if (refreshCompletionListener != null) {
-                        refreshCompletionListener.run();
-                    }
-                } catch (Exception e) {
-                    System.err.println("Error during table refresh: " + e.getMessage());
-                    e.printStackTrace();
-                } finally {
-                    isRefreshing = false; // Reset the flag even if an exception occurs
-                }
-            });
-        });
-    } else {
-        isRefreshing = false; // Reset the flag even if no loader or table is available
-        System.err.println("No reportLoader or certificationTable available. Refresh aborted.");
-    }
-}
-
-// Add a refresh completion listener
-private Runnable refreshCompletionListener;
-
-public void setRefreshCompletionListener(Runnable listener) {
-    this.refreshCompletionListener = listener;
-}
 
     public void reloadData() {
         if (reportLoader != null && !reportLoader.hasActiveRefresh()) {
@@ -220,11 +261,6 @@ public void setRefreshCompletionListener(Runnable listener) {
                 }
             });
         }
-    }
-
-    public FormTable() {
-        init();
-        initializeReportLoader();
     }
 
     private void init() {
@@ -569,50 +605,40 @@ public void handleReportGeneration(JTable table) {
 }
 
 public void handleReportGeneration(int recordId) {
-    try {
-        if (!isTableInitialized(certificationTable)) {
-            System.err.println("Error: Table is not fully initialized.");
-            JOptionPane.showMessageDialog(null,
-                    "Error generating report: Table is not fully initialized.",
-                    "Generation Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int idColumn;
-        try {
-            idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error: 'ID' column not found in certificationTable.");
-            JOptionPane.showMessageDialog(null,
-                    "Error generating report: 'ID' column not found in the table.",
-                    "Generation Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        System.out.println("ID Column Index: " + idColumn);
-
-        // Select the row with the matching record ID
-        DefaultTableModel model = (DefaultTableModel) certificationTable.getModel();
-        for (int row = 0; row < model.getRowCount(); row++) {
-            Object rawId = model.getValueAt(row, idColumn);
-            System.out.println("Row " + row + " ID: " + rawId);
-
-            if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
-                certificationTable.setRowSelectionInterval(row, row);
-                // Generate the report for the selected row
-                handleReportGeneration(certificationTable);
-                return;
-            }
-        }
-
-        // Log error if ID is not found
-        System.err.println("Record ID not found: " + recordId);
+    if (!isTableInitialized(certificationTable)) {
+        System.err.println("Error: Table is not fully initialized.");
         JOptionPane.showMessageDialog(null,
-                "Record ID " + recordId + " not found in the table.",
-                "Error",
-                JOptionPane.WARNING_MESSAGE);
+                "Error generating report: Table is not fully initialized.",
+                "Generation Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        int idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
+        int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Type").getModelIndex());
+
+        Object rawId = certificationTable.getValueAt(certificationTable.getSelectedRow(), idColumn);
+        Object rawType = certificationTable.getValueAt(certificationTable.getSelectedRow(), typeColumn);
+
+        if (rawId == null || rawType == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Invalid data for report generation.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String reportType = rawType.toString().trim();
+        List<Integer> selectedIDs = new ArrayList<>();
+        selectedIDs.add(Integer.parseInt(rawId.toString()));
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("SelectedIDs", selectedIDs);
+        params.put("ReportType", reportType);
+
+        JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
+        updateReportTab(reportViewer);
     } catch (Exception e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null,

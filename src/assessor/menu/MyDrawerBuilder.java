@@ -88,47 +88,10 @@ private static void showHospitalizationModal() {
     HospitalizationForm form = new HospitalizationForm();
     form.setSaveCallback(success -> {
         if (success) {
-            LOGGER.info("Save successful. Refreshing table and generating report...");
-            SwingUtilities.invokeLater(() -> {
-                FormTable formTable = FormManager.getActiveForm(FormTable.class);
-                if (formTable == null) {
-                    LOGGER.warning("FormTable not found. Creating new instance...");
-                    formTable = (FormTable) AllForms.getForm(FormTable.class);
-                    LOGGER.info("Showing FormTable instance...");
-                    FormManager.showForm(formTable);
-                }
-
-                final FormTable finalFormTable = formTable;
-
-                if (!finalFormTable.isRefreshing()) {
-                    LOGGER.fine("Starting SwingWorker for background processing...");
-                    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-                        @Override
-                        protected Void doInBackground() {
-                            finalFormTable.hardRefresh();
-                            return null;
-                        }
-
-                        @Override
-                        protected void done() {
-                            SwingUtilities.invokeLater(() -> {
-                                finalFormTable.setRefreshCompletionListener(() -> {
-                                    try {
-                                        if (finalFormTable.getCertificationTable().getColumn("ID") != null) {
-                                            finalFormTable.handleReportGeneration(finalFormTable.getCertificationTable());
-                                        } else {
-                                            LOGGER.warning("ID column not found. Skipping report generation.");
-                                        }
-                                    } catch (Exception e) {
-                                        LOGGER.severe("Error generating report: " + e.getMessage());
-                                    }
-                                });
-                            });
-                        }
-                    };
-                    worker.execute();
-                }
-            });
+            LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
+            // No need to manually call hardRefresh() or similar methods
+        } else {
+            LOGGER.warning("Save failed. No action taken.");
         }
     });
 

@@ -1,0 +1,460 @@
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=09:38:00.056062400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 09:38:00.056062400
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=09:38:00.056062400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 9:38:00 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 552
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=09:39:14.746321900, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 09:39:14.746321900
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=09:39:14.746321900, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 9:39:14 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 553
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=09:39:36.785709500, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 09:39:36.785709500
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=09:39:36.785709500, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 9:39:36 AM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 554
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:35:49.062275, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:35:49.062275
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:35:49.062275, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:35:49 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 555
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:37:03.021614400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:37:03.021614400
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:37:03.021614400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:37:03 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 556
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:42:38.273379900, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:42:38.273379900
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:42:38.273379900, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:42:38 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 557
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:43:31.687910400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:43:31.687910400
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:43:31.687910400, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:43:31 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 558
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:45:12.437713200, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:45:12.437713200
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:45:12.437713200, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:45:12 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 559
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asda, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:47:55.158397800, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asda
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:47:55.158397800
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asda, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:47:55.158397800, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:47:55 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 560
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, CertificationTime=13:51:25.928715100, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 13:51:25.928715100
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: asd
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=asd, CertificationDate=2025-05-05, ParentGuardian2=asd, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=asd, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=13:51:25.928715100, PlaceIssued=, Relationship=son, ParentGuardian=asd, ReceiptNo=0, Hospital=asd, HospitalAddress=asd, ParentSexIfSingle=Married}
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 561
