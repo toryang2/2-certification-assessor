@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -119,12 +120,19 @@ public class CertificateTable extends Form {
                 }
             }
         });
-        certificationTable.addKeyListener(new KeyAdapter() {
+        // Override VK_ENTER to disable moving to the next row
+        InputMap inputMap = certificationTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = certificationTable.getActionMap();
+
+        // Remove the default action for VK_ENTER
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
+
+        // Add a custom action for VK_ENTER (optional)
+        actionMap.put("none", new AbstractAction() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    handleReportGeneration(certificationTable);
-                }
+            public void actionPerformed(ActionEvent e) {
+                // Handle the VK_ENTER key without moving to the next row
+                handleReportGeneration(certificationTable);
             }
         });
 

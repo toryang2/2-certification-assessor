@@ -1633,3 +1633,23 @@ May 07, 2025 3:14:09 PM assessor.component.chart.CertificateTable$2 onLoadComple
 INFO: Data load complete.
 May 07, 2025 3:14:09 PM assessor.component.chart.CertificateTable lambda$loadData$0
 INFO: Data loaded successfully.
+May 07, 2025 3:27:40 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:27:40 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:27:40 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 4:48:05 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 4:48:06 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 4:48:06 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 4:48:37 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 4:48:37 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 4:48:37 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 4:48:37 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
