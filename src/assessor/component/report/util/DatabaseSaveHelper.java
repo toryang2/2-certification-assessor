@@ -47,6 +47,37 @@ public class DatabaseSaveHelper {
         }
         return null;
     }
+    
+    public static int saveReportAndGetNewestId(String reportType, Map<String, Object> data) {
+        logger.log(Level.INFO, "Saving report of type: {0} with data: {1}", new Object[]{reportType, data});
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword())) {
+
+            data.put("Type", reportType);
+            String sql = buildInsertQuery(data.keySet());
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                setParameters(pstmt, data);
+                pstmt.executeUpdate();
+                logger.log(Level.INFO, "Report saved successfully: {0}", data);
+
+                // Notify listeners about the data change
+                DataChangeNotifier.getInstance().notifyDataChange();
+
+                // Retrieve and return the newest record ID
+                int newestId = getNewestRecordId(reportType);
+                logger.log(Level.INFO, "Newest record ID after save: {0}", newestId);
+                return newestId;
+            }
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to save report: " + reportType, e);
+            return -1; // Indicate failure
+        }
+    }
 
     public static boolean saveReport(String reportType, Map<String, Object> data) {
         logger.log(Level.INFO, "Saving report of type: {0} with data: {1}", new Object[]{reportType, data});
@@ -125,7 +156,10 @@ public class DatabaseSaveHelper {
             Object value = entry.getValue();
             logger.log(Level.FINE, "Setting parameter: {0} to value: {1}", new Object[]{entry.getKey(), value});
 
-            if (value instanceof LocalDate) {
+            if (value == null) {
+                // Handle null values explicitly
+                pstmt.setNull(index, Types.NULL);
+            } else if (value instanceof LocalDate) {
                 pstmt.setDate(index, Date.valueOf((LocalDate) value));
             } else if (value instanceof LocalTime) {
                 pstmt.setTime(index, Time.valueOf((LocalTime) value));

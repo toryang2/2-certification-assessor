@@ -14,6 +14,7 @@ import assessor.model.ModelProfile;
 import assessor.sample.SampleData;
 import assessor.simple.SimpleInputForms;
 import assessor.system.Form;
+import assessor.utils.AdvancedLogger;
 import assessor.utils.SystemForm;
 import assessor.utils.table.CheckBoxTableHeaderRenderer;
 import assessor.utils.table.TableHeaderAlignment;
@@ -36,9 +37,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.util.logging.*;
 
 @SystemForm(name = "Table", description = "table is a user interface component", tags = {"list"})
 public class FormTable extends Form {
+    private static final Logger logger = AdvancedLogger.getLogger(FormTable.class.getName());
     public JTabbedPane tabb;
     public ReportLoader reportLoader;
     private boolean autoGenerateReport = false;
@@ -263,6 +266,10 @@ public class FormTable extends Form {
         }
     }
 
+    @Override
+    public void formInit() {
+    }
+    
     private void init() {
         setLayout(new MigLayout("fillx,wrap", "[fill]", "[][fill,grow]"));
         add(createInfo("Custom Table", "A table is a user interface component that displays a collection of records in a structured, tabular format. It allows users to view, sort, and manage data or other resources.", 1));
@@ -443,15 +450,18 @@ public class FormTable extends Form {
         return panel;
     }
 
-public Component createCertificationTable() {
+private JPanel createCertificationTable() {
     JPanel panelTable = new JPanel(new MigLayout("fill,wrap,insets 10 0 10 0", "[fill]", "[grow]"));
-    DefaultTableModel model = new DefaultTableModel(new Object[]{"Loading..."}, 0) {
+
+    // Create the table model and make cells non-editable
+    DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Column 1", "Column 2", "Column 3"}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
-            return false;
+            return false; // Disable editing for all cells
         }
     };
-    certificationTable = new JTable(model);
+
+    JTable certificationTable = new JTable(tableModel);
     JScrollPane scrollPane = new JScrollPane(certificationTable);
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
@@ -513,7 +523,7 @@ public Component createCertificationTable() {
             + "background:$Table.background;");
 
     // Add the table to the panel
-    panelTable.add(scrollPane, "grow, push");
+    panelTable.add(scrollPane, "grow, push"); // Ensure the panel grows vertically
     return panelTable;
 }
 
@@ -567,46 +577,31 @@ public Component createCertificationTable() {
     }
 
 public void handleReportGeneration(JTable table) {
-    int row = table.getSelectedRow();
-    if (row == -1) return;
-
     try {
-        int idColumn = table.convertColumnIndexToModel(table.getColumn("ID").getModelIndex());
-        int typeColumn = table.convertColumnIndexToModel(table.getColumn("Type").getModelIndex());
-
-        Object rawId = table.getValueAt(row, idColumn);
-        Object rawType = table.getValueAt(row, typeColumn);
-
-        List<Integer> selectedIDs = new ArrayList<>();
-        try {
-            selectedIDs.add(Integer.parseInt(rawId.toString()));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, 
-                "Invalid ID format", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Please select a row to generate a report.",
+                    "No Selection",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        String reportType = rawType != null ? rawType.toString().trim() : "unknown";
+        int recordId = getRecordIdFromTable(table, selectedRow);
+        String reportType = getReportTypeFromTable(table, selectedRow);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("SelectedIDs", selectedIDs);
-        params.put("ReportType", reportType);
-
-        JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
-        updateReportTab(reportViewer);
+        generateReport(recordId, reportType);
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, 
-            "Error generating report: " + e.getMessage(), 
-            "Generation Error", 
-            JOptionPane.ERROR_MESSAGE);
+        logger.log(Level.SEVERE, "Error generating report from table selection", e);
+        JOptionPane.showMessageDialog(null,
+                "Error generating report: " + e.getMessage(),
+                "Generation Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 }
 
 public void handleReportGeneration(int recordId) {
     if (!isTableInitialized(certificationTable)) {
-        System.err.println("Error: Table is not fully initialized.");
         JOptionPane.showMessageDialog(null,
                 "Error generating report: Table is not fully initialized.",
                 "Generation Error",
@@ -615,32 +610,12 @@ public void handleReportGeneration(int recordId) {
     }
 
     try {
-        int idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
         int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Type").getModelIndex());
+        String reportType = getReportTypeFromTable(certificationTable, recordId, typeColumn);
 
-        Object rawId = certificationTable.getValueAt(certificationTable.getSelectedRow(), idColumn);
-        Object rawType = certificationTable.getValueAt(certificationTable.getSelectedRow(), typeColumn);
-
-        if (rawId == null || rawType == null) {
-            JOptionPane.showMessageDialog(null,
-                    "Invalid data for report generation.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String reportType = rawType.toString().trim();
-        List<Integer> selectedIDs = new ArrayList<>();
-        selectedIDs.add(Integer.parseInt(rawId.toString()));
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("SelectedIDs", selectedIDs);
-        params.put("ReportType", reportType);
-
-        JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
-        updateReportTab(reportViewer);
+        generateReport(recordId, reportType);
     } catch (Exception e) {
-        e.printStackTrace();
+        logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, e);
         JOptionPane.showMessageDialog(null,
                 "Error generating report: " + e.getMessage(),
                 "Generation Error",
@@ -648,55 +623,114 @@ public void handleReportGeneration(int recordId) {
     }
 }
 
-private boolean isTableInitialized(JTable table) {
+public boolean isTableInitialized(JTable table) {
     return table.getColumnCount() > 0 && table.getRowCount() > 0;
 }
 
-    private void updateReportTab(JPanel reportPanel) {
-        int reportIndex = -1;
-        final String TAB_TITLE = "Report";
+private int getRecordIdFromTable(JTable table, int row) throws Exception {
+    int idColumn = table.convertColumnIndexToModel(table.getColumn("ID").getModelIndex());
+    Object rawId = table.getValueAt(row, idColumn);
 
-        for (int i = 0; i < tabb.getTabCount(); i++) {
-            if (TAB_TITLE.equals(tabb.getTitleAt(i))) {
-                reportIndex = i;
-                break;
+    if (rawId == null) {
+        throw new Exception("Invalid record ID.");
+    }
+
+    try {
+        return Integer.parseInt(rawId.toString());
+    } catch (NumberFormatException e) {
+        throw new Exception("Invalid ID format: " + rawId);
+    }
+}
+
+private String getReportTypeFromTable(JTable table, int row) throws Exception {
+    int typeColumn = table.convertColumnIndexToModel(table.getColumn("Type").getModelIndex());
+    Object rawType = table.getValueAt(row, typeColumn);
+
+    if (rawType == null) {
+        throw new Exception("Report type is missing.");
+    }
+
+    return rawType.toString().trim();
+}
+
+private String getReportTypeFromTable(JTable table, int recordId, int typeColumn) throws Exception {
+    for (int row = 0; row < table.getRowCount(); row++) {
+        int idColumn = table.convertColumnIndexToModel(table.getColumn("ID").getModelIndex());
+        Object rawId = table.getValueAt(row, idColumn);
+
+        if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
+            Object rawType = table.getValueAt(row, typeColumn);
+            if (rawType != null) {
+                return rawType.toString().trim();
+            } else {
+                throw new Exception("Report type is missing for record ID: " + recordId);
             }
         }
-
-        Component tabContent = createBorder(reportPanel);
-
-        if (reportIndex == -1) {
-            reportIndex = tabb.getTabCount();
-            tabb.addTab(TAB_TITLE, null, tabContent);
-
-            JPanel tabHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-            tabHeader.setOpaque(false);
-
-            JLabel title = new JLabel(TAB_TITLE);
-            title.setIcon(new FlatSVGIcon("assessor/icons/printer.svg").derive(16, 16));
-            title.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-
-            JButton closeButton = new JButton(new FlatSVGIcon("assessor/icons/close.svg", 12, 12));
-            closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            closeButton.setFocusable(true);
-            closeButton.setOpaque(false);
-            closeButton.setContentAreaFilled(true);
-            closeButton.addActionListener(e -> {
-                int index = tabb.indexOfComponent(tabContent);
-                if (index != -1) {
-                    tabb.remove(index);
-                }
-            });
-
-            tabHeader.add(title);
-            tabHeader.add(closeButton);
-            tabb.setTabComponentAt(reportIndex, tabHeader);
-        } else {
-            tabb.setComponentAt(reportIndex, tabContent);
-        }
-
-        tabb.setSelectedIndex(reportIndex);
     }
+
+    throw new Exception("Record ID not found in the table: " + recordId);
+}
+
+private void generateReport(int recordId, String reportType) throws Exception {
+    List<Integer> selectedIDs = new ArrayList<>();
+    selectedIDs.add(recordId);
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("SelectedIDs", selectedIDs);
+    params.put("ReportType", reportType);
+
+    JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
+    updateReportTab(reportViewer);
+}
+
+private void updateReportTab(JPanel reportPanel) {
+    final String TAB_TITLE = "Report" ;
+    int reportIndex = -1;
+
+    // Check if the "Report" tab already exists
+    for (int i = 0; i < tabb.getTabCount(); i++) {
+        if (TAB_TITLE.equals(tabb.getTitleAt(i))) {
+            reportIndex = i;
+            break;
+        }
+    }
+
+    Component tabContent = createBorder(reportPanel);
+
+    if (reportIndex == -1) {
+        // Create a new "Report" tab
+        reportIndex = tabb.getTabCount();
+        tabb.addTab(TAB_TITLE, null, tabContent);
+
+        JPanel tabHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        tabHeader.setOpaque(false);
+
+        JLabel title = new JLabel(TAB_TITLE);
+        title.setIcon(new FlatSVGIcon("assessor/icons/printer.svg").derive(16, 16));
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
+        JButton closeButton = new JButton(new FlatSVGIcon("assessor/icons/close.svg", 12, 12));
+        closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        closeButton.setFocusable(true);
+        closeButton.setOpaque(false);
+        closeButton.setContentAreaFilled(true);
+        closeButton.addActionListener(e -> {
+            int index = tabb.indexOfComponent(tabContent);
+            if (index != -1) {
+                tabb.remove(index);
+            }
+        });
+
+        tabHeader.add(title);
+        tabHeader.add(closeButton);
+        tabb.setTabComponentAt(reportIndex, tabHeader);
+    } else {
+        // Update the existing tab content
+        tabb.setComponentAt(reportIndex, tabContent);
+    }
+
+    tabb.setSelectedIndex(reportIndex);
+}
     
     public JTable getCertificationTable() {
         return certificationTable;

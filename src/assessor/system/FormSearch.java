@@ -3,6 +3,7 @@ package assessor.system;
 import raven.modal.ModalDialog;
 import assessor.component.EmptyModalBorder;
 import assessor.component.FormSearchPanel;
+import assessor.component.chart.CertificateTable;
 import assessor.forms.*;
 import assessor.utils.SystemForm;
 import raven.modal.option.Location;
@@ -47,7 +48,7 @@ public class FormSearch {
                 FormModal.class,
                 FormToast.class,
                 FormInput.class,
-                FormTable.class,
+                CertificateTable.class,
                 FormResponsiveLayout.class,
                 FormSetting.class
         };

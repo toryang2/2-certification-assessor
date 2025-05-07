@@ -16,6 +16,7 @@ import assessor.component.dashboard.CardBox;
 import assessor.component.report.util.DashboardHelper;
 import assessor.sample.SampleData;
 import assessor.system.Form;
+import assessor.system.FormManager;
 import assessor.utils.SystemForm;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ public class FormDashboard extends Form {
         createPanelLayout();
         createCard();
         createChart();
-        createOtherChart();
+//        createOtherChart();
     }
 
     @Override
@@ -103,11 +104,11 @@ public class FormDashboard extends Form {
         cardBox.setValueAt(3, "$49,240.55", "more then previous month", "+7%", true);
 
         // load data chart
-        timeSeriesChart.setDataset(DashboardHelper.getDailyClientsDataset());
-        candlestickChart.setDataset(SampleData.getOhlcDataset());
-        barChart.setDataset(SampleData.getCategoryDataset());
-        spiderChart.setDataset(SampleData.getCategoryDataset());
-        pieChart.setDataset(SampleData.getPieDataset());
+//        timeSeriesChart.setDataset(DashboardHelper.getDailyClientsDataset());
+//        candlestickChart.setDataset(SampleData.getOhlcDataset());
+//        barChart.setDataset(SampleData.getCategoryDataset());
+//        spiderChart.setDataset(SampleData.getCategoryDataset());
+//        pieChart.setDataset(SampleData.getPieDataset());
     }
 
     private void createTitle() {
@@ -160,37 +161,20 @@ public class FormDashboard extends Form {
         panelLayout.add(panel);
     }
 
-    private void createChart() {
-        JPanel panel = new JPanel(new MigLayout("gap 14,wrap,fillx", "[fill]", "[350]"));
-        timeSeriesChart = new TimeSeriesChart();
-        candlestickChart = new CandlestickChart();
-        barChart = new BarChart();
-        timeSeriesChart.add(new ToolBarTimeSeriesChartRenderer(timeSeriesChart), "al trailing,grow 0", 0);
-        candlestickChart.add(new ToolBarSelection<>(new String[]{"default", "red_green"}, s -> {
-            CandlestickRenderer renderer = (CandlestickRenderer) candlestickChart.getFreeChart().getXYPlot().getRenderer();
-            if (s == "default") {
-                renderer.setAutoPopulateSeriesPaint(true);
-                DefaultChartTheme.applyTheme(candlestickChart.getFreeChart());
-            } else {
-                renderer.setAutoPopulateSeriesPaint(false);
-                ChartCandlestickRenderer.initRedGreenColor(renderer);
-            }
-        }), "al trailing,grow 0", 0);
-        barChart.add(new ToolBarCategoryOrientation(barChart.getFreeChart()), "al trailing,grow 0", 0);
-        panel.add(timeSeriesChart);
-        panel.add(candlestickChart);
-        panel.add(barChart);
-        panelLayout.add(panel);
-    }
+private void createChart() {
+    // Create a panel for the chart with proper constraints
+    JPanel panel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
 
-    private void createOtherChart() {
-        JPanel panel = new JPanel(new MigLayout("fillx,gap 14", "[fill,300::]", "[300]"));
-        spiderChart = new SpiderChart();
-        pieChart = new PieChart();
-        panel.add(spiderChart);
-        panel.add(pieChart);
-        panelLayout.add(panel);
-    }
+    // Instantiate the CertificateTable
+    CertificateTable certificateTable = new CertificateTable();
+        FormManager.showForm(certificateTable);
+    
+    // Ensure the table grows to fill available space
+    panel.add(certificateTable, "grow, push");
+
+    // Add the panel to the main layout, ensuring it stretches
+    panelLayout.add(panel, "grow, push");
+}
 
     private Icon createIcon(String icon, Color color) {
         return new FlatSVGIcon(icon, 0.4f).setColorFilter(new FlatSVGIcon.ColorFilter(color1 -> color));
@@ -205,61 +189,77 @@ public class FormDashboard extends Form {
     private SpiderChart spiderChart;
     private PieChart pieChart;
 
-    private class DashboardLayout implements LayoutManager {
+private class DashboardLayout implements LayoutManager {
 
-        private int gap = 0;
+    private int gap = 0;
 
-        @Override
-        public void addLayoutComponent(String name, Component comp) {
-        }
+    @Override
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
-        @Override
-        public void removeLayoutComponent(Component comp) {
-        }
+    @Override
+    public void removeLayoutComponent(Component comp) {
+    }
 
-        @Override
-        public Dimension preferredLayoutSize(Container parent) {
-            synchronized (parent.getTreeLock()) {
-                Insets insets = parent.getInsets();
-                int width = (insets.left + insets.right);
-                int height = insets.top + insets.bottom;
-                int g = UIScale.scale(gap);
-                int count = parent.getComponentCount();
-                for (int i = 0; i < count; i++) {
-                    Component com = parent.getComponent(i);
-                    Dimension size = com.getPreferredSize();
-                    height += size.height;
-                }
-                if (count > 1) {
-                    height += (count - 1) * g;
-                }
-                return new Dimension(width, height);
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+        synchronized (parent.getTreeLock()) {
+            Insets insets = parent.getInsets();
+            int width = insets.left + insets.right;
+            int height = insets.top + insets.bottom;
+            int g = UIScale.scale(gap);
+            int count = parent.getComponentCount();
+            for (int i = 0; i < count; i++) {
+                Component com = parent.getComponent(i);
+                Dimension size = com.getPreferredSize();
+                height += size.height;
             }
-        }
-
-        @Override
-        public Dimension minimumLayoutSize(Container parent) {
-            synchronized (parent.getTreeLock()) {
-                return new Dimension(10, 10);
+            if (count > 1) {
+                height += (count - 1) * g;
             }
+            return new Dimension(width, height);
         }
+    }
 
-        @Override
-        public void layoutContainer(Container parent) {
-            synchronized (parent.getTreeLock()) {
-                Insets insets = parent.getInsets();
-                int x = insets.left;
-                int y = insets.top;
-                int width = parent.getWidth() - (insets.left + insets.right);
-                int g = UIScale.scale(gap);
-                int count = parent.getComponentCount();
-                for (int i = 0; i < count; i++) {
-                    Component com = parent.getComponent(i);
-                    Dimension size = com.getPreferredSize();
+    @Override
+    public Dimension minimumLayoutSize(Container parent) {
+        synchronized (parent.getTreeLock()) {
+            return new Dimension(10, 10);
+        }
+    }
+
+    @Override
+    public void layoutContainer(Container parent) {
+        synchronized (parent.getTreeLock()) {
+            Insets insets = parent.getInsets();
+            int x = insets.left;
+            int y = insets.top;
+            int width = parent.getWidth() - (insets.left + insets.right);
+            int height = parent.getHeight() - (insets.top + insets.bottom);
+            int g = UIScale.scale(gap);
+            int count = parent.getComponentCount();
+
+            // Calculate total fixed height of components
+            int fixedHeight = 0;
+            for (int i = 0; i < count; i++) {
+                Component com = parent.getComponent(i);
+                Dimension size = com.getPreferredSize();
+                fixedHeight += size.height;
+            }
+            fixedHeight += (count - 1) * g;
+
+            // Allocate remaining height to the last component
+            for (int i = 0; i < count; i++) {
+                Component com = parent.getComponent(i);
+                Dimension size = com.getPreferredSize();
+                if (i == count - 1) { // Last component
+                    com.setBounds(x, y, width, height - fixedHeight + size.height);
+                } else {
                     com.setBounds(x, y, width, size.height);
                     y += size.height + g;
                 }
             }
         }
     }
+}
 }

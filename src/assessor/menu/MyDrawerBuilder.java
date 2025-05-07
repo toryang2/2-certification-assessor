@@ -128,7 +128,7 @@ private static void showHospitalizationModal() {
                                     .subMenu("TestInput", FormInput.class)
                                     .subMenu("Hospitalization", HospitalizationForm.class)
                         )
-                        .subMenu("Table", FormTable.class)
+//                        .subMenu("Table", FormTable.class)
                         .subMenu("Responsive Layout", FormResponsiveLayout.class),
                 new Item("Components", "components.svg")
                         .subMenu("Modal", FormModal.class)

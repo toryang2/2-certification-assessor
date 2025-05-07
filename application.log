@@ -458,3 +458,1178 @@ May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getNew
 FINE: Querying newest record ID for report type: Hospitalization
 May 05, 2025 1:51:25 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
 INFO: Newest record ID found: 561
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Saving report of type: Hospitalization with data: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, CertificationTime=15:51:17.596807100, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 15:51:17.596807100
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: 123
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 3:51:17 PM assessor.component.report.util.DatabaseSaveHelper saveReport
+INFO: Report saved successfully: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=15:51:17.596807100, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:13:13 PM assessor.forms.FormTable lambda$handleReportGeneration$1
+WARNING: Record ID not found in the table after refresh: 565
+May 05, 2025 4:14:21 PM assessor.forms.FormTable lambda$handleReportGeneration$1
+WARNING: Record ID not found in the table after refresh: 566
+May 05, 2025 4:15:10 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 567
+java.lang.Exception: Record ID not found in the table: 567
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:664)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.saveAction(HospitalizationForm.java:557)
+	at assessor.component.report.input.HospitalizationForm.lambda$createCustomBorder$0(HospitalizationForm.java:674)
+	at raven.modal.component.SimpleModalBorder.doAction(SimpleModalBorder.java:247)
+	at raven.modal.component.SimpleModalBorder.lambda$createButtonOption$1(SimpleModalBorder.java:187)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2313)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6626)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4575)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:19:44 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 569
+java.lang.Exception: Record ID not found in the table: 569
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:664)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.saveAction(HospitalizationForm.java:556)
+	at assessor.component.report.input.HospitalizationForm.lambda$createCustomBorder$0(HospitalizationForm.java:674)
+	at raven.modal.component.SimpleModalBorder.doAction(SimpleModalBorder.java:247)
+	at raven.modal.component.SimpleModalBorder.lambda$createButtonOption$1(SimpleModalBorder.java:187)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2313)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6626)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4575)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:25:53 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 572
+java.lang.Exception: Record ID not found in the table: 572
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:664)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.saveAction(HospitalizationForm.java:557)
+	at assessor.component.report.input.HospitalizationForm.lambda$createCustomBorder$0(HospitalizationForm.java:674)
+	at raven.modal.component.SimpleModalBorder.doAction(SimpleModalBorder.java:247)
+	at raven.modal.component.SimpleModalBorder.lambda$createButtonOption$1(SimpleModalBorder.java:187)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2313)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6626)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4575)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:27:49 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 574
+java.lang.Exception: Record ID not found in the table: 574
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:664)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.saveAction(HospitalizationForm.java:557)
+	at assessor.component.report.input.HospitalizationForm.lambda$createCustomBorder$0(HospitalizationForm.java:674)
+	at raven.modal.component.SimpleModalBorder.doAction(SimpleModalBorder.java:247)
+	at raven.modal.component.SimpleModalBorder.lambda$createButtonOption$1(SimpleModalBorder.java:187)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1972)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2313)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6626)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4575)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:47:04 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 581
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:651)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.ensureTableReadyThenGenerateReport(HospitalizationForm.java:589)
+	at assessor.component.report.input.HospitalizationForm.lambda$ensureTableReadyThenGenerateReport$0(HospitalizationForm.java:599)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:47:36 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 584
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:651)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.ensureTableReadyThenGenerateReport(HospitalizationForm.java:589)
+	at assessor.component.report.input.HospitalizationForm.lambda$ensureTableReadyThenGenerateReport$0(HospitalizationForm.java:599)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:50:46 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 586
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:651)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Saving report of type: Hospitalization with data: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, CertificationTime=16:51:20.442773800, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 16:51:20.442773800
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: 123
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Report saved successfully: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=16:51:20.442773800, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 588
+May 05, 2025 4:51:20 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Newest record ID after save: 588
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Saving report of type: Hospitalization with data: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, CertificationTime=16:51:27.348832400, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 16:51:27.348832400
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: 123
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Report saved successfully: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=16:51:27.348832400, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 589
+May 05, 2025 4:51:27 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Newest record ID after save: 589
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Saving report of type: Hospitalization with data: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, CertificationTime=16:51:35.908445300, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports (Barangay,CertificationDate,ParentGuardian2,AmountPaid,Signatory,Patient,MaritalStatus,Type,CertificationTime,PlaceIssued,Relationship,ParentGuardian,ReceiptNo,Hospital,HospitalAddress,ParentSexIfSingle) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Barangay to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationDate to value: 2025-05-05
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian2 to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: AmountPaid to value: ₱0.00
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Signatory to value: ROEL H. MOLO, MMREM, REA, REB, LPTa
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Patient to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: MaritalStatus to value: MARRIED
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Type to value: Hospitalization
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: CertificationTime to value: 16:51:35.908445300
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: PlaceIssued to value: 
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Relationship to value: son
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentGuardian to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ReceiptNo to value: 0
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: Hospital to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: HospitalAddress to value: 123
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper setParameters
+FINE: Setting parameter: ParentSexIfSingle to value: Married
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Report saved successfully: {Barangay=123, CertificationDate=2025-05-05, ParentGuardian2=123, AmountPaid=₱0.00, Signatory=ROEL H. MOLO, MMREM, REA, REB, LPTa, Patient=123, MaritalStatus=MARRIED, Type=Hospitalization, CertificationTime=16:51:35.908445300, PlaceIssued=, Relationship=son, ParentGuardian=123, ReceiptNo=0, Hospital=123, HospitalAddress=123, ParentSexIfSingle=Married}
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+FINE: Querying newest record ID for report type: Hospitalization
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper getNewestRecordId
+INFO: Newest record ID found: 590
+May 05, 2025 4:51:35 PM assessor.component.report.util.DatabaseSaveHelper saveReportAndGetNewestId
+INFO: Newest record ID after save: 590
+May 05, 2025 4:53:52 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 591
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:651)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:607)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 8:37:22 AM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 593
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 9:03:49 AM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 597
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 11:05:04 AM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 601
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 11:22:21 AM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 606
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 11:28:16 AM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 612
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 2:03:50 PM assessor.forms.FormTable handleReportGeneration
+SEVERE: Error generating report for record ID: 617
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.forms.FormTable.getReportTypeFromTable(FormTable.java:655)
+	at assessor.forms.FormTable.handleReportGeneration(FormTable.java:611)
+	at assessor.component.report.input.HospitalizationForm.lambda$monitorTableInitialization$0(HospitalizationForm.java:590)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 2:36:32 PM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.NullPointerException: Cannot invoke "javax.swing.JTabbedPane.getTabCount()" because "this.tabb" is null
+	at assessor.component.chart.CertificateTable.updateReportTab(CertificateTable.java:367)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:359)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:269)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:95)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 2:57:43 PM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.NullPointerException: Cannot invoke "javax.swing.JTabbedPane.getTabCount()" because "this.tabb" is null
+	at assessor.component.chart.CertificateTable.updateReportTab(CertificateTable.java:383)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:375)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:285)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:109)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 2:57:46 PM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.NullPointerException: Cannot invoke "javax.swing.JTabbedPane.getTabCount()" because "this.tabb" is null
+	at assessor.component.chart.CertificateTable.updateReportTab(CertificateTable.java:383)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:375)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:285)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:109)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 4:17:45 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:17:45 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:17:45 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:17:51 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:17:51 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:17:52 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:17:52 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:20:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:20:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:20:03 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:20:11 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:20:11 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:20:54 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:20:54 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:40:01 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:40:01 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:40:01 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:40:04 PM assessor.component.chart.CertificateTable getSelectedPatientName
+SEVERE: Error retrieving patient name from table
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getSelectedPatientName(CertificateTable.java:419)
+	at assessor.component.chart.CertificateTable.updateReportTab(CertificateTable.java:379)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:374)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:284)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:109)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 4:40:15 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:40:15 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:40:15 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:40:20 PM assessor.component.chart.CertificateTable getSelectedPatientName
+SEVERE: Error retrieving patient name from table
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getSelectedPatientName(CertificateTable.java:419)
+	at assessor.component.chart.CertificateTable.updateReportTab(CertificateTable.java:379)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:374)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:284)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:109)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 06, 2025 4:40:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:40:46 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:40:46 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:43:32 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:43:33 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:43:33 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:43:40 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:43:40 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:43:41 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:43:41 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:48:05 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:48:05 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:48:05 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:48:11 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:48:11 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:48:13 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:48:13 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:17 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:19 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:19 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:20 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:23 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:24 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:24 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:31 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:31 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:32 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:32 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:32 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:32 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:33 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:33 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 06, 2025 4:51:34 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 06, 2025 4:51:34 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:20:06 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:20:06 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:20:06 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 8:20:25 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:20:25 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:20:27 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:20:27 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:30 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:30 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:30 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 8:24:39 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:39 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:40 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:40 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:51 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:51 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:51 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 8:24:57 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:57 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 8:24:59 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 8:24:59 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:54:11 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:54:11 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:54:11 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:54:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:54:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:54:19 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:54:19 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:55:27 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:55:27 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:56:30 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:56:30 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:56:30 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:00 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:00 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:00 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:10 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:10 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:10 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:23 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:23 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:23 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:40 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:40 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:40 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:48 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:48 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:48 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:57:55 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:57:56 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:57:56 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:58:13 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:58:13 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:58:13 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:58:41 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:58:41 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:58:41 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:59:06 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:59:06 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:59:06 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:59:31 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:59:31 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:59:31 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 2:59:43 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 2:59:43 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 2:59:43 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:00:06 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:00:06 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:00:06 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:00:21 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:00:21 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:00:21 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:00:39 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:00:40 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:00:40 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:02:23 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:02:23 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:02:23 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:02:32 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:02:32 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:02:32 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:03:29 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:03:29 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:03:29 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:04:27 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:04:27 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:04:27 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:04:38 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:04:38 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:04:38 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:05:29 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:05:29 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:05:29 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:06:08 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:06:09 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:06:09 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:06:22 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:06:22 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:06:22 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:08:49 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:08:49 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:08:49 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:09:12 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:09:12 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:09:12 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:09:54 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:09:54 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:09:54 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:10:29 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:10:29 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:10:29 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:12:13 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:12:13 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:12:13 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+May 07, 2025 3:14:09 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+May 07, 2025 3:14:09 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+May 07, 2025 3:14:09 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
