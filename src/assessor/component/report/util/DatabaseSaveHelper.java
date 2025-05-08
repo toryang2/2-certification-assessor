@@ -6,6 +6,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,32 @@ public class DatabaseSaveHelper {
         SQL_TYPES.put(Double.class, Types.DECIMAL);
         SQL_TYPES.put(LocalDate.class, Types.DATE);
         SQL_TYPES.put(LocalTime.class, Types.TIME);
+    }
+    
+    public static List<String> fetchBarangays() {
+        List<String> barangays = new ArrayList<>();
+        String sql = "SELECT barangay_name FROM sys_barangay_list";
+
+        logger.log(Level.FINE, "Executing query to fetch barangays: {0}", sql);
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String barangay = rs.getString("barangay_name");
+                barangays.add(barangay);
+            }
+            logger.log(Level.INFO, "Barangays fetched successfully: {0}", barangays);
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to fetch barangays", e);
+        }
+
+        return barangays;
     }
 
     public static String getAssessorName(int id) {

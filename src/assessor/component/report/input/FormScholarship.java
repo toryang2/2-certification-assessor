@@ -7,25 +7,18 @@ package assessor.component.report.input;
 import assessor.component.chart.CertificateTable;
 import assessor.component.report.util.DataChangeNotifier;
 import assessor.component.report.util.DatabaseSaveHelper;
-import assessor.system.AllForms;
+import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.system.Form;
 import assessor.system.FormManager;
-import com.formdev.flatlaf.extras.FlatSVGUtils;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
@@ -33,10 +26,9 @@ import javax.swing.JTextField;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.text.*;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
@@ -48,8 +40,8 @@ import raven.modal.component.SimpleModalBorder;
  *
  * @author Toryang
  */
-public class HospitalizationForm extends Form {
-    private static final Logger logger = Logger.getLogger(HospitalizationForm.class.getName());
+public class FormScholarship extends Form {
+    private static final Logger logger = Logger.getLogger(FormScholarship.class.getName());
     private Consumer<Boolean> saveCallback;
     private DatePicker datePicker;
     private Timer messageTimer;
@@ -70,12 +62,35 @@ public class HospitalizationForm extends Form {
     /**
      * Creates new form Input
      */
-    public HospitalizationForm() {
+    
+    private void applyUppercaseFilterToTextFields() {
+        // Create an instance of the UppercaseDocumentFilter
+        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
+
+        // Apply the filter to all relevant text fields
+        JTextField[] textFields = {
+            txtParentGuardian,
+            txtParentGuardian2,
+            txtPatientStudent,
+            txtAddress,
+            txtHospital,
+            txtHospitalAddress,
+            txtPlaceIssued
+        };
+
+        for (JTextField textField : textFields) {
+            ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
+        }
+    }
+        
+    public FormScholarship() {
         setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
 //        setupActions();
         setupAmountField();
         setupReceiptNoField();
+        populateAddressCombo();
+        applyUppercaseFilterToTextFields();
 //        setTitle("Hospitalization");
 //        setIconImages( FlatSVGUtils.createWindowIconImages( "/assessor/ui/icons/certificate.svg" ) );
         
@@ -163,6 +178,7 @@ public class HospitalizationForm extends Form {
         comboParentSex.setSelectedItem("Married");
         comboRelationship.setModel(relationshipModel);
         comboRelationship.setSelectedIndex(0);
+        comboAddress.setSelectedIndex(0);
         
         SwingUtilities.invokeLater(() -> {
             txtParentGuardian.requestFocusInWindow();
@@ -235,34 +251,34 @@ public class HospitalizationForm extends Form {
         // Row 5: Address
         contentPanel.add(labelAddress);
         contentPanel.add(jLabelMandatoryAddress);
-        contentPanel.add(txtAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(comboAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
         contentPanel.add(labelRelationship, "cell 5 5");
         contentPanel.add(comboRelationship, "cell 6 5, growx, wrap");
 
         // Row 6: Hospital
-        contentPanel.add(labelHospital, "cell 0 6");
-        contentPanel.add(jLabelMandatoryHospital);
-        contentPanel.add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
+        //contentPanel.add(labelHospital, "cell 0 6");
+        //contentPanel.add(jLabelMandatoryHospital);
+        //contentPanel.add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
 
         // Row 7: Hospital Address
-        contentPanel.add(labelHospitalAddress, "cell 0 7");
-        contentPanel.add(jLabelMandatoryHospitalAddress);
-        contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
+        //contentPanel.add(labelHospitalAddress, "cell 0 7");
+        //contentPanel.add(jLabelMandatoryHospitalAddress);
+        //contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
 
         // Row 8: Amount & Receipt
-        contentPanel.add(labelAmount, "cell 0 8");
-        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
-        contentPanel.add(labelReceiptNo, "cell 5 8");
-        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
+        contentPanel.add(labelAmount, "cell 0 6");
+        contentPanel.add(txtAmount, "cell 2 6 3 1, w 120");
+        contentPanel.add(labelReceiptNo, "cell 5 6");
+        contentPanel.add(txtReceiptNo, "cell 6 6, growx, wrap");
 
         // Row 9: Date & Place
-        contentPanel.add(labelDateIssued, "cell 0 9");
-        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
-        contentPanel.add(labelPlaceIssued, "cell 4 9");
-        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 7");
+        contentPanel.add(receiptDateIssuedPicker, "cell 2 7 2 1, w 120"); // Using DatePicker
+        contentPanel.add(labelPlaceIssued, "cell 4 7");
+        contentPanel.add(txtPlaceIssued, "cell 5 7 2 1, growx, wrap");
 
         // Row 10: Buttons
-        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
+        contentPanel.add(jLabelMandatoryMessage,"cell 0 8 3 1, left");
 //        buttonPanel.add(btnSave);
 //        buttonPanel.add(btnCancel);
 //        contentPanel.add(buttonPanel, "span 6, right");
@@ -271,6 +287,22 @@ public class HospitalizationForm extends Form {
         wrapper.add(contentPanel);
         
         add(wrapper);
+    }
+        
+    private void populateAddressCombo() {
+        // Fetch barangay data from the database
+        List<String> barangays = DatabaseSaveHelper.fetchBarangays();
+
+        // Clear existing items in the combo box
+        comboAddress.removeAllItems();
+
+        // Add barangay names to the combo box
+        for (String barangay : barangays) {
+            comboAddress.addItem(barangay);
+        }
+
+        // Optionally set a default selection
+        comboAddress.setSelectedIndex(-1); // No selection by default
     }
     
     public void cleanup() {
@@ -540,7 +572,7 @@ public void saveAction(ActionEvent e) {
             logger.log(Level.INFO, "Input validation passed");
 
             Map<String, Object> reportData = collectReportData();
-            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Hospitalization", reportData);
+            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Scholarship", reportData);
 
             if (newestRecordId != -1) {
                 logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
@@ -641,7 +673,7 @@ private Map<String, Object> collectReportData() {
     reportData.put("ParentGuardian", txtParentGuardian.getText());
     reportData.put("ParentGuardian2", txtParentGuardian2.getText());
     reportData.put("Patient", txtPatientStudent.getText());
-    reportData.put("Barangay", txtAddress.getText());
+    reportData.put("Barangay", comboAddress.getSelectedItem());
     reportData.put("Hospital", txtHospital.getText());
     reportData.put("HospitalAddress", txtHospitalAddress.getText());
     reportData.put("PlaceIssued", txtPlaceIssued.getText());
@@ -714,7 +746,7 @@ private String getReceiptNumber() {
 public SimpleModalBorder createCustomBorder() {
     return new SimpleModalBorder(
         this, 
-        "Hospitalization", 
+        "Scholarship", 
         SimpleModalBorder.OK_CANCEL_OPTION,
         (controller, action) -> {
             if (action == SimpleModalBorder.OK_OPTION) {
@@ -756,7 +788,6 @@ public SimpleModalBorder createCustomBorder() {
         Object[][] requiredFields = {
             { jLabelMandatoryParentGuardian, txtParentGuardian },
             { jLabelMandatoryParentStudent, txtPatientStudent },
-            { jLabelMandatoryAddress, txtAddress },
             { jLabelMandatoryHospital, txtHospital },
             { jLabelMandatoryHospitalAddress, txtHospitalAddress }
         };
@@ -830,6 +861,7 @@ public SimpleModalBorder createCustomBorder() {
         txtPatientStudent = new javax.swing.JTextField();
         labelRelationship = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
+        comboAddress = new javax.swing.JComboBox<>();
         comboRelationship = new javax.swing.JComboBox<>();
         labelAddress = new javax.swing.JLabel();
         labelHospital = new javax.swing.JLabel();
@@ -891,6 +923,14 @@ public SimpleModalBorder createCustomBorder() {
         labelRelationship.setText("Relationship");
         add(labelRelationship);
         add(txtAddress);
+
+        comboAddress.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboAddressActionPerformed(evt);
+            }
+        });
+        add(comboAddress);
 
         comboRelationship.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "son", "daughter", "spouse" }));
         comboRelationship.addActionListener(new java.awt.event.ActionListener() {
@@ -959,12 +999,17 @@ public SimpleModalBorder createCustomBorder() {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboRelationshipActionPerformed
 
+    private void comboAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboAddressActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JToggleButton btnSave;
     private javax.swing.JCheckBox checkBoxGuardian;
     private javax.swing.JCheckBox checkBoxMarried;
     private javax.swing.JCheckBox checkBoxSingle;
+    private javax.swing.JComboBox<String> comboAddress;
     private javax.swing.JComboBox<String> comboParentSex;
     private javax.swing.JComboBox<String> comboRelationship;
     private javax.swing.JLabel jLabelMandatoryAddress;

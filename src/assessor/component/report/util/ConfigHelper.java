@@ -1,6 +1,5 @@
 package assessor.component.report.util;
 
-import com.sun.jdi.connect.spi.Connection;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

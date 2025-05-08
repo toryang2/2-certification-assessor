@@ -4,23 +4,21 @@
  */
 package assessor.component.report.input;
 
+import assessor.component.chart.CertificateTable;
+import assessor.component.report.util.DataChangeNotifier;
 import assessor.component.report.util.DatabaseSaveHelper;
+import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.system.Form;
-import com.formdev.flatlaf.extras.FlatSVGUtils;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import assessor.system.FormManager;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
@@ -28,23 +26,31 @@ import javax.swing.JTextField;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.text.*;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
+import java.util.logging.*;
+import raven.modal.component.SimpleModalBorder;
 
 /**
  *
  * @author Toryang
  */
 public class FormHospitalization extends Form {
+    private static final Logger logger = Logger.getLogger(FormHospitalization.class.getName());
+    
     private Consumer<Boolean> saveCallback;
     private DatePicker datePicker;
     private Timer messageTimer;
+    private boolean saveSuccessful = false;
+
+    public boolean isSaveSuccessful() {
+        return saveSuccessful;
+    }
     
 //    @Override
 //    public void dispose(){
@@ -57,11 +63,35 @@ public class FormHospitalization extends Form {
     /**
      * Creates new form Input
      */
+    
+    private void applyUppercaseFilterToTextFields() {
+        // Create an instance of the UppercaseDocumentFilter
+        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
+
+        // Apply the filter to all relevant text fields
+        JTextField[] textFields = {
+            txtParentGuardian,
+            txtParentGuardian2,
+            txtPatientStudent,
+            txtAddress,
+            txtHospital,
+            txtHospitalAddress,
+            txtPlaceIssued
+        };
+
+        for (JTextField textField : textFields) {
+            ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
+        }
+    }
+    
     public FormHospitalization() {
+        setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
-        setupActions();
+//        setupActions();
         setupAmountField();
         setupReceiptNoField();
+        populateAddressCombo();
+        applyUppercaseFilterToTextFields();
 //        setTitle("Hospitalization");
 //        setIconImages( FlatSVGUtils.createWindowIconImages( "/assessor/ui/icons/certificate.svg" ) );
         
@@ -149,6 +179,7 @@ public class FormHospitalization extends Form {
         comboParentSex.setSelectedItem("Married");
         comboRelationship.setModel(relationshipModel);
         comboRelationship.setSelectedIndex(0);
+        comboAddress.setSelectedIndex(0);
         
         SwingUtilities.invokeLater(() -> {
             txtParentGuardian.requestFocusInWindow();
@@ -183,10 +214,10 @@ public class FormHospitalization extends Form {
         
         // Clear existing layout
 //        Container contentPane = getContentPane();
-//        removeAll();
+        removeAll();
 
         // Set up MigLayout
-        setLayout(new MigLayout(
+        JPanel contentPanel = new JPanel(new MigLayout(
             "insets 20 30 20 30, gap 5 15",
             // 6-column layout: [labels][field1][field2][labels][field3][fill]
             "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100]", 
@@ -194,71 +225,91 @@ public class FormHospitalization extends Form {
         ));
 
         // Row 0: Title
-        add(labelTitle, "span 7, center, wrap");
+        contentPanel.add(labelTitle, "span 7, center, wrap");
 
         // Row 1: Marital Status
         JPanel maritalPanel = new JPanel(new MigLayout("gap 15, insets 0, align center"));
         maritalPanel.add(checkBoxMarried);
         maritalPanel.add(checkBoxSingle);
         maritalPanel.add(checkBoxGuardian);
-        add(maritalPanel, "span 7, center, wrap");
+        contentPanel.add(maritalPanel, "span 7, center, wrap");
 
         // Row 2: Parent/Guardian
-        add(labelParentGuardian, "cell 0 2");
-        add(jLabelMandatoryParentGuardian);
-        add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
-        add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelParentGuardian, "cell 0 2");
+        contentPanel.add(jLabelMandatoryParentGuardian);
+        contentPanel.add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
+        contentPanel.add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
 
         // Row 3: Parent/Guardian 2
-        add(labelParentGuardian2, "cell 0 3");
-        add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelParentGuardian2, "cell 0 3");
+        contentPanel.add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
 
         // Row 4: Patient/Student
-        add(labelPatientStudent);
-        add(jLabelMandatoryParentStudent);
-        add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelPatientStudent);
+        contentPanel.add(jLabelMandatoryParentStudent);
+        contentPanel.add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
 
         // Row 5: Address
-        add(labelAddress);
-        add(jLabelMandatoryAddress);
-        add(txtAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
-        add(labelRelationship, "cell 5 5");
-        add(comboRelationship, "cell 6 5, growx, wrap");
+        contentPanel.add(labelAddress);
+        contentPanel.add(jLabelMandatoryAddress);
+        contentPanel.add(comboAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelRelationship, "cell 5 5");
+        contentPanel.add(comboRelationship, "cell 6 5, growx, wrap");
 
         // Row 6: Hospital
-        add(labelHospital, "cell 0 6");
-        add(jLabelMandatoryHospital);
-        add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelHospital, "cell 0 6");
+        contentPanel.add(jLabelMandatoryHospital);
+        contentPanel.add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
 
         // Row 7: Hospital Address
-        add(labelHospitalAddress, "cell 0 7");
-        add(jLabelMandatoryHospitalAddress);
-        add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelHospitalAddress, "cell 0 7");
+        contentPanel.add(jLabelMandatoryHospitalAddress);
+        contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
 
         // Row 8: Amount & Receipt
-        add(labelAmount, "cell 0 8");
-        add(txtAmount, "cell 2 8 3 1, w 120");
-        add(labelReceiptNo, "cell 5 8");
-        add(txtReceiptNo, "cell 6 8, growx, wrap");
+        contentPanel.add(labelAmount, "cell 0 8");
+        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
+        contentPanel.add(labelReceiptNo, "cell 5 8");
+        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
 
         // Row 9: Date & Place
-        add(labelDateIssued, "cell 0 9");
-        add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
-        add(labelPlaceIssued, "cell 4 9");
-        add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 9");
+        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
+        contentPanel.add(labelPlaceIssued, "cell 4 9");
+        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
 
         // Row 10: Buttons
-        JPanel buttonPanel = new JPanel(new MigLayout("insets 0, align right"));
-        add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
-        buttonPanel.add(btnSave);
-        buttonPanel.add(btnCancel);
-        add(buttonPanel, "span 6, right");
+        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
+//        buttonPanel.add(btnSave);
+//        buttonPanel.add(btnCancel);
+//        contentPanel.add(buttonPanel, "span 6, right");
 
-//        pack();
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(contentPanel);
+        
+        add(wrapper);
+    }
+    
+    private void populateAddressCombo() {
+        // Fetch barangay data from the database
+        List<String> barangays = DatabaseSaveHelper.fetchBarangays();
 
-        setPreferredSize(new Dimension(602, 390));
-        setMaximumSize(new Dimension(602, 390));
-        setMinimumSize(new Dimension(602, 390));
+        // Clear existing items in the combo box
+        comboAddress.removeAllItems();
+
+        // Add barangay names to the combo box
+        for (String barangay : barangays) {
+            comboAddress.addItem(barangay);
+        }
+
+        // Optionally set a default selection
+        comboAddress.setSelectedIndex(-1); // No selection by default
+    }
+    
+    public void cleanup() {
+        if (datePicker != null) {
+            datePicker.closePopup();
+        }
     }
     
     private void setupAmountField() {
@@ -414,27 +465,19 @@ public class FormHospitalization extends Form {
     private double parseDouble(String text) throws NumberFormatException {
         try {
             String cleaned = text.replace("₱", "")
-                                .replaceAll(",", "") // Remove commas before parsing
+                                .replaceAll(",", "")
                                 .replaceAll("[^\\d.]", "");
             
-            if (cleaned.isEmpty()) throw new NumberFormatException("Empty amount");
-            if (cleaned.startsWith(".")) cleaned = "0" + cleaned;
-            if (cleaned.endsWith(".")) cleaned += "0";
+            if (cleaned.isEmpty()) {
+                logger.log(Level.WARNING, "Empty amount field");
+                throw new NumberFormatException("Empty amount");
+            }
             
             return new BigDecimal(cleaned).doubleValue();
         } catch (NumberFormatException | ArithmeticException e) {
-//            showValidationError("Invalid amount format");
-            throw new NumberFormatException();
+            logger.log(Level.SEVERE, "Error parsing amount: {0}", text);
+            throw new NumberFormatException("Invalid amount format: " + text);
         }
-    }
-    
-    private void showValidationError(String message) {
-        JOptionPane.showMessageDialog(
-            this, 
-            message,
-            "Validation Error",
-            JOptionPane.WARNING_MESSAGE
-        );
     }
     
     private void setupReceiptNoField() {
@@ -490,6 +533,7 @@ public class FormHospitalization extends Form {
             try {
                 txtReceiptNo.commitEdit();
             } catch (ParseException ex) {
+                logger.log(Level.WARNING, "Invalid receipt number format", ex);
                 txtReceiptNo.setValue(null);
             }
         }
@@ -499,114 +543,230 @@ public class FormHospitalization extends Form {
     public void setSaveCallback(Consumer<Boolean> callback) {
         this.saveCallback = callback;
     }
-    private void setupActions() {
-        btnSave.addActionListener(this::saveAction);
-    }
-    
-    private void saveAction(ActionEvent e) {
+//    private void setupActions() {
+//        btnSave.addActionListener(this::saveAction);
+//        btnCancel.addActionListener(e ->  {
+//            cleanup();
+//            
+//            Window window = SwingUtilities.getWindowAncestor(HospitalizationForm.this);
+//            if (window != null) {
+//                window.dispose();
+//            }
+//        });
+//    }
+
+public void saveAction(ActionEvent e) {
+    try {
         handleAmountFocusLost();
-        if(validateInput()) {
-            // Create report data map
-            String signatory = DatabaseSaveHelper.getAssessorName(1);
-            Map<String, Object> reportData = new HashMap<>();
-            if (signatory !=null) {
-                reportData.put("Signatory", signatory);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Default assessor not configured",
-                    "Configuration Warning",
-                    JOptionPane.WARNING_MESSAGE);                
-            }
-            
-            // Determine selected marital status
-            String maritalStatus = 
-                checkBoxMarried.isSelected() ? "MARRIED" :
-                checkBoxSingle.isSelected() ? "SINGLE" :
-                checkBoxGuardian.isSelected() ? "GUARDIAN" : 
-                "Unknown";  // Fallback if none selected
+        logger.log(Level.INFO, "Starting save action...");
 
-            // Add to report data
-            reportData.put("MaritalStatus", maritalStatus);
-            if ("Unknown".equals(maritalStatus)) {
-                JOptionPane.showMessageDialog(this,
-                    "Please select a marital status",
-                    "Validation Error",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Map form fields to database columns
-            //
-            reportData.put("ParentGuardian", txtParentGuardian.getText());
-            //
-            String parentSex = comboParentSex.isEnabled() ? 
-               comboParentSex.getSelectedItem().toString() : 
-               checkBoxMarried.isSelected() ? "Married" : "Guardian";
-            reportData.put("ParentSexIfSingle", parentSex);
-            //
-            reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-            reportData.put("Patient", txtPatientStudent.getText());
-            reportData.put("Barangay", txtAddress.getText());
-            //
-            if (checkBoxGuardian.isSelected()) {
-                reportData.put("Relationship", "Legal Guardian");
-            } else {
-                Object relationship = comboRelationship.getSelectedItem();
-                if (relationship != null) {
-                    reportData.put("Relationship", relationship.toString());
-                }
-            }
-            //
-            reportData.put("Hospital", txtHospital.getText());
-            reportData.put("HospitalAddress", txtHospitalAddress.getText());
-            reportData.put("CertificationDate", LocalDate.now());
-            reportData.put("CertificationTime", LocalTime.now());
-            double amount = parseDouble(txtAmount.getText());
-            reportData.put("AmountPaid", formatAmount(amount));
-            //
-            
-            Object value = txtReceiptNo.getValue();
-            if (value instanceof Number) {
-                reportData.put("ReceiptNo", ((Number) value).longValue());
-            } else {
-                reportData.put("ReceiptNo", null);  // Or empty string based on your DB needs
-            }
+        if (validateInput()) {
+            logger.log(Level.INFO, "Input validation passed");
 
-            //
-            LocalDate receiptDate = datePicker.getSelectedDate();
-            if (receiptDate != null) {
-                reportData.put("ReceiptDateIssued", receiptDate);
-            }
-            reportData.put("PlaceIssued", txtPlaceIssued.getText());
-//            reportData.put("userInitials", currentUser.getInitials());
+            Map<String, Object> reportData = collectReportData();
+            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Hospitalization", reportData);
 
-            // Add other fields as needed
-            // reportData.put("MaritalStatus", cmbMaritalStatus.getSelectedItem());
-            // reportData.put("Barangay", txtBarangay.getText());
-            try {
-                boolean success = DatabaseSaveHelper.saveReport("Hospitalization", reportData);
+            if (newestRecordId != -1) {
+                logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
 
-                if(success) {
-                    if(saveCallback != null) {
-                        saveCallback.accept(true);
-                    }
-                    
-                } else {
+                // Fetch CertificateTable from FormManager
+                CertificateTable certificateTable = FormManager.getActiveForm(CertificateTable.class);
+                if (certificateTable == null) {
+                    logger.log(Level.SEVERE, "CertificateTable is not available in FormManager!");
                     JOptionPane.showMessageDialog(this,
-                        "Failed to save hospitalization record",
+                            "Failed to refresh the table. CertificateTable is not active.",
+                            "Table Refresh Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (certificateTable.reportLoader == null) {
+                    logger.log(Level.SEVERE, "CertificateTable's reportLoader is null!");
+                    JOptionPane.showMessageDialog(this,
+                            "Failed to refresh the table. reportLoader is not initialized.",
+                            "Table Refresh Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Refresh the table
+                logger.log(Level.INFO, "Found CertificateTable and reportLoader. Initiating data refresh...");
+                certificateTable.reportLoader.loadData(() -> {
+                    logger.log(Level.INFO, "Table refresh complete. Generating report...");
+                    monitorTableInitialization(certificateTable, newestRecordId);
+                });
+
+                // Notify success callback and close modal
+                saveSuccessful = true;
+                if (saveCallback != null) {
+                    saveCallback.accept(true);
+                }
+            } else {
+                logger.log(Level.WARNING, "Failed to save hospitalization record.");
+                JOptionPane.showMessageDialog(this,
+                        "Failed to save hospitalization record.",
                         "Database Error",
                         JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception ex) {
-                handleSaveError(ex);
             }
         }
+    } catch (Exception ex) {
+        logger.log(Level.SEVERE, "Critical error in save action", ex);
+        handleSaveError(ex);
     }
+}
+
+private void monitorTableInitialization(CertificateTable certificateTable, int recordId) {
+    SwingUtilities.invokeLater(() -> {
+        if (isTableInitialized(certificateTable.certificationTable)) {
+            try {
+                logger.log(Level.INFO, "Table is ready. Generating report...");
+                certificateTable.handleReportGeneration(recordId);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, ex);
+                JOptionPane.showMessageDialog(this,
+                        "Error generating report: " + ex.getMessage(),
+                        "Report Generation Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            logger.log(Level.INFO, "Table is not ready. Retrying...");
+            monitorTableInitialization(certificateTable, recordId);
+        }
+    });
+}
+
+// Method to check if the table is initialized
+private boolean isTableInitialized(JTable table) {
+    logger.log(Level.INFO, "Checking table initialization: columns={0}, rows={1}",
+            new Object[]{table.getColumnCount(), table.getRowCount()});
+    return table.getColumnCount() > 0 && table.getRowCount() > 0;
+}
+
+private Map<String, Object> collectReportData() {
+    Map<String, Object> reportData = new HashMap<>();
+
+    // Add signatory
+    String signatory = DatabaseSaveHelper.getAssessorName(1);
+    if (signatory != null) {
+        reportData.put("Signatory", signatory);
+        logger.log(Level.INFO, "Signatory found: {0}", signatory);
+    } else {
+        logger.log(Level.WARNING, "No default assessor configured");
+        JOptionPane.showMessageDialog(this,
+                "Default assessor not configured.",
+                "Configuration Warning",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    // Add marital status
+    reportData.put("MaritalStatus", getMaritalStatus());
+
+    // Add text fields
+    reportData.put("ParentGuardian", txtParentGuardian.getText());
+    reportData.put("ParentGuardian2", txtParentGuardian2.getText());
+    reportData.put("Patient", txtPatientStudent.getText());
+    reportData.put("Barangay", comboAddress.getSelectedItem());
+    reportData.put("Hospital", txtHospital.getText());
+    reportData.put("HospitalAddress", txtHospitalAddress.getText());
+    reportData.put("PlaceIssued", txtPlaceIssued.getText());
+
+    // Add parent sex
+    reportData.put("ParentSexIfSingle", getParentSex());
+
+    // Add relationship
+    reportData.put("Relationship", getRelationship());
+
+    // Add amount paid
+    reportData.put("AmountPaid", getAmountPaid());
+
+    // Add receipt number
+    reportData.put("ReceiptNo", getReceiptNumber());
+
+    // Add dates
+    reportData.put("CertificationDate", LocalDate.now());
+    reportData.put("CertificationTime", LocalTime.now());
+    if (datePicker.getSelectedDate() != null) {
+        reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
+    }
+
+    return reportData;
+}
+
+private String getMaritalStatus() {
+    if (checkBoxMarried.isSelected()) return "MARRIED";
+    if (checkBoxSingle.isSelected()) return "SINGLE";
+    if (checkBoxGuardian.isSelected()) return "GUARDIAN";
+    return "Unknown";
+}
+
+private String getParentSex() {
+    if (comboParentSex.isEnabled()) {
+        return comboParentSex.getSelectedItem().toString();
+    }
+    return checkBoxMarried.isSelected() ? "Married" : "Guardian";
+}
+
+private String getRelationship() {
+    if (checkBoxGuardian.isSelected()) return "Legal Guardian";
+    return comboRelationship.getSelectedItem().toString();
+}
+
+private String getAmountPaid() {
+    try {
+        double amount = parseDouble(txtAmount.getText());
+        return formatAmount(amount);
+    } catch (NumberFormatException ex) {
+        logger.log(Level.WARNING, "Invalid amount format, defaulting to ₱0.00");
+        return "₱0.00";
+    }
+}
+
+private String getReceiptNumber() {
+    try {
+        Object receiptValue = txtReceiptNo.getValue();
+        if (receiptValue instanceof Number) {
+            long numberValue = ((Number) receiptValue).longValue();
+            return numberValue == 0L ? null : String.valueOf(numberValue);
+        }
+        return null; // Or return ""; if you prefer an empty string instead of null
+    } catch (Exception ex) {
+        logger.log(Level.SEVERE, "Error processing receipt number", ex);
+        throw new RuntimeException("Invalid receipt number", ex);
+    }
+}
+    
+public SimpleModalBorder createCustomBorder() {
+    return new SimpleModalBorder(
+        this, 
+        "Hospitalization", 
+        SimpleModalBorder.OK_CANCEL_OPTION,
+        (controller, action) -> {
+            if (action == SimpleModalBorder.OK_OPTION) {
+                saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+                if (saveSuccessful) {
+                    controller.close();
+                    SwingUtilities.invokeLater(() -> {
+                        // Notify DataChangeNotifier to refresh tables
+                        DataChangeNotifier.getInstance().notifyDataChange();
+                    });
+                } else {
+                    controller.consume(); // Prevent closing the modal if save fails
+                }
+            }
+        }
+    );
+}
     
     private void handleSaveError(Exception ex) {
         String errorMessage = "Save failed: " + ex.getMessage();
-        if(ex.getCause() instanceof SQLException) {
-            errorMessage += "\nSQL State: " + ((SQLException) ex.getCause()).getSQLState();
+        logger.log(Level.SEVERE, errorMessage, ex);
+        
+        if (ex.getCause() instanceof SQLException) {
+            SQLException sqlEx = (SQLException) ex.getCause();
+            errorMessage += "\nSQL State: " + sqlEx.getSQLState();
+            logger.log(Level.SEVERE, "SQL Exception details", sqlEx);
         }
+        
         JOptionPane.showMessageDialog(this,
             errorMessage,
             "Save Error",
@@ -615,53 +775,59 @@ public class FormHospitalization extends Form {
     
     // Update validation to match your actual form fields
     private boolean validateInput() {
+        logger.log(Level.FINE, "Starting input validation");
+        
         Object[][] requiredFields = {
             { jLabelMandatoryParentGuardian, txtParentGuardian },
             { jLabelMandatoryParentStudent, txtPatientStudent },
-            { jLabelMandatoryAddress, txtAddress },
             { jLabelMandatoryHospital, txtHospital },
             { jLabelMandatoryHospitalAddress, txtHospitalAddress }
         };
 
         boolean isValid = true;
         
-        if(comboParentSex.getSelectedItem() == null) {
-            // Show error for parent sex
+        // Combo box validation
+        if (comboParentSex.getSelectedItem() == null) {
+            logger.log(Level.WARNING, "Parent sex not selected");
             isValid = false;
         }
     
-        if(comboRelationship.getSelectedItem() == null) {
-            // Show error for relationship
+        if (comboRelationship.getSelectedItem() == null) {
+            logger.log(Level.WARNING, "Relationship not selected");
             isValid = false;
         }
 
-        // First: Show indicators based on current validity
+        // Text field validation
         for (Object[] pair : requiredFields) {
             JLabel mandatoryLabel = (JLabel) pair[0];
             JTextField field = (JTextField) pair[1];
             boolean isEmpty = field.getText().trim().isEmpty();
 
-            mandatoryLabel.setVisible(isEmpty);
-
-            if (isEmpty && isValid) {
-                field.requestFocus();
+            if (isEmpty) {
+                logger.log(Level.WARNING, "Required field empty: {0}", field.getName());
+                mandatoryLabel.setVisible(true);
+                if (isValid) field.requestFocus();
                 isValid = false;
             }
         }
 
-        // Handle mandatory message with timer
         if (!isValid) {
+            logger.log(Level.WARNING, "Validation failed with {0} errors", 
+                countValidationErrors(requiredFields));
             jLabelMandatoryMessage.setVisible(true);
-            btnSave.repaint();
-            
-            messageTimer.stop(); // Stop existing timer if running
             messageTimer.start();
-        } else {
-            jLabelMandatoryMessage.setVisible(false);
-            messageTimer.stop();
         }
-
+        
         return isValid;
+    }
+
+    private int countValidationErrors(Object[][] fields) {
+        int count = 0;
+        for (Object[] pair : fields) {
+            JTextField field = (JTextField) pair[1];
+            if (field.getText().trim().isEmpty()) count++;
+        }
+        return count;
     }
     
     /**
@@ -687,6 +853,7 @@ public class FormHospitalization extends Form {
         txtPatientStudent = new javax.swing.JTextField();
         labelRelationship = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
+        comboAddress = new javax.swing.JComboBox<>();
         comboRelationship = new javax.swing.JComboBox<>();
         labelAddress = new javax.swing.JLabel();
         labelHospital = new javax.swing.JLabel();
@@ -712,28 +879,45 @@ public class FormHospitalization extends Form {
         labelTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("CLIENT INFORMATION");
+        add(labelTitle);
 
         labelParentGuardian.setText("Parent/ Guardian  ");
+        add(labelParentGuardian);
 
         txtParentGuardian.setToolTipText("");
+        txtParentGuardian.setActionCommand("<Not Set>");
+        add(txtParentGuardian);
 
         jLabelMandatoryParentGuardian.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryParentGuardian.setText("*");
+        add(jLabelMandatoryParentGuardian);
 
         comboParentSex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        add(comboParentSex);
 
         labelParentGuardian2.setText("Parent/ Guardian");
+        add(labelParentGuardian2);
+        add(txtParentGuardian2);
 
         checkBoxSingle.setText("Single");
         checkBoxSingle.setToolTipText("");
+        add(checkBoxSingle);
 
         checkBoxMarried.setText("Married");
+        add(checkBoxMarried);
 
         checkBoxGuardian.setText("Guardian");
+        add(checkBoxGuardian);
 
         labelPatientStudent.setText("Patient/ Student");
+        add(labelPatientStudent);
+        add(txtPatientStudent);
 
         labelRelationship.setText("Relationship");
+        add(labelRelationship);
+        add(txtAddress);
+
+        add(comboAddress);
 
         comboRelationship.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "son", "daughter", "spouse" }));
         comboRelationship.addActionListener(new java.awt.event.ActionListener() {
@@ -741,233 +925,66 @@ public class FormHospitalization extends Form {
                 comboRelationshipActionPerformed(evt);
             }
         });
+        add(comboRelationship);
 
         labelAddress.setText("Address");
+        add(labelAddress);
 
         labelHospital.setText("Hospital");
+        add(labelHospital);
+        add(txtHospital);
 
         labelHospitalAddress.setText("Hospital Address");
+        add(labelHospitalAddress);
+        add(txtHospitalAddress);
 
         labelAmount.setText("Amount");
+        add(labelAmount);
+        add(txtAmount);
 
         labelReceiptNo.setText("Receipt No.");
+        add(labelReceiptNo);
 
         labelDateIssued.setText("Date Issued");
+        add(labelDateIssued);
 
         labelPlaceIssued.setText("Place Issued");
+        add(labelPlaceIssued);
+        add(txtPlaceIssued);
 
         btnSave.setText("Save");
+        add(btnSave);
 
         jLabelMandatoryParentStudent.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryParentStudent.setText("*");
+        add(jLabelMandatoryParentStudent);
 
         jLabelMandatoryAddress.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryAddress.setText("*");
+        add(jLabelMandatoryAddress);
 
         jLabelMandatoryHospital.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryHospital.setText("*");
+        add(jLabelMandatoryHospital);
 
         jLabelMandatoryHospitalAddress.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryHospitalAddress.setText("*");
+        add(jLabelMandatoryHospitalAddress);
 
         btnCancel.setText("Cancel");
+        add(btnCancel);
+        add(receiptDateIssuedPicker);
 
         jLabelMandatoryMessage.setText("<html><font color='red'>*</font> Mandatory fields required</html>");
+        add(jLabelMandatoryMessage);
 
         txtReceiptNo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelDateIssued)
-                            .addComponent(labelHospitalAddress)
-                            .addComponent(labelAmount)
-                            .addComponent(labelHospital)
-                            .addComponent(labelPatientStudent)
-                            .addComponent(labelAddress))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabelMandatoryParentStudent)
-                                            .addComponent(jLabelMandatoryHospital))
-                                        .addComponent(jLabelMandatoryHospitalAddress))
-                                    .addComponent(jLabelMandatoryAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtHospitalAddress)
-                                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtHospital)
-                                    .addComponent(txtPatientStudent, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(197, 197, 197)
-                                        .addComponent(labelRelationship)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(comboRelationship, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                                            .addComponent(receiptDateIssuedPicker))
-                                        .addGap(39, 39, 39)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(labelReceiptNo)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(labelPlaceIssued)
-                                                .addGap(4, 4, 4)))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPlaceIssued)
-                                            .addComponent(txtReceiptNo)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelMandatoryMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(180, 180, 180)
-                                .addComponent(btnSave)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelParentGuardian2)
-                            .addComponent(labelParentGuardian))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelMandatoryParentGuardian)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkBoxSingle)
-                                .addGap(18, 18, 18)
-                                .addComponent(checkBoxMarried)
-                                .addGap(18, 18, 18)
-                                .addComponent(checkBoxGuardian))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtParentGuardian2)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtParentGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(17, 17, 17)
-                                    .addComponent(comboParentSex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkBoxSingle)
-                    .addComponent(checkBoxMarried)
-                    .addComponent(checkBoxGuardian))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelParentGuardian)
-                    .addComponent(txtParentGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMandatoryParentGuardian)
-                    .addComponent(comboParentSex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelParentGuardian2)
-                    .addComponent(txtParentGuardian2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelPatientStudent)
-                    .addComponent(txtPatientStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMandatoryParentStudent))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelRelationship)
-                    .addComponent(comboRelationship, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelAddress)
-                    .addComponent(jLabelMandatoryAddress)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelHospital)
-                    .addComponent(txtHospital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMandatoryHospital))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelHospitalAddress)
-                    .addComponent(txtHospitalAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelMandatoryHospitalAddress))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelAmount)
-                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelReceiptNo)
-                    .addComponent(txtReceiptNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDateIssued)
-                    .addComponent(labelPlaceIssued)
-                    .addComponent(txtPlaceIssued, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(receiptDateIssuedPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnCancel)
-                    .addComponent(jLabelMandatoryMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
+        add(txtReceiptNo);
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboRelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRelationshipActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboRelationshipActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormHospitalization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormHospitalization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormHospitalization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormHospitalization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-    java.awt.EventQueue.invokeLater(() -> {
-        JFrame frame = new JFrame("Hospitalization");
-        frame.setContentPane(new FormHospitalization());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -975,6 +992,7 @@ public class FormHospitalization extends Form {
     private javax.swing.JCheckBox checkBoxGuardian;
     private javax.swing.JCheckBox checkBoxMarried;
     private javax.swing.JCheckBox checkBoxSingle;
+    private javax.swing.JComboBox<String> comboAddress;
     private javax.swing.JComboBox<String> comboParentSex;
     private javax.swing.JComboBox<String> comboRelationship;
     private javax.swing.JLabel jLabelMandatoryAddress;

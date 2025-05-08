@@ -97,11 +97,11 @@ Municipality of Kitaotao]]></text>
 			<text><![CDATA[OFFICE OF THE MUNICIPAL ASSESSOR]]></text>
 		</element>
 		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="25" fontName="Bernard MT Condensed" fontSize="20.0" hTextAlign="Center">
-			<text><![CDATA[SCHOLARSHIP]]></text>
+			<text><![CDATA[CERTIFICATE OF NON-LANDHOLDINGS]]></text>
 		</element>
 	</columnHeader>
 	<detail>
-		<band height="440" splitType="Stretch">
+		<band height="490" splitType="Stretch">
 			<element kind="textField" uuid="9e453b17-a0a1-41a4-aa00-2bc257c14c72" stretchType="NoStretch" x="0" y="71" width="443" height="229" markup="styled" fontName="Bookman Old Style" fontSize="12.0" linkTarget="Self" hTextAlign="Justified">
 				<paragraph firstLineIndent="20"/>
 				<expression><![CDATA["THIS IS TO CERTIFY that " + 
@@ -110,23 +110,24 @@ Municipality of Kitaotao]]></text>
     ? "" 
     : assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}) + " "
 ) + " " +  $F{ParentDisplay} + "</style> " + 
-" of Barangay " + $F{Barangay} +  
-" this municipality has no declared real property ownership such as building, land, and machinery as far as our record is concerned.\n\n" +
+" resident of Barangay " + assessor.component.report.TextNormalizer.toProperCase($F{Barangay}) +  
+", Kitaotao, Bukidnon have No Real Property such as Land, Building and Machinery declared in this office as far as our record is concerned.\n\n" +
 
-"THIS CERTIFICATION is being done to facilitate their request for financial/medical assistance of " + 
+"This CERTIFICATION is issued upon verbal request of the above-named persons for the purposes of:\n\n" +
+"<style isBold=\"true\"> a) </style>" + "Scholarship requirements for " +
 (assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}).isEmpty() 
     ? "" 
     : assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}) + " "
 ) +
 (($F{Relationship} == null || $F{Relationship}.isEmpty()) ? "" : $F{Relationship} + " ") + 
-"  <style isBold=\"true\">" + $F{Patient} + " (Patient)</style> at " + $F{Hospital} + " – " + $F{HospitalAddress} + ".\n\n" +
+"  <style isBold=\"true\">" + $F{Patient} + ".</style>" + "\n\n" +
 
-"Done and Given this " + 
+"Issued this " + 
 ( ($F{CertificationDate} != null) ? 
     assessor.component.report.DateUtil.formatCertificationDate($F{CertificationDate}) : 
     "[DATE MISSING]"
 ) +
-" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon."
+" at Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon, Philippines."
 ]]></expression>
 				<property name="net.sf.jasperreports.awt.justify.last.line" value="false"/>
 				<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
@@ -140,40 +141,47 @@ Municipality of Kitaotao]]></text>
 			<element kind="staticText" uuid="fd42a9f8-83dd-4b93-bc43-d524f4871537" x="220" y="333" width="223" height="16" fontName="Bookman Old Style" fontSize="12.0" hTextAlign="Center">
 				<text><![CDATA[Municipal Assessor]]></text>
 			</element>
-			<element kind="staticText" uuid="d26b1d10-c2eb-458b-a4d1-b4c3db4d391f" x="0" y="370" width="70" height="70" fontName="Times New Roman" fontSize="12.0">
+			<element kind="staticText" uuid="d26b1d10-c2eb-458b-a4d1-b4c3db4d391f" x="0" y="420" width="70" height="70" fontName="Times New Roman" fontSize="12.0">
 				<text><![CDATA[Amount Paid
 Receipt No.
 Date Issued
 Place Issued
 Prepared By]]></text>
 			</element>
-			<element kind="textField" uuid="1f2580b7-9386-4721-a0bc-bb6a23d0ac41" x="70" y="370" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+			<element kind="textField" uuid="1f2580b7-9386-4721-a0bc-bb6a23d0ac41" x="70" y="420" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
 				<expression><![CDATA[": " + $F{AmountPaid}]]></expression>
 			</element>
-			<element kind="textField" uuid="2069c0a1-a46e-45cb-b569-3b6acb68c6e8" x="70" y="384" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+			<element kind="textField" uuid="2069c0a1-a46e-45cb-b569-3b6acb68c6e8" x="70" y="434" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
 				<expression><![CDATA[": " + ($F{ReceiptNo} == null ? "" : $F{ReceiptNo})]]></expression>
 			</element>
-			<element kind="textField" uuid="da4d1b1a-bd2b-46c5-86f9-83498f8a3193" x="70" y="398" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="false">
+			<element kind="textField" uuid="da4d1b1a-bd2b-46c5-86f9-83498f8a3193" x="70" y="448" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="false">
 				<expression><![CDATA[": " + ($F{ReceiptDateIssued} == null ? "" : $F{ReceiptDateIssued})]]></expression>
 			</element>
-			<element kind="textField" uuid="d549d644-60bd-44cb-85cc-29cd15e0b8e4" x="70" y="412" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+			<element kind="textField" uuid="d549d644-60bd-44cb-85cc-29cd15e0b8e4" x="70" y="462" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
 				<expression><![CDATA[": " + ($F{PlaceIssued} == null ? "" : $F{PlaceIssued})]]></expression>
 			</element>
-			<element kind="textField" uuid="24d06479-0959-4133-b63d-620f92afde50" x="70" y="426" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
+			<element kind="textField" uuid="24d06479-0959-4133-b63d-620f92afde50" x="70" y="476" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
 				<expression><![CDATA[": " + $F{userInitials} +" " +  $F{CertificationDate}   + " @ " + 
 ( ($F{CertificationTime} != null) ? 
     new java.text.SimpleDateFormat("hh:mm a").format($F{CertificationTime}) : 
     "[TIME MISSING]"
 )]]></expression>
 			</element>
+			<element kind="staticText" uuid="5771058d-f100-452d-9d2a-2351dd548682" positionType="FixRelativeToBottom" x="0" y="370" width="100" height="20" fontName="Times New Roman" underline="true">
+				<text><![CDATA[Dry Seal Here]]></text>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			</element>
 		</band>
 	</detail>
 	<columnFooter height="30" splitType="Stretch">
 		<property name="com.jaspersoft.studio.unit.height" value="px"/>
 	</columnFooter>
-	<pageFooter height="36" splitType="Stretch">
+	<pageFooter height="54" splitType="Stretch">
 		<element kind="staticText" uuid="a6f9a8b6-6bb9-437f-b0fc-496bd182eb19" x="0" y="0" width="443" height="20" fontName="Times New Roman" fontSize="12.0">
 			<text><![CDATA[Note: This certification is not valid if it has a mark of erasure or alteration.]]></text>
+		</element>
+		<element kind="staticText" uuid="53038616-3d56-4f60-8262-186b18a4b362" x="0" y="24" width="443" height="16" forecolor="#00B050">
+			<text><![CDATA[MUNICIPALITY OF KITAOTAO where heritage is a pride...]]></text>
 		</element>
 	</pageFooter>
 	<summary splitType="Stretch"/>

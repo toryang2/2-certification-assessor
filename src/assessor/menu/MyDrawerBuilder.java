@@ -4,9 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import raven.extras.AvatarIcon;
 import assessor.MainFrame;
-import assessor.component.report.input.FormHospitalization;
-import assessor.component.report.input.HospitalizationForm;
-import assessor.component.report.input.NewJPanel;
+import assessor.component.report.input.*;
 import assessor.forms.*;
 import assessor.system.AllForms;
 import assessor.system.Form;
@@ -30,9 +28,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import raven.modal.ModalDialog;
-import raven.modal.component.SimpleModalBorder;
-import java.awt.event.ActionEvent;
-import javax.swing.table.DefaultTableModel;
 import java.util.logging.Logger;
 
 public class MyDrawerBuilder extends SimpleDrawerBuilder {
@@ -85,7 +80,31 @@ private static void showHospitalizationModal() {
         .setAnimateDistance(0, 0);
 
     LOGGER.info("Creating new HospitalizationForm instance...");
-    HospitalizationForm form = new HospitalizationForm();
+    FormHospitalization form = new FormHospitalization();
+    form.setSaveCallback(success -> {
+        if (success) {
+            LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
+            // No need to manually call hardRefresh() or similar methods
+        } else {
+            LOGGER.warning("Save failed. No action taken.");
+        }
+    });
+
+    ModalDialog.showModal(FormManager.getFrame(), form.createCustomBorder(), option);
+}
+
+private static void showScholarshipModal() {
+    LOGGER.info("Showing Scholarship modal...");
+    Option option = ModalDialog.createOption()
+        .setAnimationEnabled(true)
+        .setCloseOnPressedEscape(true)
+        .setBackgroundClickType(Option.BackgroundClickType.CLOSE_MODAL);
+    option.getLayoutOption()
+        .setLocation(Location.CENTER, Location.CENTER)
+        .setAnimateDistance(0, 0);
+
+    LOGGER.info("Creating new Scholarship instance...");
+    FormScholarship form = new FormScholarship();
     form.setSaveCallback(success -> {
         if (success) {
             LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
@@ -122,14 +141,16 @@ private static void showHospitalizationModal() {
         MenuItem items[] = new MenuItem[]{
                 new Item.Label("MAIN"),
                 new Item("Dashboard", "dashboard.svg", FormDashboard.class),
-                new Item.Label("SWING UI"),
-                new Item("Forms", "forms.svg")
-                        .subMenu(new Item("Input")
-                                    .subMenu("TestInput", FormInput.class)
-                                    .subMenu("Hospitalization", HospitalizationForm.class)
-                        )
-//                        .subMenu("Table", FormTable.class)
-                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
+                new Item.Label("No Landholding"),
+//                new Item("Forms", "forms.svg")
+//                        .subMenu(new Item("Input")
+//                                    .subMenu("TestInput", FormInput.class)
+//                                    .subMenu("Hospitalization", HospitalizationForm.class)
+//                        )
+////                        .subMenu("Table", FormTable.class)
+//                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
+                new Item("Hospitalization", "forms.svg", FormHospitalization.class),
+                new Item("Scholarship", "forms.svg", FormScholarship.class),
                 new Item("Components", "components.svg")
                         .subMenu("Modal", FormModal.class)
                         .subMenu("Toast", FormToast.class)
@@ -194,11 +215,11 @@ private static void showHospitalizationModal() {
                 System.out.println("Drawer menu selected " + Arrays.toString(index));
                 Class<?> itemClass = action.getItem().getItemClass();
                 int i = index[0];
-                if (i == 8) {
+                if (i == 9) {
                     action.consume();
                     FormManager.showAbout();
                     return;
-                } else if (i == 9) {
+                } else if (i == 10) {
                     action.consume();
                     FormManager.logout();
                     return;
@@ -210,8 +231,14 @@ private static void showHospitalizationModal() {
                 Class<? extends Form> formClass = (Class<? extends Form>) itemClass;
 
                 // Special handling for HospitalizationForm
-                if (formClass == HospitalizationForm.class) {
+                if (formClass == FormHospitalization.class) {
                     showHospitalizationModal();
+                    action.consume();
+                    return;
+                }
+                
+                if(formClass == FormScholarship.class) {
+                    showScholarshipModal();
                     action.consume();
                     return;
                 }

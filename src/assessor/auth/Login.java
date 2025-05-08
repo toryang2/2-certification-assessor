@@ -3,12 +3,14 @@ package assessor.auth;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.DropShadowBorder;
-import assessor.component.LabelButton;
 import assessor.system.Form;
 import assessor.system.FormManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.text.JTextComponent;
 
 public class Login extends Form {
 
@@ -52,6 +54,10 @@ public class Login extends Form {
             }
         };
 
+        // Add focus listeners to highlight text
+        addHighlightOnFocus(txtUsername);
+        addHighlightOnFocus(txtPassword);
+
         // style
         txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your username or email");
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your password");
@@ -81,33 +87,30 @@ public class Login extends Form {
         loginContent.add(txtPassword);
         loginContent.add(chRememberMe);
         loginContent.add(cmdLogin, "gapy 20");
-        loginContent.add(createInfo());
 
         panelLogin.add(loginContent);
         add(panelLogin);
 
         // event
         cmdLogin.addActionListener(e -> {
-            FormManager.login();
+            String username = txtUsername.getText();
+            String password = new String(txtPassword.getPassword());
+            if (Authenticator.authenticate(username, password)) {
+//                JOptionPane.showMessageDialog(this, "Login successful!");
+                FormManager.login(); // Proceed to the next form or dashboard
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
-    private JPanel createInfo() {
-        JPanel panelInfo = new JPanel(new MigLayout("wrap,al center", "[center]"));
-        panelInfo.putClientProperty(FlatClientProperties.STYLE, "" +
-                "background:null;");
-
-        panelInfo.add(new JLabel("Don't remember your account details?"));
-        panelInfo.add(new JLabel("Contact us at"), "split 2");
-        LabelButton lbLink = new LabelButton("help@info.com");
-
-        panelInfo.add(lbLink);
-
-        // event
-        lbLink.addOnClick(e -> {
-
+    private void addHighlightOnFocus(JTextComponent textComponent) {
+        textComponent.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                textComponent.selectAll(); // Select all text when the component gains focus
+            }
         });
-        return panelInfo;
     }
 
     private void applyShadowBorder(JPanel panel) {
