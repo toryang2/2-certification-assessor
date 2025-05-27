@@ -1,0 +1,6 @@
+# Ignore all roff/man pages from language stats
+*.roff linguist-documentation
+*.1    linguist-documentation
+*.2    linguist-documentation
+*.3    linguist-documentation
+*.man  linguist-documentation
