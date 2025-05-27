@@ -53,13 +53,13 @@ public class MainForm extends JPanel {
                 Drawer.toggleMenuOpenMode();
             }
         });
-        buttonUndo.addActionListener(e -> FormManager.undo());
-        buttonRedo.addActionListener(e -> FormManager.redo());
+//        buttonUndo.addActionListener(e -> FormManager.undo());
+//        buttonRedo.addActionListener(e -> FormManager.redo());
         buttonRefresh.addActionListener(e -> FormManager.refresh());
 
         toolBar.add(buttonDrawer);
-        toolBar.add(buttonUndo);
-        toolBar.add(buttonRedo);
+//        toolBar.add(buttonUndo);
+//        toolBar.add(buttonRedo);
         toolBar.add(buttonRefresh);
         panel.add(toolBar);
         panel.add(createSearchBox(), "gapx n 135");
@@ -73,7 +73,7 @@ public class MainForm extends JPanel {
                 "[dark]background:tint($Panel.background,5%);");
 
         // demo version
-        JLabel lbDemoVersion = new JLabel("Demo: v" + MainFrame.VERSION);
+        JLabel lbDemoVersion = new JLabel("Version: v" + MainFrame.VERSION);
         lbDemoVersion.putClientProperty(FlatClientProperties.STYLE, "" +
                 "foreground:$Label.disabledForeground;");
         lbDemoVersion.setIcon(new SVGIconUIColor("assessor/icons/git.svg", 1f, "Label.disabledForeground"));

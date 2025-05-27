@@ -4,10 +4,14 @@
  */
 package assessor.component.report.input;
 
+import assessor.auth.Authenticator; 
+import assessor.auth.SessionManager;
 import assessor.component.chart.CertificateTable;
 import assessor.component.report.util.DataChangeNotifier;
 import assessor.component.report.util.DatabaseSaveHelper;
+import assessor.component.report.util.NameCapitalizationFilter;
 import assessor.component.report.util.UppercaseDocumentFilter;
+import assessor.forms.FormDashboard;
 import assessor.system.Form;
 import assessor.system.FormManager;
 import java.awt.GridBagLayout;
@@ -75,13 +79,26 @@ public class FormHospitalization extends Form {
             txtPatientStudent,
             txtAddress,
             txtHospital,
-            txtHospitalAddress,
+//            txtHospitalAddress,
             txtPlaceIssued
         };
 
         for (JTextField textField : textFields) {
             ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
         }
+    }
+    
+    private void updateRelationshipCombo(String maritalStatus, String gender) {
+        List<String> relationships = DatabaseSaveHelper.fetchRelationships(maritalStatus, gender);
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (String rel : relationships) model.addElement(rel);
+        comboRelationship.setModel(model);
+        if (model.getSize() > 0) comboRelationship.setSelectedIndex(0);
+    }
+
+    private void updateParentSexCombo() {
+        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Male", "Female"}));
+        comboParentSex.setSelectedIndex(0);
     }
     
     public FormHospitalization() {
@@ -92,22 +109,23 @@ public class FormHospitalization extends Form {
         setupReceiptNoField();
         populateAddressCombo();
         applyUppercaseFilterToTextFields();
+        ((AbstractDocument) txtHospitalAddress.getDocument()).setDocumentFilter(new NameCapitalizationFilter());
 //        setTitle("Hospitalization");
 //        setIconImages( FlatSVGUtils.createWindowIconImages( "/assessor/ui/icons/certificate.svg" ) );
         
-        // Gender combo model
-        DefaultComboBoxModel<String> defaultParentSexModel = new DefaultComboBoxModel<>();
-        defaultParentSexModel.addElement("Male");
-        defaultParentSexModel.addElement("Female");
-
-        // Relationship combo model
-        DefaultComboBoxModel<String> relationshipModel = new DefaultComboBoxModel<>();
-        relationshipModel.addElement("son");
-        relationshipModel.addElement("daughter");
-        relationshipModel.addElement("spouse");
-
-        DefaultComboBoxModel<String> guardianModel = new DefaultComboBoxModel<>();
-        guardianModel.addElement("son");
+//        // Gender combo model
+//        DefaultComboBoxModel<String> defaultParentSexModel = new DefaultComboBoxModel<>();
+//        defaultParentSexModel.addElement("Male");
+//        defaultParentSexModel.addElement("Female");
+//
+//        // Relationship combo model
+//        DefaultComboBoxModel<String> relationshipModel = new DefaultComboBoxModel<>();
+//        relationshipModel.addElement("son");
+//        relationshipModel.addElement("daughter");
+//        relationshipModel.addElement("spouse");
+//
+//        DefaultComboBoxModel<String> guardianModel = new DefaultComboBoxModel<>();
+//        guardianModel.addElement("son");
 
         JCheckBox[] maritalCheckboxes = {
             checkBoxMarried, 
@@ -129,25 +147,58 @@ public class FormHospitalization extends Form {
                     // Update combos based on selection
                     if (checkbox == checkBoxMarried) {
                         comboParentSex.setEnabled(false);
-                        comboParentSex.setSelectedItem("Married");
-                        comboRelationship.setEnabled(true);
-                        comboRelationship.setModel(relationshipModel);
-                        comboRelationship.setSelectedIndex(0);
+                        txtParentGuardian2.setEnabled(true);
+                        txtParentGuardian2.setText("");
+                        labelParentGuardian.setText("Parent/ Guardian");
+                        labelParentGuardian2.setText("Parent/ Guardian");
+                        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Married"}));
+                        updateRelationshipCombo("Married", null);
+//                        comboRelationship.setEnabled(true);
+//                        comboRelationship.setModel(relationshipModel);
+//                        comboRelationship.setSelectedIndex(0);
+                        SwingUtilities.invokeLater(() -> {
+                            txtParentGuardian.requestFocusInWindow();
+                        });
                     } 
                     else if (checkbox == checkBoxSingle) {
                         comboParentSex.setEnabled(true);
-                        comboParentSex.setModel(defaultParentSexModel);
-                        comboParentSex.setSelectedIndex(0);
-                        comboRelationship.setEnabled(true);
-                        comboRelationship.setModel(relationshipModel);
-                        comboRelationship.setSelectedIndex(0);
+                        txtParentGuardian2.setEnabled(false);
+                        txtParentGuardian2.setText("");
+                        labelParentGuardian.setText("Requestor");
+                        labelParentGuardian2.setText("");
+                        updateParentSexCombo();
+                        // When parent sex change, update relationships for selected sex:
+                        comboParentSex.addActionListener(evt -> {
+                            String gender = comboParentSex.getSelectedItem().toString();
+                            updateRelationshipCombo("Single", gender);
+                        });
+                        updateRelationshipCombo("Single", comboParentSex.getSelectedItem().toString());
+//                        comboParentSex.setModel(defaultParentSexModel);
+//                        comboParentSex.setSelectedIndex(0);
+//                        comboRelationship.setEnabled(true);
+//                        comboRelationship.setModel(relationshipModel);
+//                        comboRelationship.setSelectedIndex(0);
+                        SwingUtilities.invokeLater(() -> {
+                            txtParentGuardian.requestFocusInWindow();
+                        });
                     }
                     else if (checkbox == checkBoxGuardian) {
                         comboParentSex.setEnabled(false);
-                        comboParentSex.setSelectedItem("Guardian");
-                        comboRelationship.setEnabled(false);
+                        txtParentGuardian2.setEnabled(false);
+                        txtParentGuardian2.setText("");
+                        labelParentGuardian.setText("Guardian");
+                        labelParentGuardian2.setText("");
+                        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Guardian"}));
+                        DefaultComboBoxModel<String> guardianModel = new DefaultComboBoxModel<>();
+                        guardianModel.addElement("Guardian");
                         comboRelationship.setModel(guardianModel);
-                        comboRelationship.setSelectedIndex(0);
+//                        comboParentSex.setSelectedItem("Guardian");
+//                        comboRelationship.setEnabled(false);
+//                        comboRelationship.setModel(guardianModel);
+//                        comboRelationship.setSelectedIndex(0);
+                        SwingUtilities.invokeLater(() -> {
+                            txtParentGuardian.requestFocusInWindow();
+                        });
                     }
                 }
                 else if (e.getStateChange() == ItemEvent.DESELECTED) {
@@ -165,11 +216,6 @@ public class FormHospitalization extends Form {
                         checkBoxMarried.setSelected(true);
                     }
                 }
-
-                // Focus on parent guardian field
-                SwingUtilities.invokeLater(() -> {
-                    txtParentGuardian.requestFocusInWindow();
-                });
             });
         }
 
@@ -177,7 +223,7 @@ public class FormHospitalization extends Form {
         checkBoxMarried.setSelected(true);
         comboParentSex.setEnabled(false);
         comboParentSex.setSelectedItem("Married");
-        comboRelationship.setModel(relationshipModel);
+//        comboRelationship.setModel(relationshipModel);
         comboRelationship.setSelectedIndex(0);
         comboAddress.setSelectedIndex(0);
         
@@ -688,6 +734,13 @@ private Map<String, Object> collectReportData() {
     if (datePicker.getSelectedDate() != null) {
         reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
     }
+    
+    String userInitials = SessionManager.getInstance().getUserInitials();
+    if (userInitials != null) {
+        reportData.put("userInitials", userInitials);
+    } else {
+        logger.log(Level.WARNING, "User initial not found");
+    }
 
     return reportData;
 }
@@ -707,7 +760,7 @@ private String getParentSex() {
 }
 
 private String getRelationship() {
-    if (checkBoxGuardian.isSelected()) return "Legal Guardian";
+    if (checkBoxGuardian.isSelected()) return "Guardian";
     return comboRelationship.getSelectedItem().toString();
 }
 
@@ -892,7 +945,6 @@ public SimpleModalBorder createCustomBorder() {
         jLabelMandatoryParentGuardian.setText("*");
         add(jLabelMandatoryParentGuardian);
 
-        comboParentSex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         add(comboParentSex);
 
         labelParentGuardian2.setText("Parent/ Guardian");
@@ -919,7 +971,6 @@ public SimpleModalBorder createCustomBorder() {
 
         add(comboAddress);
 
-        comboRelationship.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "son", "daughter", "spouse" }));
         comboRelationship.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboRelationshipActionPerformed(evt);
@@ -1018,7 +1069,7 @@ public SimpleModalBorder createCustomBorder() {
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtHospital;
     private javax.swing.JTextField txtHospitalAddress;
-    private javax.swing.JTextField txtParentGuardian;
+    public javax.swing.JTextField txtParentGuardian;
     private javax.swing.JTextField txtParentGuardian2;
     private javax.swing.JTextField txtPatientStudent;
     private javax.swing.JTextField txtPlaceIssued;

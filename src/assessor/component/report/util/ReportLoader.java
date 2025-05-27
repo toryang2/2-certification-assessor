@@ -69,7 +69,7 @@ public class ReportLoader {
             protected Void doInBackground() {
                 String query = "SELECT id AS ID, Type AS Type, Patient, ParentGuardian, ParentGuardian2, Hospital,"
                              + " HospitalAddress, Barangay, CertificationDate, CertificationTime,"
-                             + " AmountPaid, ReceiptNo, ReceiptDateIssued, PlaceIssued, Signatory"
+                             + " AmountPaid, ReceiptNo, ReceiptDateIssued, PlaceIssued, Signatory, LegalAge"
                              + " FROM reports ORDER BY id DESC";
                 logger.log(Level.INFO, "Executing SQL query: {0}", query);
 

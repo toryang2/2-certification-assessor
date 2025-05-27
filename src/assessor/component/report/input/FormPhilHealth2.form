@@ -25,37 +25,23 @@
         <Property name="text" type="java.lang.String" value="CLIENT INFORMATION"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="labelParentGuardian">
+    <Component class="javax.swing.JLabel" name="labelRequestor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Parent/ Guardian  "/>
+        <Property name="text" type="java.lang.String" value="Requestor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtParentGuardian">
+    <Component class="javax.swing.JTextField" name="txtRequestor">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
-        <Property name="actionCommand" type="java.lang.String" value="&lt;Not Set&gt;"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-      </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMandatoryParentGuardian">
+    <Component class="javax.swing.JLabel" name="jLabelMandatoryRequestor">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="*"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="comboParentSex">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelParentGuardian2">
       <Properties>
@@ -70,48 +56,57 @@
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JCheckBox" name="checkBoxIndividual">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Individual (18+)"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkBoxIndividualWithRequestor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Individual w/ Requestor (18+)"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
     <Component class="javax.swing.JCheckBox" name="checkBoxMarried">
       <Properties>
         <Property name="text" type="java.lang.String" value="Married"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="checkBoxGuardian">
+    <Component class="javax.swing.JCheckBox" name="checkBoxNoRequestor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Guardian"/>
+        <Property name="text" type="java.lang.String" value="No Requestor"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="labelPatientStudent">
+    <Component class="javax.swing.JCheckBox" name="checkBoxWithRequestor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Patient/ Student"/>
+        <Property name="text" type="java.lang.String" value="With Requestor"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPatientStudent">
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelRelationship">
+    <Component class="javax.swing.JLabel" name="labelRequestee">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Relationship"/>
+        <Property name="text" type="java.lang.String" value="Requestee"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtRequestee">
     </Component>
     <Component class="javax.swing.JTextField" name="txtAddress">
     </Component>
     <Component class="javax.swing.JComboBox" name="comboAddress">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="comboRelationship">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboRelationshipActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboAddressActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -165,7 +160,7 @@
         <Property name="text" type="java.lang.String" value="Save"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelMandatoryParentStudent">
+    <Component class="javax.swing.JLabel" name="jLabelMandatoryRequestee">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>

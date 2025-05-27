@@ -4,6 +4,7 @@ import raven.modal.Drawer;
 import raven.modal.ModalDialog;
 import raven.modal.component.SimpleModalBorder;
 import assessor.auth.Login;
+import assessor.auth.SignUp;
 import assessor.component.About;
 import assessor.forms.FormDashboard;
 import assessor.utils.UndoRedo;
@@ -18,6 +19,7 @@ public class FormManager {
     private static JFrame frame;
     private static MainForm mainForm;
     private static Login login;
+    private static SignUp signup;
 
     public static void install(JFrame f) {
         frame = f;
@@ -91,12 +93,34 @@ public class FormManager {
         frame.repaint();
         frame.revalidate();
     }
+    
+    public static void signUp() {
+        Drawer.setVisible(false);
+        frame.getContentPane().removeAll();
+        Form signup = getSignUp();
+        signup.formCheck();
+        frame.getContentPane().add(signup);
+        FORMS.clear();
+        frame.repaint();
+        frame.revalidate();
+    }
+    
+    public static void backtologin() {
+        Drawer.setVisible(false);
+        frame.getContentPane().removeAll();
+        Form login = getLogin();
+        login.formCheck();
+        frame.getContentPane().add(login);
+        FORMS.clear();
+        frame.repaint();
+        frame.revalidate();
+    }
 
     public static JFrame getFrame() {
         return frame;
     }
 
-    private static MainForm getMainForm() {
+    public static MainForm getMainForm() {
         if (mainForm == null) {
             mainForm = new MainForm();
         }
@@ -108,6 +132,13 @@ public class FormManager {
             login = new Login();
         }
         return login;
+    }
+    
+    private static SignUp getSignUp() {
+        if (signup == null) {
+            signup = new SignUp();
+        }
+        return signup;
     }
 
     public static void showAbout() {

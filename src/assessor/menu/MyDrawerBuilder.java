@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import raven.extras.AvatarIcon;
 import assessor.MainFrame;
+import assessor.auth.Authenticator;
+import assessor.auth.SessionManager;
 import assessor.component.report.input.*;
 import assessor.forms.*;
 import assessor.system.AllForms;
@@ -44,25 +46,37 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
         });
     }
 
-    @Override
-    public SimpleHeaderData getSimpleHeaderData() {
-        AvatarIcon icon = new AvatarIcon(new FlatSVGIcon("assessor/drawer/image/avatar_male.svg", 100, 100), 50, 50, 3.5f);
-        icon.setType(AvatarIcon.Type.MASK_SQUIRCLE);
-        icon.setBorder(2, 2);
+@Override
+public SimpleHeaderData getSimpleHeaderData() {
+    // Retrieve the username and initials from SessionManager
+    String username = SessionManager.getInstance().getLoggedInUsername();
+    String userInitials = SessionManager.getInstance().getUserInitials();
 
-        changeAvatarIconBorderColor(icon);
+    // Debugging: Verify fetched values
+    System.out.println("getSimpleHeaderData - Username: " + username);
+    System.out.println("getSimpleHeaderData - User Initials: " + userInitials);
 
-        UIManager.addPropertyChangeListener(evt -> {
-            if (evt.getPropertyName().equals("lookAndFeel")) {
-                changeAvatarIconBorderColor(icon);
-            }
-        });
+    AvatarIcon icon = new AvatarIcon(new FlatSVGIcon("assessor/drawer/image/avatar_male.svg", 100, 100), 50, 50, 3.5f);
+    icon.setType(AvatarIcon.Type.MASK_SQUIRCLE);
+    icon.setBorder(2, 2);
 
-        return new SimpleHeaderData()
-                .setIcon(icon)
-                .setTitle("Ra Ven")
-                .setDescription("raven@gmail.com");
-    }
+    changeAvatarIconBorderColor(icon);
+
+    UIManager.addPropertyChangeListener(evt -> {
+        if (evt.getPropertyName().equals("lookAndFeel")) {
+            changeAvatarIconBorderColor(icon);
+        }
+    });
+
+    return new SimpleHeaderData()
+            .setIcon(icon)
+            .setTitle("Welcome back!")
+            .setDescription(
+    username != null && !username.isEmpty() && userInitials != null && !userInitials.isEmpty()
+        ? username + " (" + userInitials + ")"
+        : (username != null ? username : "Default Username")
+);
+}
 
     private void changeAvatarIconBorderColor(AvatarIcon icon) {
         icon.setBorderColor(new AvatarIcon.BorderColor(UIManager.getColor("Component.accentColor"), 0.7f));
@@ -70,6 +84,7 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
     
 // Change this method in MyDrawerBuilder
 private static void showHospitalizationModal() {
+    FormDashboard.resetFilters();
     LOGGER.info("Showing Hospitalization modal...");
     Option option = ModalDialog.createOption()
         .setAnimationEnabled(true)
@@ -91,9 +106,14 @@ private static void showHospitalizationModal() {
     });
 
     ModalDialog.showModal(FormManager.getFrame(), form.createCustomBorder(), option);
+        
+    SwingUtilities.invokeLater(() -> {
+        form.txtParentGuardian.requestFocusInWindow();
+    });
 }
 
 private static void showScholarshipModal() {
+    FormDashboard.resetFilters();
     LOGGER.info("Showing Scholarship modal...");
     Option option = ModalDialog.createOption()
         .setAnimationEnabled(true)
@@ -105,6 +125,31 @@ private static void showScholarshipModal() {
 
     LOGGER.info("Creating new Scholarship instance...");
     FormScholarship form = new FormScholarship();
+    form.setSaveCallback(success -> {
+        if (success) {
+            LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
+            // No need to manually call hardRefresh() or similar methods
+        } else {
+            LOGGER.warning("Save failed. No action taken.");
+        }
+    });
+
+    ModalDialog.showModal(FormManager.getFrame(), form.createCustomBorder(), option);
+}
+
+private static void showPhilHealthModal() {
+    FormDashboard.resetFilters();
+    LOGGER.info("Showing Scholarship modal...");
+    Option option = ModalDialog.createOption()
+        .setAnimationEnabled(true)
+        .setCloseOnPressedEscape(true)
+        .setBackgroundClickType(Option.BackgroundClickType.CLOSE_MODAL);
+    option.getLayoutOption()
+        .setLocation(Location.CENTER, Location.CENTER)
+        .setAnimateDistance(0, 0);
+
+    LOGGER.info("Creating new Scholarship instance...");
+    FormPhilHealth2 form = new FormPhilHealth2();
     form.setSaveCallback(success -> {
         if (success) {
             LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
@@ -151,6 +196,7 @@ private static void showScholarshipModal() {
 //                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
                 new Item("Hospitalization", "forms.svg", FormHospitalization.class),
                 new Item("Scholarship", "forms.svg", FormScholarship.class),
+                new Item("PhilHealth", "forms.svg", FormPhilHealth2.class),
                 new Item("Components", "components.svg")
                         .subMenu("Modal", FormModal.class)
                         .subMenu("Toast", FormToast.class)
@@ -215,11 +261,11 @@ private static void showScholarshipModal() {
                 System.out.println("Drawer menu selected " + Arrays.toString(index));
                 Class<?> itemClass = action.getItem().getItemClass();
                 int i = index[0];
-                if (i == 9) {
+                if (i == 10) {
                     action.consume();
                     FormManager.showAbout();
                     return;
-                } else if (i == 10) {
+                } else if (i == 11) {
                     action.consume();
                     FormManager.logout();
                     return;
@@ -239,6 +285,12 @@ private static void showScholarshipModal() {
                 
                 if(formClass == FormScholarship.class) {
                     showScholarshipModal();
+                    action.consume();
+                    return;
+                }
+                
+                if(formClass == FormPhilHealth2.class) {
+                    showPhilHealthModal();
                     action.consume();
                     return;
                 }

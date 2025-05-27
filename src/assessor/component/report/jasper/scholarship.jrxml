@@ -1,5 +1,5 @@
 <!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
-<jasperReport name="hospitalization_certificate" language="java" columnCount="1" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="443" leftMargin="82" rightMargin="70" topMargin="57" bottomMargin="57" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
+<jasperReport name="scholarship_certificate" language="java" columnCount="1" pageWidth="595" pageHeight="842" columnWidth="443" leftMargin="82" rightMargin="70" topMargin="57" bottomMargin="57" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mySQL"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>

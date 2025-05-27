@@ -12,6 +12,7 @@ import assessor.component.report.util.DatabaseSaveHelper;
 import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.system.Form;
 import assessor.system.FormManager;
+import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -42,8 +43,8 @@ import raven.modal.component.SimpleModalBorder;
  *
  * @author Toryang
  */
-public class FormScholarship extends Form {
-    private static final Logger logger = Logger.getLogger(FormScholarship.class.getName());
+public class FormPhilHealth2 extends Form {
+    private static final Logger logger = Logger.getLogger(FormPhilHealth2.class.getName());
     private Consumer<Boolean> saveCallback;
     private DatePicker datePicker;
     private Timer messageTimer;
@@ -71,9 +72,9 @@ public class FormScholarship extends Form {
 
         // Apply the filter to all relevant text fields
         JTextField[] textFields = {
-            txtParentGuardian,
+            txtRequestor,
             txtParentGuardian2,
-            txtPatientStudent,
+            txtRequestee,
             txtAddress,
             txtHospital,
             txtHospitalAddress,
@@ -85,7 +86,7 @@ public class FormScholarship extends Form {
         }
     }
         
-    public FormScholarship() {
+    public FormPhilHealth2() {
         setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
 //        setupActions();
@@ -112,8 +113,7 @@ public class FormScholarship extends Form {
 
         JCheckBox[] maritalCheckboxes = {
             checkBoxMarried, 
-            checkBoxSingle, 
-            checkBoxGuardian
+            checkBoxSingle,
         };
 
         // Add item listener to each checkbox
@@ -129,26 +129,24 @@ public class FormScholarship extends Form {
 
                     // Update combos based on selection
                     if (checkbox == checkBoxMarried) {
-                        comboParentSex.setEnabled(false);
-                        comboParentSex.setSelectedItem("Married");
-                        comboRelationship.setEnabled(true);
-                        comboRelationship.setModel(relationshipModel);
-                        comboRelationship.setSelectedIndex(0);
+                        checkBoxIndividual.setEnabled(false);
+                        checkBoxIndividualWithRequestor.setEnabled(false);
+                        checkBoxIndividual.setVisible(false);
+                        checkBoxIndividualWithRequestor.setVisible(false);
+                        checkBoxNoRequestor.setEnabled(true);
+                        checkBoxWithRequestor.setEnabled(true);
+                        checkBoxNoRequestor.setVisible(true);
+                        checkBoxWithRequestor.setVisible(true);
                     } 
                     else if (checkbox == checkBoxSingle) {
-                        comboParentSex.setEnabled(true);
-                        comboParentSex.setModel(defaultParentSexModel);
-                        comboParentSex.setSelectedIndex(0);
-                        comboRelationship.setEnabled(true);
-                        comboRelationship.setModel(relationshipModel);
-                        comboRelationship.setSelectedIndex(0);
-                    }
-                    else if (checkbox == checkBoxGuardian) {
-                        comboParentSex.setEnabled(false);
-                        comboParentSex.setSelectedItem("Guardian");
-                        comboRelationship.setEnabled(false);
-                        comboRelationship.setModel(guardianModel);
-                        comboRelationship.setSelectedIndex(0);
+                        checkBoxIndividual.setEnabled(true);
+                        checkBoxIndividualWithRequestor.setEnabled(true);
+                        checkBoxIndividual.setVisible(true);
+                        checkBoxIndividualWithRequestor.setVisible(true);
+                        checkBoxNoRequestor.setEnabled(false);
+                        checkBoxWithRequestor.setEnabled(false);
+                        checkBoxNoRequestor.setVisible(false);
+                        checkBoxWithRequestor.setVisible(false);
                     }
                 }
                 else if (e.getStateChange() == ItemEvent.DESELECTED) {
@@ -169,21 +167,55 @@ public class FormScholarship extends Form {
 
                 // Focus on parent guardian field
                 SwingUtilities.invokeLater(() -> {
-                    txtParentGuardian.requestFocusInWindow();
+                    txtRequestor.requestFocusInWindow();
                 });
             });
         }
+        
+        checkBoxIndividual.addActionListener(e -> {
+            if (checkBoxIndividual.isSelected()) {
+                checkBoxIndividualWithRequestor.setSelected(false);
+            } else if (!checkBoxIndividualWithRequestor.isSelected()) {
+                // Prevent both from being deselected
+                checkBoxIndividual.setSelected(true);
+            }
+        });
+        checkBoxIndividualWithRequestor.addActionListener(e -> {
+            if (checkBoxIndividualWithRequestor.isSelected()) {
+                checkBoxIndividual.setSelected(false);
+            } else if (!checkBoxIndividual.isSelected()) {
+                checkBoxIndividualWithRequestor.setSelected(true);
+            }
+        });
+        checkBoxIndividual.setSelected(true); // Default
+        
+        checkBoxNoRequestor.addActionListener(e -> {
+            if (checkBoxNoRequestor.isSelected()) {
+                checkBoxWithRequestor.setSelected(false);
+            } else if (!checkBoxWithRequestor.isSelected()) {
+                // Prevent both from being deselected
+                checkBoxNoRequestor.setSelected(true);
+            }
+        });
+        checkBoxWithRequestor.addActionListener(e -> {
+            if (checkBoxWithRequestor.isSelected()) {
+                checkBoxNoRequestor.setSelected(false);
+            } else if (!checkBoxNoRequestor.isSelected()) {
+                checkBoxWithRequestor.setSelected(true);
+            }
+        });
+        checkBoxNoRequestor.setSelected(true); // Default
 
         // Initial state setup
         checkBoxMarried.setSelected(true);
-        comboParentSex.setEnabled(false);
-        comboParentSex.setSelectedItem("Married");
-        comboRelationship.setModel(relationshipModel);
-        comboRelationship.setSelectedIndex(0);
+        checkBoxIndividual.setEnabled(false);
+        checkBoxIndividualWithRequestor.setEnabled(false);
+        checkBoxIndividual.setVisible(false);
+        checkBoxIndividualWithRequestor.setVisible(false);
         comboAddress.setSelectedIndex(0);
         
         SwingUtilities.invokeLater(() -> {
-            txtParentGuardian.requestFocusInWindow();
+            txtRequestor.requestFocusInWindow();
         });
         
         datePicker = new DatePicker();
@@ -201,8 +233,8 @@ public class FormScholarship extends Form {
         });
         
         jLabelMandatoryMessage.setVisible(false);
-        jLabelMandatoryParentGuardian.setVisible(false); 
-        jLabelMandatoryParentStudent.setVisible(false); 
+        jLabelMandatoryRequestor.setVisible(false); 
+        jLabelMandatoryRequestee.setVisible(false); 
         jLabelMandatoryAddress.setVisible(false); 
         jLabelMandatoryHospital.setVisible(false); 
         jLabelMandatoryHospitalAddress.setVisible(false); 
@@ -232,30 +264,41 @@ public class FormScholarship extends Form {
         JPanel maritalPanel = new JPanel(new MigLayout("gap 15, insets 0, align center"));
         maritalPanel.add(checkBoxMarried);
         maritalPanel.add(checkBoxSingle);
-        maritalPanel.add(checkBoxGuardian);
         contentPanel.add(maritalPanel, "span 7, center, wrap");
+        
+        JPanel singleOptionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        singleOptionPanel.add(checkBoxNoRequestor);
+        singleOptionPanel.add(checkBoxWithRequestor);
+        
+        JPanel marriedOptionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        marriedOptionPanel.add(checkBoxIndividual);
+        marriedOptionPanel.add(checkBoxIndividualWithRequestor);
+        
+        JPanel optionsHolder = new JPanel(new MigLayout("gap 15, insets 0, align center"));
+        optionsHolder.add(singleOptionPanel, "center");
+        optionsHolder.add(marriedOptionPanel, "center");
+        
+        // Add to your content panel (MigLayout)
+        contentPanel.add(optionsHolder, "span, growx, center, wrap");
 
         // Row 2: Parent/Guardian
-        contentPanel.add(labelParentGuardian, "cell 0 2");
-        contentPanel.add(jLabelMandatoryParentGuardian);
-        contentPanel.add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
-        contentPanel.add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelRequestor, "cell 0 4");
+        contentPanel.add(jLabelMandatoryRequestor);
+        contentPanel.add(txtRequestor, "cell 2 4 4 1, growx, pushx, w 100%");
 
         // Row 3: Parent/Guardian 2
-        contentPanel.add(labelParentGuardian2, "cell 0 3");
-        contentPanel.add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelParentGuardian2, "cell 0 5");
+        contentPanel.add(txtParentGuardian2, "cell 2 5 5 1, growx, pushx, w 100%, wrap");
 
         // Row 4: Patient/Student
-        contentPanel.add(labelPatientStudent);
-        contentPanel.add(jLabelMandatoryParentStudent);
-        contentPanel.add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
+        contentPanel.add(labelRequestee);
+        contentPanel.add(jLabelMandatoryRequestee);
+        contentPanel.add(txtRequestee, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
 
         // Row 5: Address
         contentPanel.add(labelAddress);
         contentPanel.add(jLabelMandatoryAddress);
-        contentPanel.add(comboAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
-        contentPanel.add(labelRelationship, "cell 5 5");
-        contentPanel.add(comboRelationship, "cell 6 5, growx, wrap");
+        contentPanel.add(comboAddress, "cell 2 7 3 1, growx, pushx, w 100%, wrap");
 
         // Row 6: Hospital
         //contentPanel.add(labelHospital, "cell 0 6");
@@ -268,19 +311,19 @@ public class FormScholarship extends Form {
         //contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
 
         // Row 8: Amount & Receipt
-        contentPanel.add(labelAmount, "cell 0 6");
-        contentPanel.add(txtAmount, "cell 2 6 3 1, w 120");
-        contentPanel.add(labelReceiptNo, "cell 5 6");
-        contentPanel.add(txtReceiptNo, "cell 6 6, growx, wrap");
+        contentPanel.add(labelAmount, "cell 0 8");
+        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
+        contentPanel.add(labelReceiptNo, "cell 5 8");
+        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
 
         // Row 9: Date & Place
-        contentPanel.add(labelDateIssued, "cell 0 7");
-        contentPanel.add(receiptDateIssuedPicker, "cell 2 7 2 1, w 120"); // Using DatePicker
-        contentPanel.add(labelPlaceIssued, "cell 4 7");
-        contentPanel.add(txtPlaceIssued, "cell 5 7 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 9");
+        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
+        contentPanel.add(labelPlaceIssued, "cell 4 9");
+        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
 
         // Row 10: Buttons
-        contentPanel.add(jLabelMandatoryMessage,"cell 0 8 3 1, left");
+        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
 //        buttonPanel.add(btnSave);
 //        buttonPanel.add(btnCancel);
 //        contentPanel.add(buttonPanel, "span 6, right");
@@ -574,7 +617,7 @@ public void saveAction(ActionEvent e) {
             logger.log(Level.INFO, "Input validation passed");
 
             Map<String, Object> reportData = collectReportData();
-            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Scholarship", reportData);
+            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Philhealth", reportData);
 
             if (newestRecordId != -1) {
                 logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
@@ -672,19 +715,13 @@ private Map<String, Object> collectReportData() {
     reportData.put("MaritalStatus", getMaritalStatus());
 
     // Add text fields
-    reportData.put("ParentGuardian", txtParentGuardian.getText());
+    reportData.put("ParentGuardian", txtRequestor.getText());
     reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-    reportData.put("Patient", txtPatientStudent.getText());
+    reportData.put("Patient", txtRequestee.getText());
     reportData.put("Barangay", comboAddress.getSelectedItem());
     reportData.put("Hospital", txtHospital.getText());
     reportData.put("HospitalAddress", txtHospitalAddress.getText());
     reportData.put("PlaceIssued", txtPlaceIssued.getText());
-
-    // Add parent sex
-    reportData.put("ParentSexIfSingle", getParentSex());
-
-    // Add relationship
-    reportData.put("Relationship", getRelationship());
 
     // Add amount paid
     reportData.put("AmountPaid", getAmountPaid());
@@ -705,6 +742,8 @@ private Map<String, Object> collectReportData() {
     } else {
         logger.log(Level.WARNING, "User initial not found");
     }
+    
+    reportData.put("LegalAge", checkBoxIndividual.isSelected() ? "Yes" : "No");
 
     return reportData;
 }
@@ -712,20 +751,7 @@ private Map<String, Object> collectReportData() {
 private String getMaritalStatus() {
     if (checkBoxMarried.isSelected()) return "MARRIED";
     if (checkBoxSingle.isSelected()) return "SINGLE";
-    if (checkBoxGuardian.isSelected()) return "GUARDIAN";
     return "Unknown";
-}
-
-private String getParentSex() {
-    if (comboParentSex.isEnabled()) {
-        return comboParentSex.getSelectedItem().toString();
-    }
-    return checkBoxMarried.isSelected() ? "Married" : "Guardian";
-}
-
-private String getRelationship() {
-    if (checkBoxGuardian.isSelected()) return "Legal Guardian";
-    return comboRelationship.getSelectedItem().toString();
 }
 
 private String getAmountPaid() {
@@ -755,7 +781,7 @@ private String getReceiptNumber() {
 public SimpleModalBorder createCustomBorder() {
     return new SimpleModalBorder(
         this, 
-        "Scholarship", 
+        "Philhealth", 
         SimpleModalBorder.OK_CANCEL_OPTION,
         (controller, action) -> {
             if (action == SimpleModalBorder.OK_OPTION) {
@@ -795,24 +821,11 @@ public SimpleModalBorder createCustomBorder() {
         logger.log(Level.FINE, "Starting input validation");
         
         Object[][] requiredFields = {
-            { jLabelMandatoryParentGuardian, txtParentGuardian },
-            { jLabelMandatoryParentStudent, txtPatientStudent },
-            { jLabelMandatoryHospital, txtHospital },
-            { jLabelMandatoryHospitalAddress, txtHospitalAddress }
+            { jLabelMandatoryRequestor, txtRequestor },
+            { jLabelMandatoryRequestee, txtRequestee }
         };
 
         boolean isValid = true;
-        
-        // Combo box validation
-        if (comboParentSex.getSelectedItem() == null) {
-            logger.log(Level.WARNING, "Parent sex not selected");
-            isValid = false;
-        }
-    
-        if (comboRelationship.getSelectedItem() == null) {
-            logger.log(Level.WARNING, "Relationship not selected");
-            isValid = false;
-        }
 
         // Text field validation
         for (Object[] pair : requiredFields) {
@@ -857,21 +870,21 @@ public SimpleModalBorder createCustomBorder() {
     private void initComponents() {
 
         labelTitle = new javax.swing.JLabel();
-        labelParentGuardian = new javax.swing.JLabel();
-        txtParentGuardian = new javax.swing.JTextField();
-        jLabelMandatoryParentGuardian = new javax.swing.JLabel();
-        comboParentSex = new javax.swing.JComboBox<>();
+        labelRequestor = new javax.swing.JLabel();
+        txtRequestor = new javax.swing.JTextField();
+        jLabelMandatoryRequestor = new javax.swing.JLabel();
         labelParentGuardian2 = new javax.swing.JLabel();
         txtParentGuardian2 = new javax.swing.JTextField();
         checkBoxSingle = new javax.swing.JCheckBox();
+        checkBoxIndividual = new javax.swing.JCheckBox();
+        checkBoxIndividualWithRequestor = new javax.swing.JCheckBox();
         checkBoxMarried = new javax.swing.JCheckBox();
-        checkBoxGuardian = new javax.swing.JCheckBox();
-        labelPatientStudent = new javax.swing.JLabel();
-        txtPatientStudent = new javax.swing.JTextField();
-        labelRelationship = new javax.swing.JLabel();
+        checkBoxNoRequestor = new javax.swing.JCheckBox();
+        checkBoxWithRequestor = new javax.swing.JCheckBox();
+        labelRequestee = new javax.swing.JLabel();
+        txtRequestee = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
         comboAddress = new javax.swing.JComboBox<>();
-        comboRelationship = new javax.swing.JComboBox<>();
         labelAddress = new javax.swing.JLabel();
         labelHospital = new javax.swing.JLabel();
         txtHospital = new javax.swing.JTextField();
@@ -884,7 +897,7 @@ public SimpleModalBorder createCustomBorder() {
         labelPlaceIssued = new javax.swing.JLabel();
         txtPlaceIssued = new javax.swing.JTextField();
         btnSave = new javax.swing.JToggleButton();
-        jLabelMandatoryParentStudent = new javax.swing.JLabel();
+        jLabelMandatoryRequestee = new javax.swing.JLabel();
         jLabelMandatoryAddress = new javax.swing.JLabel();
         jLabelMandatoryHospital = new javax.swing.JLabel();
         jLabelMandatoryHospitalAddress = new javax.swing.JLabel();
@@ -898,18 +911,15 @@ public SimpleModalBorder createCustomBorder() {
         labelTitle.setText("CLIENT INFORMATION");
         add(labelTitle);
 
-        labelParentGuardian.setText("Parent/ Guardian  ");
-        add(labelParentGuardian);
+        labelRequestor.setText("Requestor");
+        add(labelRequestor);
 
-        txtParentGuardian.setToolTipText("");
-        add(txtParentGuardian);
+        txtRequestor.setToolTipText("");
+        add(txtRequestor);
 
-        jLabelMandatoryParentGuardian.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryParentGuardian.setText("*");
-        add(jLabelMandatoryParentGuardian);
-
-        comboParentSex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
-        add(comboParentSex);
+        jLabelMandatoryRequestor.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelMandatoryRequestor.setText("*");
+        add(jLabelMandatoryRequestor);
 
         labelParentGuardian2.setText("Parent/ Guardian");
         add(labelParentGuardian2);
@@ -919,18 +929,28 @@ public SimpleModalBorder createCustomBorder() {
         checkBoxSingle.setToolTipText("");
         add(checkBoxSingle);
 
+        checkBoxIndividual.setText("Individual (18+)");
+        checkBoxIndividual.setToolTipText("");
+        add(checkBoxIndividual);
+
+        checkBoxIndividualWithRequestor.setText("Individual w/ Requestor (18+)");
+        checkBoxIndividualWithRequestor.setToolTipText("");
+        add(checkBoxIndividualWithRequestor);
+
         checkBoxMarried.setText("Married");
         add(checkBoxMarried);
 
-        checkBoxGuardian.setText("Guardian");
-        add(checkBoxGuardian);
+        checkBoxNoRequestor.setText("No Requestor");
+        checkBoxNoRequestor.setToolTipText("");
+        add(checkBoxNoRequestor);
 
-        labelPatientStudent.setText("Patient/ Student");
-        add(labelPatientStudent);
-        add(txtPatientStudent);
+        checkBoxWithRequestor.setText("With Requestor");
+        checkBoxWithRequestor.setToolTipText("");
+        add(checkBoxWithRequestor);
 
-        labelRelationship.setText("Relationship");
-        add(labelRelationship);
+        labelRequestee.setText("Requestee");
+        add(labelRequestee);
+        add(txtRequestee);
         add(txtAddress);
 
         comboAddress.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -940,14 +960,6 @@ public SimpleModalBorder createCustomBorder() {
             }
         });
         add(comboAddress);
-
-        comboRelationship.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "son", "daughter", "spouse" }));
-        comboRelationship.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboRelationshipActionPerformed(evt);
-            }
-        });
-        add(comboRelationship);
 
         labelAddress.setText("Address");
         add(labelAddress);
@@ -977,9 +989,9 @@ public SimpleModalBorder createCustomBorder() {
         btnSave.setText("Save");
         add(btnSave);
 
-        jLabelMandatoryParentStudent.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryParentStudent.setText("*");
-        add(jLabelMandatoryParentStudent);
+        jLabelMandatoryRequestee.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelMandatoryRequestee.setText("*");
+        add(jLabelMandatoryRequestee);
 
         jLabelMandatoryAddress.setForeground(new java.awt.Color(255, 0, 0));
         jLabelMandatoryAddress.setText("*");
@@ -1004,10 +1016,6 @@ public SimpleModalBorder createCustomBorder() {
         add(txtReceiptNo);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboRelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRelationshipActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboRelationshipActionPerformed
-
     private void comboAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAddressActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAddressActionPerformed
@@ -1015,39 +1023,39 @@ public SimpleModalBorder createCustomBorder() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JToggleButton btnSave;
-    private javax.swing.JCheckBox checkBoxGuardian;
+    private javax.swing.JCheckBox checkBoxIndividual;
+    private javax.swing.JCheckBox checkBoxIndividualWithRequestor;
     private javax.swing.JCheckBox checkBoxMarried;
+    private javax.swing.JCheckBox checkBoxNoRequestor;
     private javax.swing.JCheckBox checkBoxSingle;
+    private javax.swing.JCheckBox checkBoxWithRequestor;
     private javax.swing.JComboBox<String> comboAddress;
-    private javax.swing.JComboBox<String> comboParentSex;
-    private javax.swing.JComboBox<String> comboRelationship;
     private javax.swing.JLabel jLabelMandatoryAddress;
     private javax.swing.JLabel jLabelMandatoryHospital;
     private javax.swing.JLabel jLabelMandatoryHospitalAddress;
     private javax.swing.JLabel jLabelMandatoryMessage;
-    private javax.swing.JLabel jLabelMandatoryParentGuardian;
-    private javax.swing.JLabel jLabelMandatoryParentStudent;
+    private javax.swing.JLabel jLabelMandatoryRequestee;
+    private javax.swing.JLabel jLabelMandatoryRequestor;
     private javax.swing.JLabel labelAddress;
     private javax.swing.JLabel labelAmount;
     private javax.swing.JLabel labelDateIssued;
     private javax.swing.JLabel labelHospital;
     private javax.swing.JLabel labelHospitalAddress;
-    private javax.swing.JLabel labelParentGuardian;
     private javax.swing.JLabel labelParentGuardian2;
-    private javax.swing.JLabel labelPatientStudent;
     private javax.swing.JLabel labelPlaceIssued;
     private javax.swing.JLabel labelReceiptNo;
-    private javax.swing.JLabel labelRelationship;
+    private javax.swing.JLabel labelRequestee;
+    private javax.swing.JLabel labelRequestor;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTextField receiptDateIssuedPicker;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtHospital;
     private javax.swing.JTextField txtHospitalAddress;
-    private javax.swing.JTextField txtParentGuardian;
     private javax.swing.JTextField txtParentGuardian2;
-    private javax.swing.JTextField txtPatientStudent;
     private javax.swing.JTextField txtPlaceIssued;
     private javax.swing.JFormattedTextField txtReceiptNo;
+    private javax.swing.JTextField txtRequestee;
+    private javax.swing.JTextField txtRequestor;
     // End of variables declaration//GEN-END:variables
 }

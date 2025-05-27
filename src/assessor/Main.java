@@ -40,7 +40,7 @@ public class Main {
                     "Server=localhost;\n" +
                     "Port=3306;\n" +
                     "Database=certificationdb;\n" +
-                    "User ID=root;\n" +
+                    "User ID=user;\n" +
                     "Password=;\n"
                 );
                 System.out.println("Created new config.ini with default values");

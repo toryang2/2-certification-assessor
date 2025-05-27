@@ -51,6 +51,62 @@ public class DatabaseSaveHelper {
 
         return barangays;
     }
+    
+    public static List<String> fetchTypeSet() {
+        List<String> typesets = new ArrayList<>();
+        String sql = "SELECT typesets FROM sys_nolandholding_internaltypesets";
+
+        logger.log(Level.FINE, "Executing query to fetch typesets: {0}", sql);
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String typeset = rs.getString("typesets");
+                typesets.add(typeset);
+            }
+            logger.log(Level.INFO, "Typesets fetched successfully: {0}", typesets);
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to fetch typesets", e);
+        }
+
+        return typesets;
+    }
+    
+    public static List<String> fetchRelationships(String maritalStatus, String gender) {
+        List<String> relationships = new ArrayList<>();
+        String sql = "SELECT Relationship FROM RelationshipMappings WHERE MaritalStatus = ?"
+            + (gender != null ? " AND (Gender = ? OR Gender IS NULL)" : "");
+
+        logger.log(Level.FINE, "Executing query to fetch relationships: {0}, maritalStatus={1}, gender={2}",
+                new Object[]{sql, maritalStatus, gender});
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, maritalStatus);
+            if (gender != null) pstmt.setString(2, gender);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    relationships.add(rs.getString("Relationship"));
+                }
+                logger.log(Level.INFO, "Relationships fetched successfully: {0}", relationships);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to fetch relationships", e);
+        }
+
+        return relationships;
+    }
 
     public static String getAssessorName(int id) {
         String sql = "SELECT Assessor FROM sys_signatories WHERE id = ?";

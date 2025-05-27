@@ -5,6 +5,7 @@ import assessor.component.report.util.CurrencyRenderer;
 import assessor.component.report.util.DateRenderer;
 import assessor.component.report.util.RedTextRenderer;
 import assessor.component.report.util.ReportLoader;
+import assessor.component.report.util.TableCenterRenderer;
 import assessor.component.report.util.TableRightRenderer;
 import assessor.component.report.util.TimeRenderer;
 import assessor.system.Form;
@@ -206,7 +207,7 @@ public class CertificateTable extends Form {
             switch (colName) {
                 case "id": // Ensure the "ID" column is properly configured
                     column.setHeaderValue("ID");
-                    column.setCellRenderer(new TableRightRenderer()); // Right align for readability
+                    column.setCellRenderer(new TableCenterRenderer()); // Right align for readability
                     setColumnWidth(column, 50, 50, 50); // Fixed width
                     break;
                 case "patient":
@@ -476,5 +477,61 @@ private JPanel createTabHeader(Component tabContent, String tabTitle) {
     tabHeader.add(closeButton);
 
     return tabHeader;
+}
+
+public void setMultiColumnFilter(String patient, String barangay, String hospital, String type) {
+    if (certificationTable != null && certificationTable.getRowSorter() instanceof TableRowSorter) {
+        TableRowSorter<?> sorter = (TableRowSorter<?>) certificationTable.getRowSorter();
+
+        RowFilter<Object, Object> rf = new RowFilter<Object, Object>() {
+            @Override
+            public boolean include(RowFilter.Entry<?, ?> entry) {
+                JTable table = certificationTable;
+                boolean matches = true;
+
+                // Always look up the column index dynamically, so it works after reload
+                int patientCol = getColIndex(table, "PATIENT");
+                int barangayCol = getColIndex(table, "Barangay");
+                int hospitalCol = getColIndex(table, "HOSPITAL");
+                int typeCol = getColIndex(table, "TYPE");
+
+                if (patientCol >= 0 && patient != null && !patient.isEmpty()) {
+                    Object val = entry.getValue(patientCol);
+                    matches &= val != null && val.toString().toLowerCase().contains(patient.toLowerCase());
+}
+                if (barangayCol >= 0 && barangay != null && !barangay.isEmpty()) {
+                    Object val = entry.getValue(barangayCol);
+                    matches &= val != null && val.toString().toLowerCase().contains(barangay.toLowerCase());
+                }
+                if (hospitalCol >= 0 && hospital != null && !hospital.isEmpty()) {
+                    Object val = entry.getValue(hospitalCol);
+                    matches &= val != null && val.toString().toLowerCase().contains(hospital.toLowerCase());
+                }
+                if (typeCol >= 0 && type != null && !type.isEmpty()) {
+                    Object val = entry.getValue(typeCol);
+                    matches &= val != null && val.toString().toLowerCase().contains(type.toLowerCase());
+                }
+                return matches;
+            }
+
+            // Helper to find column index by name (case-insensitive)
+            private int getColIndex(JTable table, String name) {
+                if (table == null) return -1;
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    if (name.equalsIgnoreCase(table.getColumnName(i))) return i;
+                }
+                return -1;
+            }
+        };
+
+        if ((patient == null || patient.isEmpty()) &&
+            (barangay == null || barangay.isEmpty()) &&
+            (hospital == null || hospital.isEmpty()) &&
+            (type == null || type.isEmpty())) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(rf);
+        }
+    }
 }
 }
