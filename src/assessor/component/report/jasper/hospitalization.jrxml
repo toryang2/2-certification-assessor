@@ -92,11 +92,11 @@ Municipality of Kitaotao]]></text>
 		</element>
 	</title>
 	<pageHeader splitType="Stretch"/>
-	<columnHeader height="60" splitType="Stretch">
-		<element kind="staticText" uuid="4542ecbb-4d61-4270-b170-5ed16e7518a2" x="0" y="12" width="443" height="18" fontName="Berlin Sans FB" fontSize="14.0" hTextAlign="Center">
+	<columnHeader height="70" splitType="Stretch">
+		<element kind="staticText" uuid="4542ecbb-4d61-4270-b170-5ed16e7518a2" x="0" y="12" width="443" height="18" fontName="Berlin Sans FB" fontSize="12.0" hTextAlign="Center">
 			<text><![CDATA[OFFICE OF THE MUNICIPAL ASSESSOR]]></text>
 		</element>
-		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="25" fontName="Bernard MT Condensed" fontSize="20.0" hTextAlign="Center">
+		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="35" fontName="Bernard MT Condensed" fontSize="28.0" hTextAlign="Center">
 			<text><![CDATA[CERTIFICATION]]></text>
 		</element>
 	</columnHeader>
@@ -142,10 +142,10 @@ Municipality of Kitaotao]]></text>
 "  <style isBold=\"true\">" + $F{Patient} + " (Patient)</style> at " + $F{Hospital} + " – " + $F{HospitalAddress} + ".\n\n" +
 
 "Done and Given this " + 
-( ($F{CertificationDate} != null) ? 
-    assessor.component.report.DateUtil.formatCertificationDate($F{CertificationDate}) : 
-    "[DATE MISSING]"
-) +
+	( ($F{CertificationDate} != null) ? 
+  		assessor.component.report.DateUtil.formatCertificationDate($F{CertificationDate}) : 
+ 	   "[DATE MISSING]"
+	) +
 " at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon."
 ]]></expression>
 				<property name="net.sf.jasperreports.awt.justify.last.line" value="false"/>
@@ -180,7 +180,7 @@ Prepared By]]></text>
 				<expression><![CDATA[": " + ($F{PlaceIssued} == null ? "" : $F{PlaceIssued})]]></expression>
 			</element>
 			<element kind="textField" uuid="24d06479-0959-4133-b63d-620f92afde50" x="70" y="426" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
-				<expression><![CDATA[": " + $F{userInitials} +" " +  $F{CertificationDate}   + " @ " + 
+				<expression><![CDATA[": " + $F{userInitials} +" " + (($F{CertificationDate} != null) ? new java.text.SimpleDateFormat("MM/dd/yyyy").format($F{CertificationDate}) : "[DATE MISSING]")  + " @ " + 
 ( ($F{CertificationTime} != null) ? 
     new java.text.SimpleDateFormat("hh:mm a").format($F{CertificationTime}) : 
     "[TIME MISSING]"

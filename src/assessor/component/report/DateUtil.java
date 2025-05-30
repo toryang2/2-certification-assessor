@@ -9,7 +9,7 @@ public class DateUtil {
     // Main method for Date objects (SQL DATE type)
     public static String formatCertificationDate(Date date) {
         if (date == null) return "";
-        
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
@@ -17,7 +17,8 @@ public class DateUtil {
         String month = new SimpleDateFormat("MMMM").format(date);
         int year = cal.get(Calendar.YEAR);
 
-        return String.format("%d%s day of %s, %d",
+        // Use HTML <sup> tag with small font size for the suffix
+        return String.format("%d<sup style='font-size:8px'>%s</sup> day of %s, %d",
                 day,
                 getOrdinalSuffix(day),
                 month,

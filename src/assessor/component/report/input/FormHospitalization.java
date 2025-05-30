@@ -16,6 +16,7 @@ import assessor.system.Form;
 import assessor.system.FormManager;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -97,7 +98,7 @@ public class FormHospitalization extends Form {
     }
 
     private void updateParentSexCombo() {
-        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Male", "Female"}));
+        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Live-in", "Male", "Female"}));
         comboParentSex.setSelectedIndex(0);
     }
     
@@ -162,17 +163,42 @@ public class FormHospitalization extends Form {
                     } 
                     else if (checkbox == checkBoxSingle) {
                         comboParentSex.setEnabled(true);
-                        txtParentGuardian2.setEnabled(false);
+//                        txtParentGuardian2.setEnabled(false);
                         txtParentGuardian2.setText("");
                         labelParentGuardian.setText("Requestor");
-                        labelParentGuardian2.setText("");
+//                        labelParentGuardian2.setText("");
                         updateParentSexCombo();
+                        
+                        // Remove existing listeners to avoid multiple triggers
+                        for (ActionListener al : comboParentSex.getActionListeners()) {
+                            comboParentSex.removeActionListener(al);
+                        }
+                        
                         // When parent sex change, update relationships for selected sex:
                         comboParentSex.addActionListener(evt -> {
                             String gender = comboParentSex.getSelectedItem().toString();
                             updateRelationshipCombo("Single", gender);
+                            
+                            // Enable ParentGuardian2 only if gender is Live-in
+                            if ("Live-in".equalsIgnoreCase(gender)) {
+                                txtParentGuardian2.setEnabled(true);
+                                labelParentGuardian2.setText("Requestor");
+                            } else {
+                                txtParentGuardian2.setEnabled(false);
+                                txtParentGuardian2.setText("");
+                                labelParentGuardian2.setText("");
+                            }
                         });
-                        updateRelationshipCombo("Single", comboParentSex.getSelectedItem().toString());
+                        String gender = comboParentSex.getSelectedItem().toString();
+                        updateRelationshipCombo("Single", gender);
+                            if ("Live-in".equalsIgnoreCase(gender)) {
+                                txtParentGuardian2.setEnabled(true);
+                                labelParentGuardian2.setText("Requestor");
+                            } else {
+                                txtParentGuardian2.setEnabled(false);
+                                txtParentGuardian2.setText("");
+                                labelParentGuardian2.setText("");
+                            }
 //                        comboParentSex.setModel(defaultParentSexModel);
 //                        comboParentSex.setSelectedIndex(0);
 //                        comboRelationship.setEnabled(true);

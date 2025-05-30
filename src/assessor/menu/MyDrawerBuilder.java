@@ -55,6 +55,10 @@ public SimpleHeaderData getSimpleHeaderData() {
     // Debugging: Verify fetched values
     System.out.println("getSimpleHeaderData - Username: " + username);
     System.out.println("getSimpleHeaderData - User Initials: " + userInitials);
+    
+    if ("admin".equalsIgnoreCase(userInitials)) {
+        userInitials = "admin";
+    }
 
     AvatarIcon icon = new AvatarIcon(new FlatSVGIcon("assessor/drawer/image/avatar_male.svg", 100, 100), 50, 50, 3.5f);
     icon.setType(AvatarIcon.Type.MASK_SQUIRCLE);
