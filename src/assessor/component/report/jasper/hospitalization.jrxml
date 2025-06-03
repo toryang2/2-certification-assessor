@@ -110,7 +110,7 @@ Municipality of Kitaotao]]></text>
     ? "" 
     : assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}) + " "
 ) + " " +  $F{ParentDisplay} + "</style> " + 
-" of Barangay " + $F{Barangay} +  
+" of Barangay " + "<style isBold=\"true\">" + $F{Barangay} + "</style> " +
 " this municipality has no declared real property ownership such as building, land, and machinery as far as our record is concerned.\n\n" +
 
 "THIS CERTIFICATION is being done to facilitate their request for financial/medical assistance of " + 
