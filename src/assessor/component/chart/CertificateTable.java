@@ -1,13 +1,7 @@
 package assessor.component.chart;
 
-import assessor.component.report.GenerateReport;
-import assessor.component.report.util.CurrencyRenderer;
-import assessor.component.report.util.DateRenderer;
-import assessor.component.report.util.RedTextRenderer;
-import assessor.component.report.util.ReportLoader;
-import assessor.component.report.util.TableCenterRenderer;
-import assessor.component.report.util.TableRightRenderer;
-import assessor.component.report.util.TimeRenderer;
+import assessor.component.report.*;
+import assessor.component.report.util.*;
 import assessor.system.Form;
 import assessor.utils.AdvancedLogger;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -15,26 +9,12 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.event.*;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import java.util.logging.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableRowSorter;
 
 /**
  * CertificateTable class that displays a table with loaded data using ReportLoader.
@@ -143,7 +123,7 @@ public class CertificateTable extends Form {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setHorizontalAlignment(SwingConstants.LEFT);
                 return label;
             }
         });
@@ -160,6 +140,7 @@ public class CertificateTable extends Form {
         certificationTable.putClientProperty(FlatClientProperties.STYLE, ""
                 + "rowHeight:30;"
                 + "showHorizontalLines:true;"
+                + "showVerticalLines:true;"
                 + "intercellSpacing:0,1;");
         scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
                 + "trackArc:$ScrollBar.thumbArc;"
@@ -207,19 +188,27 @@ public class CertificateTable extends Form {
             switch (colName) {
                 case "id": // Ensure the "ID" column is properly configured
                     column.setHeaderValue("ID");
-                    column.setCellRenderer(new TableCenterRenderer()); // Right align for readability
+//                    column.setCellRenderer(new TableCenterRenderer()); // Right align for readability
                     setColumnWidth(column, 50, 50, 50); // Fixed width
                     break;
                 case "patient":
-                    column.setHeaderValue("PATIENT");
-                    setColumnWidth(column, 200, 200, 200); // Wider for long names
+                    column.setHeaderValue("Patient");
+                    setColumnWidth(column, 300, 300, 300); // Wider for long names
                     break;
                 case "relationship":
                     setColumnWidth(column, 80, 80, 80); // Standard width
                     break;
+                case "hospital":
+                    column.setHeaderValue("Hospital");
+                    setColumnWidth(column, 300, 300, 300); // Wider for detailed addresses
+                    break;
                 case "hospitaladdress":
                     column.setHeaderValue("Hospital Address");
-                    setColumnWidth(column, 250, 250, 250); // Wider for detailed addresses
+                    column.setCellRenderer(new UppercaseRenderer());
+                    setColumnWidth(column, 200, 200, 200); // Wider for detailed addresses
+                    break;
+                case "barangay":
+                    setColumnWidth(column, 120, 120, 120); // Wider for detailed addresses
                     break;
                 case "maritalstatus":
                     column.setHeaderValue("Marital Status");
@@ -227,11 +216,11 @@ public class CertificateTable extends Form {
                     break;
                 case "parentguardian":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 120, 200, 200); // Flexible width
+                    setColumnWidth(column, 300, 300, 300); // Flexible width
                     break;
                 case "parentguardian2":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 200, 200, 200); // Flexible width
+                    setColumnWidth(column, 300, 300, 300); // Flexible width
                     break;
                 case "parentsexifsingle":
                     setColumnWidth(column, 0, 0, 0); // Hidden column
@@ -261,16 +250,20 @@ public class CertificateTable extends Form {
                     setColumnWidth(column, 80, 80, 80);
                     break;
                 case "receiptdateissued":
-                    column.setHeaderValue("Receipt Date Issued");
+                    column.setHeaderValue("Date Issued");
                     column.setCellRenderer(new DateRenderer());
-                    setColumnWidth(column, 120, 120, 120);
+                    setColumnWidth(column, 100, 100, 100);
                     break;
                 case "placeissued":
                     column.setHeaderValue("Place Issued");
-                    setColumnWidth(column, 120, 120, 120);
+                    setColumnWidth(column, 100, 100, 100);
+                    break;
+                case "legalage":
+                    column.setHeaderValue("Legal Age");
+                    setColumnWidth(column, 70, 70, 70);
                     break;
                 default:
-                    setColumnWidth(column, 200, 200, 200); // Default column width
+                    setColumnWidth(column, 250, 250, 250); // Default column width
             }
         }
     }
@@ -398,7 +391,7 @@ private String getPatientNameByRecordId(int recordId) {
             Object rawId = certificationTable.getValueAt(row, idColumn);
 
             if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
-                int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("PATIENT").getModelIndex());
+                int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Patient").getModelIndex());
                 Object rawPatientName = certificationTable.getValueAt(row, patientColumn);
 
                 if (rawPatientName != null) {

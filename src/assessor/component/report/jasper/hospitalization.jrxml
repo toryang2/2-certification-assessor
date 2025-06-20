@@ -125,17 +125,25 @@ Municipality of Kitaotao]]></text>
        ($F{ParentSexIfSingle}.equalsIgnoreCase("Male") || $F{ParentSexIfSingle}.equalsIgnoreCase("Female")) &&
        $F{Relationship} != null && $F{Relationship}.equalsIgnoreCase("self"))
         ? ""
+    // Condition 3: Live-in + husband/wife = blank
+    	: (
+      	  ($F{ParentSexIfSingle} != null &&
+      		 $F{ParentSexIfSingle}.equalsIgnoreCase("Live-in") &&
+      		 $F{Relationship} != null && 
+      		 ($F{Relationship}.equalsIgnoreCase("husband") || $F{Relationship}.equalsIgnoreCase("wife")))
+      		  ? ""
         // Default case
-        : (
-            (assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}).isEmpty()
-              ? ""
-              : assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}) + " "
-            ) +
-            (
-              ($F{Relationship} == null || $F{Relationship}.isEmpty())
-                ? ""
-                : $F{Relationship} + " "
-            )
+       		 : (
+          		  (assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}).isEmpty()
+             		 ? ""
+           	   		 : assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}) + " "
+            		) +
+           		 (
+              		($F{Relationship} == null || $F{Relationship}.isEmpty())
+                	? ""
+                	: $F{Relationship} + " "
+                	)
+            	 )
           )
     )
 ) + 

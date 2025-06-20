@@ -10,7 +10,7 @@ public class CurrencyRenderer extends DefaultTableCellRenderer {
     private final NumberFormat currencyFormat;
 
     public CurrencyRenderer() {
-        setHorizontalAlignment(SwingConstants.RIGHT);
+//        setHorizontalAlignment(SwingConstants.RIGHT);
         Locale phLocale = new Locale("en", "PH");
         currencyFormat = NumberFormat.getCurrencyInstance(phLocale);
         

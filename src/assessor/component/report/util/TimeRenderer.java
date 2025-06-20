@@ -16,7 +16,7 @@ public class TimeRenderer extends DefaultTableCellRenderer {
     private final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 
     public TimeRenderer() {
-        setHorizontalAlignment(SwingConstants.RIGHT); // Add this line
+//        setHorizontalAlignment(SwingConstants.RIGHT); // Add this line
     }
     
     @Override

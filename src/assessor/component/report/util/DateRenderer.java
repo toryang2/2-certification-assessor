@@ -16,7 +16,7 @@ public class DateRenderer extends DefaultTableCellRenderer {
     private final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 
     public DateRenderer() {
-        setHorizontalAlignment(SwingConstants.RIGHT); // Add this line
+//        setHorizontalAlignment(SwingConstants.RIGHT); // Add this line
     }
     
     @Override

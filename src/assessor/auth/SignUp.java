@@ -2,8 +2,8 @@ package assessor.auth;
 
 import assessor.MainFrame;
 import assessor.component.ButtonLink;
-import assessor.component.report.util.NameCapitalizationFilter;
-import assessor.component.report.util.UppercaseDocumentFilter;
+//import assessor.component.report.util.NameCapitalizationFilter;
+//import assessor.component.report.util.UppercaseDocumentFilter;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.DropShadowBorder;
@@ -14,6 +14,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.JTextComponent;
 import raven.modal.ModalDialog;
@@ -52,9 +57,9 @@ public class SignUp extends Form {
 
         JTextField txtUsername = new JTextField();
         JTextField txtName = new JTextField();
-        ((AbstractDocument) txtName.getDocument()).setDocumentFilter(new NameCapitalizationFilter());
+//        ((AbstractDocument) txtName.getDocument()).setDocumentFilter(new NameCapitalizationFilter());
         JTextField txtInitial = new JTextField(); // New: Initial textbox
-        ((AbstractDocument) txtInitial.getDocument()).setDocumentFilter(new UppercaseDocumentFilter());
+//        ((AbstractDocument) txtInitial.getDocument()).setDocumentFilter(new UppercaseDocumentFilter());
         JPasswordField txtPassword = new JPasswordField();
         JPasswordField txtConfirmPassword = new JPasswordField();
         JButton cmdSignUp = new JButton("Sign Up") {
@@ -152,18 +157,58 @@ public class SignUp extends Form {
         // event
         cmdSignUp.addActionListener(e -> {
             String username = txtUsername.getText().trim();
-            String name = txtName.getText().trim();
-            String initial = txtInitial.getText().trim(); // New: get initial
+            String name = capitalizeName(txtName.getText().trim());
+            String initial = uppercaseInitial(txtInitial.getText().trim()); // New: get initial
             String password = new String(txtPassword.getPassword());
             String confirmPassword = new String(txtConfirmPassword.getPassword());
 
-            // Simple validation
-            if (username.isEmpty() || name.isEmpty() || initial.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Sign Up Failed", JOptionPane.ERROR_MESSAGE);
+//            // Simple validation
+//            if (username.isEmpty() || name.isEmpty() || initial.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Sign Up Failed", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+            // Validate empty fields and focus on the first empty one
+            // Validate empty fields and collect all empty ones
+            // Reset all fields to default background before validation
+            // Reset all fields to default background before validation
+            for (JTextComponent field : new JTextComponent[]{txtUsername, txtName, txtInitial, txtPassword, txtConfirmPassword}) {
+                field.setBackground(SystemColor.window);
+            }
+
+            // Validate empty fields and collect all empty ones
+            JTextComponent[] fields = {txtUsername, txtName, txtInitial, txtPassword, txtConfirmPassword};
+            String[] fieldNames = {"Username", "Name", "Initial", "Password", "Confirm Password"};
+            java.util.List<Integer> emptyIndices = new java.util.ArrayList<>();
+            for (int i = 0; i < fields.length; i++) {
+                String text = fields[i] instanceof JPasswordField ? new String(((JPasswordField) fields[i]).getPassword()) : fields[i].getText().trim();
+                if (text.isEmpty()) {
+                    emptyIndices.add(i);
+                    fields[i].setBackground(new Color(255, 255, 204)); // Faint yellow for empty fields
+                }
+            }
+
+            // Show appropriate error message and focus on first empty field
+            if (!emptyIndices.isEmpty()) {
+                String message;
+                if (emptyIndices.size() == 1) {
+                    message = fieldNames[emptyIndices.get(0)] + " cannot be empty.";
+                } else {
+                    String emptyFields = emptyIndices.stream()
+                            .map(i -> fieldNames[i])
+                            .collect(Collectors.joining(", "));
+                    message = "The following fields cannot be empty: " + emptyFields + ".";
+                }
+                JOptionPane.showMessageDialog(this, message, "Sign Up Failed", JOptionPane.ERROR_MESSAGE);
+                fields[emptyIndices.get(0)].requestFocusInWindow();
+                fields[emptyIndices.get(0)].selectAll();
                 return;
             }
+
             if (!password.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(this, "Passwords do not match.", "Sign Up Failed", JOptionPane.ERROR_MESSAGE);
+                txtConfirmPassword.setBackground(new Color(255, 255, 204)); // Highlight confirm password
+                txtConfirmPassword.requestFocusInWindow();
+                txtConfirmPassword.selectAll();
                 return;
             }
 
@@ -172,6 +217,12 @@ public class SignUp extends Form {
 
             if (registrationSuccess) {
                 JOptionPane.showMessageDialog(this, "Account created successfully! You can now log in.", "Sign Up Success", JOptionPane.INFORMATION_MESSAGE);
+                // Clear all fields
+                txtUsername.setText("");
+                txtName.setText("");
+                txtInitial.setText("");
+                txtPassword.setText("");
+                txtConfirmPassword.setText("");
                 // Optionally, return to login form
                 FormManager.backtologin();
             } else {
@@ -180,15 +231,64 @@ public class SignUp extends Form {
         });
 
         cmdBackToLogin.addActionListener(e -> {
+                txtUsername.setText("");
+                txtName.setText("");
+                txtInitial.setText("");
+                txtPassword.setText("");
+                txtConfirmPassword.setText("");
             FormManager.backtologin();
         });
     }
+    
+        // Helper method to capitalize the first letter of each word in the name
+    private String capitalizeName(String name) {
+        if (name == null || name.isEmpty()) {
+            return name;
+        }
+        String[] words = name.trim().split("\\s+");
+        StringBuilder capitalized = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                capitalized.append(Character.toUpperCase(word.charAt(0)))
+                           .append(word.substring(1).toLowerCase())
+                           .append(" ");
+            }
+        }
+        return capitalized.toString().trim();
+    }
 
+    // Helper method to convert initial to uppercase
+    private String uppercaseInitial(String initial) {
+        if (initial == null || initial.isEmpty()) {
+            return initial;
+        }
+        return initial.toUpperCase();
+    }
+    
     private void addHighlightOnFocus(JTextComponent textComponent) {
+        // Store the original background color
+        final Color originalBackground = textComponent.getBackground();
+
         textComponent.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                textComponent.selectAll(); // Select all text when the component gains focus
+                textComponent.selectAll();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                textComponent.setBackground(originalBackground); // Revert to original on focus lost
+            }
+        });
+
+        textComponent.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Revert to original background when typing starts, but only if the field is not empty
+                String text = textComponent instanceof JPasswordField ? new String(((JPasswordField) textComponent).getPassword()) : textComponent.getText().trim();
+                if (!text.isEmpty()) {
+                    textComponent.setBackground(originalBackground);
+                }
             }
         });
     }

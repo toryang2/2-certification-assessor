@@ -22,7 +22,7 @@ public class RedTextRenderer extends DefaultTableCellRenderer {
 
         // Set text color to red
         component.setForeground(Color.RED);
-        setHorizontalAlignment(SwingConstants.RIGHT);
+//        setHorizontalAlignment(SwingConstants.RIGHT);
 
         return component;
     }

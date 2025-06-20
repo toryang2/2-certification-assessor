@@ -255,4 +255,50 @@ public class DatabaseSaveHelper {
             index++;
         }
     }
+    
+    // Autocomplete Cache
+    public static List<String> getAutocompleteSuggestions(String fieldKey, String prefix) {
+        List<String> suggestions = new ArrayList<>();
+        // Use case-insensitive matching
+        String sql = "SELECT value FROM autocomplete_cache " +
+                     "WHERE field_key = ? AND LOWER(value) LIKE LOWER(?) " +
+                     "ORDER BY value LIMIT 10";
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, fieldKey);
+            pstmt.setString(2, prefix + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                suggestions.add(rs.getString("value"));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to get autocomplete suggestions", e);
+        }
+        return suggestions;
+    }
+    
+    public static void saveAutocompleteValue(String fieldKey, String value) {
+        if (value == null || value.isEmpty()) return;
+
+        String sql = "INSERT IGNORE INTO autocomplete_cache (field_key, value) VALUES (?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, fieldKey);
+            pstmt.setString(2, value);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error saving autocomplete value", e);
+        }
+    }
 }

@@ -9,17 +9,30 @@ import assessor.auth.SessionManager;
 import assessor.component.chart.CertificateTable;
 import assessor.component.report.util.DataChangeNotifier;
 import assessor.component.report.util.DatabaseSaveHelper;
+import static assessor.component.report.util.DatabaseSaveHelper.saveAutocompleteValue;
 import assessor.component.report.util.NameCapitalizationFilter;
 import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.forms.FormDashboard;
 import assessor.system.Form;
 import assessor.system.FormManager;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,6 +44,8 @@ import javax.swing.JTextField;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
@@ -39,6 +54,11 @@ import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.SwingWorker;
 import raven.modal.component.SimpleModalBorder;
 
 /**
@@ -68,6 +88,374 @@ public class FormHospitalization extends Form {
     /**
      * Creates new form Input
      */
+    
+private class AutocompleteHandler implements DocumentListener, KeyListener {
+    private final JTextField textField;
+    private final String fieldKey;
+    private final Timer delayTimer;
+    private JPopupMenu popupMenu;
+    private SwingWorker<List<String>, Void> worker;
+    private List<String> currentSuggestions = new ArrayList<>();
+    private int selectedIndex = -1;
+    private boolean popupVisible = false;
+    private String lastQuery = "";
+
+    public AutocompleteHandler(JTextField textField, String fieldKey) {
+        this.textField = textField;
+        this.fieldKey = fieldKey;
+        
+        // Create a lightweight popup
+        this.popupMenu = new JPopupMenu();
+        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.Y_AXIS));
+        popupMenu.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        popupMenu.setFocusable(false);  // Prevents focus stealing
+        
+        // Configure timer with proper delay
+        this.delayTimer = new Timer(0, e -> fetchSuggestions());
+        delayTimer.setRepeats(false);
+        
+        textField.getDocument().addDocumentListener(this);
+        textField.addKeyListener(this);
+        
+        // Improved focus handling
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Only hide if focus isn't going to popup
+                if (!popupMenu.isFocusOwner()) {
+                    popupMenu.setVisible(false);
+                    popupVisible = false;
+                }
+            }
+        });
+    }
+
+    private void fetchSuggestions() {
+        String text = textField.getText().trim();
+        lastQuery = text; // Store the current query
+        
+        if (text.isEmpty()) {
+            hidePopup();
+            return;
+        }
+
+        // Cancel previous worker if running
+        if (worker != null && !worker.isDone()) {
+            worker.cancel(true);
+        }
+
+        worker = new SwingWorker<List<String>, Void>() {
+            @Override
+            protected List<String> doInBackground() {
+                return DatabaseSaveHelper.getAutocompleteSuggestions(fieldKey, text);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    if (!isCancelled()) {
+                        List<String> suggestions = get();
+                        
+                        // Only update if query hasn't changed
+                        if (text.equals(lastQuery)) {
+                            currentSuggestions = suggestions;
+                            showSuggestions();
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    currentSuggestions = Collections.emptyList();
+                    hidePopup();
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private void showSuggestions() {
+        // Clear previous items
+        popupMenu.removeAll();
+        
+        // Get FlatLaf colors from UIManager
+        final Color background = getThemeColor("PopupMenu.background", Color.WHITE);
+        final Color foreground = getThemeColor("PopupMenu.foreground", Color.BLACK);
+        final Color selectionBg = getThemeColor("MenuItem.selectionBackground", new Color(51, 153, 255));
+        final Color selectionFg = getThemeColor("MenuItem.selectionForeground", Color.WHITE);
+        final Color matchedColor = getThemeColor("Component.linkColor", new Color(0, 100, 200));
+        
+        if (currentSuggestions == null || currentSuggestions.isEmpty()) {
+            hidePopup();
+            return;
+        }
+
+        // Filter suggestions to match current text (case-insensitive)
+        String currentText = textField.getText().toLowerCase();
+        List<String> filteredSuggestions = currentSuggestions.stream()
+            .filter(s -> s.toLowerCase().contains(currentText))
+            .collect(Collectors.toList());
+        
+        if (filteredSuggestions.isEmpty()) {
+            hidePopup();
+            return;
+        }
+
+        // Add new suggestions
+        // Add new suggestions
+        for (String suggestion : filteredSuggestions) {
+            // Create menu item with FlatLaf-aware styling
+            JMenuItem item = new JMenuItem() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    // Custom painting with theme colors
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    
+                    // Paint background
+                    if (isArmed()) {
+                        g2.setColor(selectionBg);
+                    } else {
+                        g2.setColor(background);
+                    }
+                    g2.fillRect(0, 0, getWidth(), getHeight());
+                    
+                    // Get current text and suggestion in lowercase for matching
+                    String currentText = textField.getText().toLowerCase();
+                    String suggestionLower = suggestion.toLowerCase();
+                    
+                    // Find matching portion
+                    int matchStart = suggestionLower.indexOf(currentText);
+                    int matchEnd = (matchStart >= 0) ? matchStart + currentText.length() : -1;
+                    
+                    // Set initial position
+                    int xPos = 5;
+                    Font normalFont = getFont().deriveFont(Font.PLAIN);
+                    Font boldFont = getFont().deriveFont(Font.BOLD);
+                    g2.setFont(normalFont);
+                    FontMetrics fm = g2.getFontMetrics();
+                    int textY = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                    
+                    if (matchStart >= 0 && !currentText.isEmpty()) {
+                        // Draw text before match
+                        if (matchStart > 0) {
+                            String prefix = suggestion.substring(0, matchStart);
+                            g2.setFont(normalFont);
+                            g2.setColor(isArmed() ? selectionFg : foreground);
+                            g2.drawString(prefix, xPos, textY);
+                            xPos += fm.stringWidth(prefix);
+                        }
+                        
+                        // Draw matched portion in bold
+                        String match = suggestion.substring(matchStart, matchEnd);
+                        g2.setFont(boldFont);
+                        g2.setColor(isArmed() ? selectionFg : matchedColor);
+                        g2.drawString(match, xPos, textY);
+                        xPos += g2.getFontMetrics().stringWidth(match);
+                        
+                        // Draw text after match
+                        if (matchEnd < suggestion.length()) {
+                            String suffix = suggestion.substring(matchEnd);
+                            g2.setFont(normalFont);
+                            g2.setColor(isArmed() ? selectionFg : foreground);
+                            g2.drawString(suffix, xPos, textY);
+                        }
+                    } else {
+                        // Draw full text if no match
+                        g2.setFont(normalFont);
+                        g2.setColor(isArmed() ? selectionFg : foreground);
+                        g2.drawString(suggestion, xPos, textY);
+                    }
+                }
+                
+                @Override
+                public Dimension getPreferredSize() {
+                    Dimension dim = super.getPreferredSize();
+                    dim.width = textField.getWidth();
+                    dim.height = 25;
+                    return dim;
+                }
+            };
+            
+            // Store the suggestion in the item's client properties
+            item.putClientProperty("suggestion", suggestion);
+            
+            // Set font and action
+            item.setFont(textField.getFont());
+            item.setOpaque(false);
+            item.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
+            item.addActionListener(e -> {
+                String selected = (String) ((JMenuItem)e.getSource()).getClientProperty("suggestion");
+                
+                if (selected != null) {
+                    textField.setText(selected);
+                    textField.setCaretPosition(selected.length());
+                }
+                hidePopup();
+            });
+            
+            popupMenu.add(item);
+        }
+        
+        // Apply FlatLaf styling to popup
+        popupMenu.setBackground(background);
+//        popupMenu.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor")));
+
+        // Match text field width
+        popupMenu.setPreferredSize(new Dimension(
+            textField.getWidth(), 
+            Math.min(200, filteredSuggestions.size() * 25) // 25px per item
+        ));
+        
+        // Size and position the popup
+        popupMenu.pack();
+        
+        // Limit maximum height
+        Dimension prefSize = popupMenu.getPreferredSize();
+        int maxHeight = Math.min(200, prefSize.height);
+        if (prefSize.height > maxHeight) {
+            popupMenu.setPreferredSize(new Dimension(prefSize.width, maxHeight));
+        }
+        
+        // Show below text field
+        popupMenu.show(textField, 0, textField.getHeight());
+        popupVisible = true;
+        
+        // Select first item automatically
+        if (popupMenu.getComponentCount() > 0) {
+            selectedIndex = 0;
+            JMenuItem firstItem = (JMenuItem) popupMenu.getComponent(0);
+            firstItem.setArmed(true);
+            firstItem.requestFocus();
+        }
+    }
+    
+    private Color getThemeColor(String key, Color defaultColor) {
+        Color color = UIManager.getColor(key);
+        return color != null ? color : defaultColor;
+    }
+    
+    private void hidePopup() {
+        popupMenu.setVisible(false);
+        popupVisible = false;
+        selectedIndex = -1;
+    }
+
+    // DocumentListener methods
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        delayTimer.restart();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        delayTimer.restart();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {}
+
+    // KeyListener methods
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (!popupVisible) return;
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_DOWN:
+                moveSelection(1);
+                e.consume();
+                break;
+                
+            case KeyEvent.VK_UP:
+                moveSelection(-1);
+                e.consume();
+                break;
+                
+            case KeyEvent.VK_ENTER:
+                selectCurrentSuggestion();
+                e.consume();
+                break;
+                
+            case KeyEvent.VK_ESCAPE:
+                hidePopup();
+//                textField.requestFocus();
+                e.consume();
+                break;
+                
+            case KeyEvent.VK_TAB:
+                if (selectedIndex >= 0) {
+                    // Prevent default tab behavior
+                    e.consume();
+                    
+                    // Select the current suggestion
+                    selectCurrentSuggestion();
+                    
+                    // Give focus back to text field briefly
+//                    textField.requestFocusInWindow();
+                    
+                    // Manually transfer focus a small delay
+                    SwingUtilities.invokeLater(() ->{
+                        transferFocusSafely(e.isShiftDown());
+                    });
+                }
+                break;
+        }
+    }
+    
+    private void transferFocusSafely(boolean backward) {
+        if (backward) {
+            textField.transferFocusBackward();
+        } else {
+            textField.transferFocus();
+        }
+        
+        // Fallback for custom focus cycles
+        if (textField.isFocusOwner()) {
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+        }
+    }
+
+    private void moveSelection(int direction) {
+        int count = popupMenu.getComponentCount();
+        if (count == 0) return;
+
+        // Clear previous selection
+        if (selectedIndex >= 0 && selectedIndex < count) {
+            JMenuItem prevItem = (JMenuItem) popupMenu.getComponent(selectedIndex);
+            prevItem.setArmed(false);
+        }
+
+        // Calculate new index
+        selectedIndex = (selectedIndex + direction + count) % count;
+
+        // Set new selection
+        JMenuItem newItem = (JMenuItem) popupMenu.getComponent(selectedIndex);
+        newItem.setArmed(true);
+        newItem.requestFocus();
+
+        // Scroll to visible
+        Rectangle bounds = newItem.getBounds();
+        Rectangle visible = popupMenu.getVisibleRect();
+        visible.y = bounds.y;
+        popupMenu.scrollRectToVisible(visible);
+    }
+
+    private void selectCurrentSuggestion() {
+        if (selectedIndex >= 0 && selectedIndex < popupMenu.getComponentCount()) {
+            JMenuItem item = (JMenuItem) popupMenu.getComponent(selectedIndex);
+            String plainText = (String) item.getClientProperty("suggestion");
+            if (plainText != null) {
+                textField.setText(plainText);
+                textField.setCaretPosition(plainText.length());
+                hidePopup();
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+}
     
     private void applyUppercaseFilterToTextFields() {
         // Create an instance of the UppercaseDocumentFilter
@@ -244,6 +632,11 @@ public class FormHospitalization extends Form {
                 }
             });
         }
+                
+        // Initialize autocomplete handlers
+        new AutocompleteHandler(txtHospital, "txtHospital");
+        new AutocompleteHandler(txtHospitalAddress, "txtHospitalAddress");
+        new AutocompleteHandler(txtPlaceIssued, "txtPlaceIssued");
 
         // Initial state setup
         checkBoxMarried.setSelected(true);
@@ -636,6 +1029,10 @@ public void saveAction(ActionEvent e) {
             logger.log(Level.INFO, "Input validation passed");
 
             Map<String, Object> reportData = collectReportData();
+            // Save autocomplete values
+            saveAutocompleteValue("txtHospital", txtHospital.getText().trim());
+            saveAutocompleteValue("txtHospitalAddress", txtHospitalAddress.getText().trim());
+            saveAutocompleteValue("txtPlaceIssued", txtPlaceIssued.getText().trim());
             int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Hospitalization", reportData);
 
             if (newestRecordId != -1) {

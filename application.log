@@ -454,3 +454,1755 @@ Jun 02, 2025 12:08:10 PM assessor.component.chart.CertificateTable$2 onLoadStart
 INFO: Loading data...
 Jun 02, 2025 12:08:10 PM assessor.component.chart.CertificateTable$2 onLoadComplete
 INFO: Data load complete.
+Jun 03, 2025 4:18:11 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 03, 2025 4:18:11 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 03, 2025 4:18:11 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 04, 2025 9:53:13 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 9:53:13 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 9:53:13 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 04, 2025 11:59:46 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 11:59:46 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 11:59:49 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 11:59:49 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 12:03:19 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 12:03:19 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 12:03:19 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 12:03:19 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 12:04:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 04, 2025 12:04:46 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 04, 2025 12:04:46 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:36:47 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:36:48 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:36:48 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:45:17 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:45:17 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:45:17 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:46:27 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:46:27 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:46:27 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:48:04 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:48:04 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:48:04 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:48:53 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:48:53 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:48:53 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:51:12 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:51:12 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:51:12 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:51:40 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:51:40 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:51:40 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:53:06 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:53:06 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:53:06 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 8:59:45 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:59:45 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 8:59:45 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:328)
+	at assessor.component.report.input.FormHospitalization.lambda$monitorTableInitialization$0(FormHospitalization.java:695)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:771)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:741)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 8:59:47 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 8:59:47 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:02:10 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:02:10 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:02:10 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:02:12 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 9:03:09 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:03:10 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:03:10 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:03:10 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 9:04:47 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 9:05:02 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 9:05:05 AM assessor.component.chart.CertificateTable getPatientNameByRecordId
+SEVERE: Error retrieving patient name by record ID
+java.lang.IllegalArgumentException: Identifier not found
+	at java.desktop/javax.swing.table.DefaultTableColumnModel.getColumnIndex(DefaultTableColumnModel.java:283)
+	at java.desktop/javax.swing.JTable.getColumn(JTable.java:2605)
+	at assessor.component.chart.CertificateTable.getPatientNameByRecordId(CertificateTable.java:408)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:395)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 05, 2025 9:05:41 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:05:41 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:05:41 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:12:32 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:12:34 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:13:46 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:13:46 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:13:46 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:13:48 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:14:49 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:14:49 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:14:49 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:14:51 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:15:03 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:15:05 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:15:06 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:15:08 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1fc54c75b4cb78fff1206c4a4a4e23c9959f0e1c0dfdaf8227345ebd3d3efab2.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:18:54 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:18:57 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:19:10 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:19:10 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:19:10 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:19:12 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:19:14 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:19:15 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_317557cc731e089dd32fca832a5e832f19b2cde706fdb6c6b4ca949febc43768.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:20:05 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:20:14 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:20:14 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:20:14 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 9:20:16 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:172: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:288: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_1864394afc9d5bc08bd4d3da11d28b70389ee4f2b64db89c77ca5cfa59a984e1.java:404: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:22:04 AM assessor.component.chart.CertificateTable handleReportGeneration
+SEVERE: Error generating report from table selection
+java.lang.RuntimeException: Report generation failed
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:204)
+	at assessor.component.chart.CertificateTable.generateReport(CertificateTable.java:397)
+	at assessor.component.chart.CertificateTable.handleReportGeneration(CertificateTable.java:305)
+	at assessor.component.chart.CertificateTable$3.mouseClicked(CertificateTable.java:120)
+	at java.desktop/java.awt.AWTEventMulticaster.mouseClicked(AWTEventMulticaster.java:278)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6629)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3389)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6391)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5001)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4948)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4584)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4516)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2780)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4833)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:716)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:746)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:744)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:743)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: net.sf.jasperreports.engine.JRException: Errors were encountered when compiling report expressions class file:
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_14b6429eaa90b83980f35b51dc39313dcae805d1c2153a8d98615266f789b62a.java:173: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_14b6429eaa90b83980f35b51dc39313dcae805d1c2153a8d98615266f789b62a.java:290: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+C:\Users\user\AppData\Local\Temp\hospitalization_certificate_14b6429eaa90b83980f35b51dc39313dcae805d1c2153a8d98615266f789b62a.java:407: error: ')' expected
+" at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon." //$JR_EXPR_ID=11$
+                                                                          ^
+3 errors
+.
+	at net.sf.jasperreports.engine.design.JRAbstractCompiler.compileReport(JRAbstractCompiler.java:234)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:350)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:610)
+	at assessor.component.report.GenerateReport.compileAndFill(GenerateReport.java:154)
+	at assessor.component.report.GenerateReport.generateReportPanel(GenerateReport.java:201)
+	... 34 more
+
+Jun 05, 2025 9:28:45 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 9:28:45 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 9:28:45 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:08:39 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:08:39 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:08:39 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:09:18 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:09:18 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:09:19 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:09:19 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:11:42 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:11:42 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:11:42 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:13:41 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:13:41 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:13:41 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:15:12 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:15:12 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:15:12 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:16:08 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:16:08 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:16:08 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:16:35 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:16:35 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:16:35 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:17:38 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:17:38 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:17:38 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:19:24 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:19:24 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:19:24 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:20:29 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:20:29 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:20:29 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:20:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:20:47 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:20:47 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:21:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:21:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:21:03 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:22:26 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:22:26 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:22:26 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:23:17 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:23:17 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:23:17 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:24:28 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:24:28 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:24:28 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:25:22 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:25:22 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:25:22 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 05, 2025 1:26:01 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 05, 2025 1:26:01 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 05, 2025 1:26:01 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 11, 2025 2:47:06 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 11, 2025 2:47:06 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 11, 2025 2:47:06 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 11, 2025 2:52:12 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 11, 2025 2:52:12 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 11, 2025 2:52:12 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 11, 2025 2:54:02 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 11, 2025 2:54:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 11, 2025 2:54:03 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 13, 2025 10:30:57 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 10:30:57 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 10:30:57 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 13, 2025 10:36:37 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 10:36:37 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 10:36:37 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 13, 2025 10:37:29 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 13, 2025 10:37:29 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 10:37:29 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 10:37:29 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 13, 2025 10:43:03 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 10:43:03 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 10:43:05 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 10:43:05 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 1:40:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 1:40:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 13, 2025 1:40:04 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 13, 2025 1:40:04 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 8:44:54 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 8:44:54 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 8:44:54 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 16, 2025 10:25:35 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 16, 2025 10:25:35 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 10:25:35 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 10:25:35 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 16, 2025 10:25:36 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 16, 2025 10:25:36 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 10:25:36 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 10:25:36 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 10:25:37 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 16, 2025 10:25:38 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 16, 2025 10:25:38 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 16, 2025 10:25:38 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 16, 2025 10:25:38 AM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 17, 2025 11:10:21 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 17, 2025 11:10:21 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 17, 2025 11:10:21 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 8:45:34 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 8:45:34 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 8:45:34 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 9:12:24 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 9:12:25 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 9:12:25 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 10:11:53 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 10:11:53 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 10:11:53 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 11:29:12 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 11:29:12 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 11:29:12 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 11:32:01 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 11:32:01 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 11:32:04 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 11:32:04 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 2:11:09 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 2:11:09 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 2:11:09 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 2:38:24 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 2:38:24 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 2:38:24 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 2:41:28 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 2:41:28 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 2:41:28 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 2:41:44 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 2:41:44 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 2:41:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 2:41:46 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 3:05:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 3:05:46 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 3:05:46 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 3:05:46 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 3:26:54 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 3:26:54 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 3:26:54 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 4:00:12 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 4:00:12 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 4:00:12 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 19, 2025 4:01:57 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 19, 2025 4:01:57 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 19, 2025 4:01:57 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 9:37:35 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 9:37:35 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 9:37:35 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 9:38:20 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 9:38:20 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 9:38:20 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:02:49 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:02:49 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:02:49 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:03:25 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:03:25 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:03:25 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:04:08 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:04:08 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:04:08 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:04:29 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:04:29 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:04:29 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:04:48 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:04:48 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:04:48 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 10:05:48 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 10:05:48 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 10:05:48 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 12:54:20 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 12:54:20 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 12:54:20 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 12:58:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 12:58:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 12:58:03 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 12:59:12 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 12:59:12 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 12:59:12 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:02:17 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:02:17 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:02:17 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:07:32 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:07:32 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:07:32 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:08:53 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:08:53 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:08:53 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:31:39 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:31:39 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:31:39 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:56:09 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:56:10 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:56:10 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:57:57 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:57:57 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:57:57 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 1:58:25 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 1:58:25 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 1:58:25 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 2:10:24 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:10:24 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:10:24 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 2:12:48 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:12:49 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:12:49 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 2:13:00 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:13:00 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:13:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:13:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:13:27 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:13:27 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:13:27 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:13:27 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:15:33 PM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Jun 20, 2025 2:15:33 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:15:33 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:15:33 PM assessor.component.chart.CertificateTable lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Jun 20, 2025 2:16:31 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:16:31 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:16:31 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 2:17:03 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:17:03 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:17:03 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 2:51:17 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 2:51:17 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 2:51:17 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 4:00:11 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 4:00:11 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 4:00:11 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 4:01:50 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 4:01:50 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 4:01:50 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Jun 20, 2025 4:02:14 PM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Jun 20, 2025 4:02:14 PM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Jun 20, 2025 4:02:14 PM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
