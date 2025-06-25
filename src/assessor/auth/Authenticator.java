@@ -22,7 +22,7 @@ public class Authenticator {
                 ConfigHelper.getDbUser(),
                 ConfigHelper.getDbPassword())) {
 
-            String query = "SELECT initial FROM sys_login_credentials WHERE username = ? AND password = ?";
+            String query = "SELECT initial, accesslevel FROM sys_login_credentials WHERE username = ? AND password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, hashedPassword);
@@ -32,10 +32,12 @@ public class Authenticator {
                         // Store the username and initials in SessionManager
                         SessionManager.getInstance().setLoggedInUsername(username);
                         SessionManager.getInstance().setUserInitials(resultSet.getString("initial"));
+                        SessionManager.getInstance().setAccessLevel(resultSet.getInt("accesslevel"));
 
                         // Debugging: Print stored values
                         System.out.println("Session - Username: " + SessionManager.getInstance().getLoggedInUsername());
                         System.out.println("Session - User Initials: " + SessionManager.getInstance().getUserInitials());
+                        System.out.println("Session - Access Level: " + SessionManager.getInstance().getAccessLevel());
 
                         return true; // Authentication successful
                     }

@@ -57,6 +57,7 @@ public class FormDashboard extends Form {
         createCard();
         createFilterPanel();
         createChart();
+        formRefresh();
 //        createOtherChart();
     }
 

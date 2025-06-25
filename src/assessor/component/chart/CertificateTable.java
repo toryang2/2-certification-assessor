@@ -2,6 +2,7 @@ package assessor.component.chart;
 
 import assessor.component.report.*;
 import assessor.component.report.util.*;
+import assessor.auth.*;
 import assessor.system.Form;
 import assessor.utils.AdvancedLogger;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -30,10 +31,10 @@ public class CertificateTable extends Form {
 
     public CertificateTable() {
         setLayout(new BorderLayout());
-        tableModel = new DefaultTableModel(new Object[]{"Loading..."}, 0) {
+        tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return SessionManager.getInstance().isAdmin();
             }
         };
         reportLoader = new ReportLoader(tableModel, new ReportLoader.LoadCallbacks() {

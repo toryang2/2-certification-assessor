@@ -4,6 +4,7 @@ import raven.modal.Drawer;
 import raven.modal.ModalDialog;
 import raven.modal.component.SimpleModalBorder;
 import assessor.auth.Login;
+import assessor.auth.SessionManager;
 import assessor.auth.SignUp;
 import assessor.component.About;
 import assessor.forms.FormDashboard;
@@ -84,6 +85,7 @@ public class FormManager {
     }
 
     public static void logout() {
+        SessionManager.getInstance().clearSession();
         Drawer.setVisible(false);
         frame.getContentPane().removeAll();
         Form login = getLogin();

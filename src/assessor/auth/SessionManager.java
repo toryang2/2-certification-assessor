@@ -4,6 +4,7 @@ public class SessionManager {
     private static SessionManager instance;
     private String loggedInUsername;
     private String userInitials;
+    private int accessLevel = -1; // 0 = user, 1 = admin
 
     // Private constructor to prevent direct instantiation
     private SessionManager() {}
@@ -33,10 +34,23 @@ public class SessionManager {
     public void setUserInitials(String initials) {
         this.userInitials = initials;
     }
+    
+    public int getAccessLevel() {
+        return accessLevel;
+    }
+    
+    public void setAccessLevel(int accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+    
+    public boolean isAdmin() {
+        return accessLevel == 1;
+    }
 
     // Clear session data (useful for logout)
     public void clearSession() {
         this.loggedInUsername = null;
         this.userInitials = null;
+        this.accessLevel = -1;
     }
 }

@@ -60,7 +60,7 @@ public class ReportLoader {
         SwingUtilities.invokeLater(() -> {
             logger.log(Level.INFO, "Setting temporary 'Loading...' header in table.");
             model.setRowCount(0);
-            model.setColumnIdentifiers(new Object[]{"Loading..."}); // Set temporary "Loading..." header
+//            model.setColumnIdentifiers(new Object[]{"Loading..."}); // Set temporary "Loading..." header
             callbacks.onLoadStart();
         });
 
