@@ -128,7 +128,23 @@ public class ReportLoader {
 
                     SwingUtilities.invokeLater(() -> {
                         try {
-                            model.setDataVector(finalData, finalColumns);
+                            // Save current column names
+                            String[] currentColumns = new String[model.getColumnCount()];
+                            for (int i = 0; i < model.getColumnCount(); i++) {
+                                currentColumns[i] = model.getColumnName(i);
+                            }
+                            // Compare with new columns
+                            boolean columnsChanged = !Arrays.equals(currentColumns, finalColumns);
+
+                            if (columnsChanged) {
+                                model.setDataVector(finalData, finalColumns);
+                            } else {
+                                // Only update rows
+                                model.setRowCount(0);
+                                for (Object[] row : finalData) {
+                                    model.addRow(row);
+                                }
+                            }
                             callbacks.onLoadComplete();
                             if (onComplete != null) onComplete.run();
                         } catch (Exception e) {
@@ -138,7 +154,6 @@ public class ReportLoader {
                             refreshInProgress = false;
                         }
                     });
-
                 } catch (SQLException ex) {
                     logger.log(Level.SEVERE, "Database error during data load: {0}", ex.getMessage());
                     SwingUtilities.invokeLater(() -> {

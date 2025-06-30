@@ -6,6 +6,7 @@ package assessor;
 
 import java.io.*;
 import assessor.component.report.util.ConfigHelper;
+import assessor.component.report.util.DataChangeNotifier;
 import assessor.utils.DemoPreferences;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
@@ -26,6 +27,21 @@ public class Main {
         // TODO code application logic here
         createConfigIfMissing();
         launchUI();
+        DataChangeNotifier.getInstance().connectWebSocket("ws://192.168.1.33:8887");
+        
+        
+        // Add a sample listener
+        DataChangeNotifier.getInstance().addListener(() ->
+            System.out.println("Data changed! (Listener notified)")
+        );
+        // Simulate a local data change after 5 seconds
+        try {
+            Thread.sleep(5000);
+            System.out.println("Simulating local data change...");
+            DataChangeNotifier.getInstance().notifyDataChange();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         System.out.println("Database URL: " + ConfigHelper.getDbUrl());
         System.out.println("User: " + ConfigHelper.getDbUser());
