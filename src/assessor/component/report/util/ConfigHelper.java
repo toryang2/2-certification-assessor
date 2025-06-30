@@ -78,4 +78,8 @@ public class ConfigHelper {
         }
         return true;
     }
+
+    public static String getDbServer() {
+        return configMap.get("Server");
+    }
 }
