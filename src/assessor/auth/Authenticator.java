@@ -2,12 +2,8 @@ package assessor.auth;
 
 import assessor.component.report.util.ConfigHelper;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.security.*;
+import java.sql.*;
 
 public class Authenticator {
 

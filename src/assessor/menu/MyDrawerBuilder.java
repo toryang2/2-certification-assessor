@@ -50,6 +50,9 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
 public SimpleHeaderData getSimpleHeaderData() {
     // Retrieve the username and initials from SessionManager
     String username = SessionManager.getInstance().getLoggedInUsername();
+    if (username != null) {
+        username = username.toLowerCase();
+    }
     String userInitials = SessionManager.getInstance().getUserInitials();
 
     // Debugging: Verify fetched values

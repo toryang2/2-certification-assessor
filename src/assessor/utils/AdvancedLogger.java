@@ -1,6 +1,6 @@
 package assessor.utils;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.*;
 
 public class AdvancedLogger {
@@ -13,8 +13,14 @@ public class AdvancedLogger {
         }
 
         try {
+            // Ensure log directory exists
+            File logDir = new File("logs");
+            if (!logDir.exists()) {
+                logDir.mkdirs();
+            }
+
             // Set up a file handler
-            FileHandler fileHandler = new FileHandler("application.log", true);
+            FileHandler fileHandler = new FileHandler("logs/application.log", true);
             fileHandler.setFormatter(new SimpleFormatter());
             fileHandler.setLevel(Level.ALL);
 

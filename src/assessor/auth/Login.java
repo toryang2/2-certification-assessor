@@ -3,19 +3,14 @@ package assessor.auth;
 import assessor.MainFrame;
 import assessor.component.ButtonLink;
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.DropShadowBorder;
-import assessor.system.Form;
-import assessor.system.FormManager;
+import assessor.system.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import javax.swing.text.JTextComponent;
-import raven.modal.ModalDialog;
 
 public class Login extends Form {
 

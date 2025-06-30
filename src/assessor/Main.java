@@ -37,11 +37,11 @@ public class Main {
             try (FileWriter writer = new FileWriter(configFile)) {
                 writer.write(
                     "[Database]\n" +
-                    "Server=localhost;\n" +
+                    "Server=192.168.1.33;\n" +
                     "Port=3306;\n" +
                     "Database=certificationdb;\n" +
                     "User ID=user;\n" +
-                    "Password=;\n"
+                    "Password=user;\n"
                 );
                 System.out.println("Created new config.ini with default values");
             } catch (Exception e) {

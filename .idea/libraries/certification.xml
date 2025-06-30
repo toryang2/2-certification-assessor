@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="certification">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/absolutelayout/certification/jna-5.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/absolutelayout/certification/jna-platform-5.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/absolutelayout/certification/miglayout-4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/absolutelayout/certification/TimingFramework-0.55.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

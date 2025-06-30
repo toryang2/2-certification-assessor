@@ -1,6 +1,5 @@
 package assessor;
 
-import assessor.auth.SignUp;
 import com.formdev.flatlaf.FlatClientProperties;
 import raven.modal.Drawer;
 import assessor.menu.MyDrawerBuilder;
@@ -9,8 +8,6 @@ import com.formdev.flatlaf.extras.FlatSVGUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import raven.modal.ModalDialog;
-import raven.modal.drawer.DrawerPanel;
 
 public class MainFrame extends JFrame {
 

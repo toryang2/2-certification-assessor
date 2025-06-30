@@ -301,4 +301,23 @@ public class DatabaseSaveHelper {
             logger.log(Level.WARNING, "Error saving autocomplete value", e);
         }
     }
+    
+    public static boolean updateReportField(int id, String column, Object value) {
+        String sql = "UPDATE " + TABLE_NAME + " SET " + column + " = ? WHERE id = ?";
+        logger.log(Level.FINE, "Updating report field: id={0}, column={1}, value={2}", new Object[]{id, column, value});
+        try (Connection conn = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setObject(1, value);
+            pstmt.setInt(2, id);
+            int updated = pstmt.executeUpdate();
+            logger.log(Level.INFO, "Update result: {0} row(s) updated", updated);
+            return updated > 0;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to update report field", e);
+            return false;
+        }
+    }
 }

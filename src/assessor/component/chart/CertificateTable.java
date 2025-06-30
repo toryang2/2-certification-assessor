@@ -17,9 +17,6 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.*;
 
-/**
- * CertificateTable class that displays a table with loaded data using ReportLoader.
- */
 public class CertificateTable extends Form {
 
     private static final Logger logger = AdvancedLogger.getLogger(CertificateTable.class.getName());
@@ -28,13 +25,34 @@ public class CertificateTable extends Form {
     private final DefaultTableModel tableModel;
     private java.util.List<Runnable> dataLoadListeners = new CopyOnWriteArrayList<>();
     public final ReportLoader reportLoader;
+    private JCheckBox selectAllCheckBox;
 
     public CertificateTable() {
         setLayout(new BorderLayout());
         tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return SessionManager.getInstance().isAdmin();
+                if (SessionManager.getInstance().getAccessLevel() == 1) {
+                    // If any row is checked, allow editing for all columns except the checkbox
+                    boolean anyChecked = false;
+                    for (int i = 0; i < getRowCount(); i++) {
+                        Object val = getValueAt(i, 0);
+                        if (Boolean.TRUE.equals(val)) {
+                            anyChecked = true;
+                            break;
+                        }
+                    }
+                    if (anyChecked && column != 0) return true;
+                    // Always allow checkbox column
+                    if (column == 0) return true;
+                }
+                return false;
+            }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (SessionManager.getInstance().getAccessLevel() == 1 && columnIndex == 0)
+                    return Boolean.class;
+                return super.getColumnClass(columnIndex);
             }
         };
         reportLoader = new ReportLoader(tableModel, new ReportLoader.LoadCallbacks() {
@@ -42,36 +60,31 @@ public class CertificateTable extends Form {
             public void onLoadStart() {
                 Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Loading data...");
             }
-
             @Override
             public void onLoadComplete() {
                 Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Data load complete.");
-                SwingUtilities.invokeLater(() -> configureColumns(certificationTable)); // Configure columns after data load
+                SwingUtilities.invokeLater(() -> configureColumns(certificationTable));
             }
-
             @Override
             public void onLoadError(String message) {
                 Logger.getLogger(CertificateTable.class.getName()).log(Level.SEVERE, "Error loading data: {0}", message);
             }
         });
+        reportLoader.startPolling(3000); // Poll every 3 seconds
         add(createTab());
         loadData();
     }
-    
+
     private Component createTab() {
         tabb = new JTabbedPane();
-        tabb.putClientProperty(FlatClientProperties.STYLE, "" +
-                "tabType:card");
-
-        // Add the Certification Table tab
-        tabb.addTab("Certification", 
-            new FlatSVGIcon("assessor/icons/certificate.svg").derive(16, 16), 
+        tabb.putClientProperty(FlatClientProperties.STYLE, "tabType:card");
+        tabb.addTab("Certification",
+            new FlatSVGIcon("assessor/icons/certificate.svg").derive(16, 16),
             createBorder(createCertificationTable())
         );
-
         return tabb;
     }
-    
+
     private Component createBorder(Component component) {
         JPanel panel = new JPanel(new MigLayout("fill,insets 7 0 7 0", "[fill]", "[fill]"));
         panel.add(component);
@@ -81,44 +94,73 @@ public class CertificateTable extends Form {
     private JPanel createCertificationTable() {
         JPanel panelTable = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow]"));
 
-        // Create the table
-        certificationTable = new JTable(tableModel);
+        certificationTable = new JTable(tableModel) {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                if (SessionManager.getInstance().getAccessLevel() == 1 && column == 0) {
+                    return Boolean.class;
+                }
+                return super.getColumnClass(column);
+            }
+        };
         certificationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scrollPane = new JScrollPane(certificationTable);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
+
         certificationTable.getTableHeader().setReorderingAllowed(false);
         certificationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         certificationTable.setRowSorter(sorter);
 
-        // Add listeners for double-click and Enter key
+        // Double-click/Enter: Edit if admin+any checked, else report
         certificationTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    handleReportGeneration(certificationTable);
+                    int row = certificationTable.rowAtPoint(e.getPoint());
+                    if (row < 0) return;
+                    int modelRow = certificationTable.convertRowIndexToModel(row);
+
+                    boolean isAdmin = SessionManager.getInstance().getAccessLevel() == 1;
+                    boolean anyChecked = false;
+                    if (isAdmin) {
+                        for (int i = 0; i < certificationTable.getRowCount(); i++) {
+                            int modelIdx = certificationTable.convertRowIndexToModel(i);
+                            Object val = certificationTable.getModel().getValueAt(modelIdx, 0);
+                            if (Boolean.TRUE.equals(val)) {
+                                anyChecked = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isAdmin && anyChecked) {
+                        // Find first editable column after checkbox for admin
+                        int editCol = 1;
+                        for (int c = 1; c < certificationTable.getColumnCount(); c++) {
+                            if (certificationTable.isCellEditable(row, c)) {
+                                editCol = c; break;
+                            }
+                        }
+                        certificationTable.editCellAt(row, editCol);
+                        certificationTable.requestFocusInWindow();
+                    } else {
+                        handleReportGeneration(certificationTable);
+                    }
                 }
             }
         });
-        // Override VK_ENTER to disable moving to the next row
         InputMap inputMap = certificationTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap actionMap = certificationTable.getActionMap();
-
-        // Remove the default action for VK_ENTER
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");
-
-        // Add a custom action for VK_ENTER (optional)
         actionMap.put("none", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle the VK_ENTER key without moving to the next row
                 handleReportGeneration(certificationTable);
             }
         });
 
-        // Configure table properties
         certificationTable.setAutoCreateColumnsFromModel(true);
         certificationTable.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -129,32 +171,16 @@ public class CertificateTable extends Form {
             }
         });
 
-        // Apply custom styles
-        panelTable.putClientProperty(FlatClientProperties.STYLE, ""
-                + "arc:20;"
-                + "background:$Table.background;");
-        certificationTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
-                + "height:30;"
-                + "hoverBackground:null;"
-                + "pressedBackground:null;"
-                + "separatorColor:$TableHeader.background;");
-        certificationTable.putClientProperty(FlatClientProperties.STYLE, ""
-                + "rowHeight:30;"
-                + "showHorizontalLines:true;"
-                + "showVerticalLines:true;"
-                + "intercellSpacing:0,1;");
-        scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "trackArc:$ScrollBar.thumbArc;"
-                + "trackInsets:3,3,3,3;"
-                + "thumbInsets:3,3,3,3;"
-                + "background:$Table.background;");
-        scrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
-                + "trackArc:$ScrollBar.thumbArc;"
-                + "trackInsets:3,3,3,3;"
-                + "thumbInsets:3,3,3,3;"
-                + "background:$Table.background;");
+        panelTable.putClientProperty(FlatClientProperties.STYLE, "arc:20;background:$Table.background;");
+        certificationTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE,
+            "height:30;hoverBackground:null;pressedBackground:null;separatorColor:$TableHeader.background;");
+        certificationTable.putClientProperty(FlatClientProperties.STYLE,
+            "rowHeight:30;showHorizontalLines:true;showVerticalLines:true;intercellSpacing:0,1;");
+        scrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
+        scrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
 
-        // Add the table to the panel
         panelTable.add(scrollPane, "grow, push");
         add(panelTable, BorderLayout.CENTER);
         return panelTable;
@@ -172,103 +198,134 @@ public class CertificateTable extends Form {
 
     public void formDispose() {
         Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Disposing form...");
+        reportLoader.stopPolling();
         reportLoader.cleanup();
     }
 
     private void configureColumns(JTable table) {
-        if (table == null) return;
+        if (table == null || table.getColumnCount() == 0) return;
 
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int startIdx = 0;
 
-        for (int i = 0; i < model.getColumnCount(); i++) {
+        if (SessionManager.getInstance().getAccessLevel() == 1) {
+            TableColumn selectColumn = table.getColumnModel().getColumn(0);
+
+            if (selectAllCheckBox == null) {
+                selectAllCheckBox = new JCheckBox();
+                selectAllCheckBox.setOpaque(false);
+                selectAllCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+                selectAllCheckBox.setMargin(new Insets(0, 0, 0, 0));
+                selectAllCheckBox.addActionListener(e -> {
+                    boolean checked = selectAllCheckBox.isSelected();
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        model.setValueAt(checked, i, 0);
+                    }
+                });
+                model.addTableModelListener(e -> {
+                    if (e.getColumn() == 0) {
+                        boolean all = true;
+                        for (int i = 0; i < model.getRowCount(); i++) {
+                            Boolean val = (Boolean) model.getValueAt(i, 0);
+                            if (!Boolean.TRUE.equals(val)) {
+                                all = false;
+                                break;
+                            }
+                        }
+                        selectAllCheckBox.setSelected(all && model.getRowCount() > 0);
+                    }
+                });
+            }
+            selectColumn.setHeaderRenderer((table1, value, isSelected, hasFocus, row, column) -> {
+                JPanel panel = new JPanel(new GridBagLayout());
+                panel.setOpaque(false);
+                panel.setPreferredSize(new Dimension(35, 35));
+                selectAllCheckBox.setPreferredSize(new Dimension(20, 20));
+                panel.add(selectAllCheckBox);
+                return panel;
+            });
+            selectColumn.setMinWidth(30);
+            selectColumn.setMaxWidth(40);
+            selectColumn.setPreferredWidth(35);
+            JTableHeader header = table.getTableHeader();
+            for (MouseListener ml : header.getMouseListeners()) {
+                if (ml instanceof HeaderCheckBoxMouseListener) {
+                    header.removeMouseListener(ml);
+                }
+            }
+            header.addMouseListener(new HeaderCheckBoxMouseListener(selectAllCheckBox, table, 0));
+            startIdx = 1;
+        } else {
+            selectAllCheckBox = null;
+        }
+
+        for (int i = startIdx; i < model.getColumnCount(); i++) {
             TableColumn column = columnModel.getColumn(i);
-            String colName = model.getColumnName(i).toLowerCase(); // Convert to lowercase for case-insensitive comparison
-
-            // Dynamically configure columns based on column name
+            String colName = model.getColumnName(i).toLowerCase();
             switch (colName) {
-                case "id": // Ensure the "ID" column is properly configured
+                case "id":
                     column.setHeaderValue("ID");
-//                    column.setCellRenderer(new TableCenterRenderer()); // Right align for readability
-                    setColumnWidth(column, 50, 50, 50); // Fixed width
-                    break;
+                    setColumnWidth(column, 50, 50, 50); break;
                 case "patient":
                     column.setHeaderValue("Patient");
-                    setColumnWidth(column, 300, 300, 300); // Wider for long names
-                    break;
+                    setColumnWidth(column, 300, 300, 300); break;
                 case "relationship":
-                    setColumnWidth(column, 80, 80, 80); // Standard width
-                    break;
+                    setColumnWidth(column, 80, 80, 80); break;
                 case "hospital":
                     column.setHeaderValue("Hospital");
-                    setColumnWidth(column, 300, 300, 300); // Wider for detailed addresses
-                    break;
+                    setColumnWidth(column, 300, 300, 300); break;
                 case "hospitaladdress":
                     column.setHeaderValue("Hospital Address");
                     column.setCellRenderer(new UppercaseRenderer());
-                    setColumnWidth(column, 200, 200, 200); // Wider for detailed addresses
-                    break;
+                    setColumnWidth(column, 200, 200, 200); break;
                 case "barangay":
-                    setColumnWidth(column, 120, 120, 120); // Wider for detailed addresses
-                    break;
+                    setColumnWidth(column, 120, 120, 120); break;
                 case "maritalstatus":
                     column.setHeaderValue("Marital Status");
-                    setColumnWidth(column, 90, 90, 90); // Standard width
-                    break;
+                    setColumnWidth(column, 90, 90, 90); break;
                 case "parentguardian":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 300, 300, 300); // Flexible width
-                    break;
+                    setColumnWidth(column, 300, 300, 300); break;
                 case "parentguardian2":
                     column.setHeaderValue("Parent");
-                    setColumnWidth(column, 300, 300, 300); // Flexible width
-                    break;
+                    setColumnWidth(column, 300, 300, 300); break;
                 case "parentsexifsingle":
-                    setColumnWidth(column, 0, 0, 0); // Hidden column
-                    column.setResizable(false);
-                    break;
+                    setColumnWidth(column, 0, 0, 0); column.setResizable(false); break;
                 case "certificationdate":
                     column.setHeaderValue("Certification Date");
                     column.setCellRenderer(new DateRenderer());
-                    setColumnWidth(column, 120, 120, 120);
-                    break;
+                    setColumnWidth(column, 120, 120, 120); break;
                 case "certificationtime":
                     column.setHeaderValue("Certification Time");
                     column.setCellRenderer(new TimeRenderer());
-                    setColumnWidth(column, 100, 120, 120);
-                    break;
+                    setColumnWidth(column, 100, 120, 120); break;
                 case "type":
-                    setColumnWidth(column, 100, 100, 100); // Standard width for type
-                    break;
+                    setColumnWidth(column, 100, 100, 100); break;
                 case "amountpaid":
                     column.setHeaderValue("Amount Paid");
-                    column.setCellRenderer(new CurrencyRenderer()); // Custom renderer for currency
-                    setColumnWidth(column, 80, 80, 80);
-                    break;
+                    column.setCellRenderer(new CurrencyRenderer());
+                    setColumnWidth(column, 80, 80, 80); break;
                 case "receiptno":
                     column.setHeaderValue("Receipt No.");
-                    column.setCellRenderer(new RedTextRenderer()); // Highlight receipts
-                    setColumnWidth(column, 80, 80, 80);
-                    break;
+                    column.setCellRenderer(new RedTextRenderer());
+                    setColumnWidth(column, 80, 80, 80); break;
                 case "receiptdateissued":
                     column.setHeaderValue("Date Issued");
                     column.setCellRenderer(new DateRenderer());
-                    setColumnWidth(column, 100, 100, 100);
-                    break;
+                    setColumnWidth(column, 100, 100, 100); break;
                 case "placeissued":
                     column.setHeaderValue("Place Issued");
-                    setColumnWidth(column, 100, 100, 100);
-                    break;
+                    setColumnWidth(column, 100, 100, 100); break;
                 case "legalage":
                     column.setHeaderValue("Legal Age");
-                    setColumnWidth(column, 70, 70, 70);
-                    break;
+                    setColumnWidth(column, 70, 70, 70); break;
                 default:
-                    setColumnWidth(column, 250, 250, 250); // Default column width
+                    setColumnWidth(column, 250, 250, 250);
             }
         }
     }
-    
+
     private void setColumnWidth(TableColumn column, int pref, int max, int min) {
         column.setPreferredWidth(pref);
         column.setMaxWidth(max);
@@ -285,10 +342,8 @@ public class CertificateTable extends Form {
                         JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
             int recordId = getRecordIdFromTable(table, selectedRow);
             String reportType = getReportTypeFromTable(table, selectedRow);
-
             generateReport(recordId, reportType);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error generating report from table selection", e);
@@ -298,7 +353,7 @@ public class CertificateTable extends Form {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void handleReportGeneration(int recordId) {
         if (!isTableInitialized(certificationTable)) {
             JOptionPane.showMessageDialog(null,
@@ -307,11 +362,9 @@ public class CertificateTable extends Form {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         try {
             int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Type").getModelIndex());
             String reportType = getReportTypeFromTable(certificationTable, recordId, typeColumn);
-
             generateReport(recordId, reportType);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, e);
@@ -321,11 +374,11 @@ public class CertificateTable extends Form {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public boolean isTableInitialized(JTable table) {
         return table.getColumnCount() > 0 && table.getRowCount() > 0;
     }
-    
+
     private int getRecordIdFromTable(JTable table, int row) throws Exception {
         int idColumn = table.convertColumnIndexToModel(table.getColumn("ID").getModelIndex());
         Object rawId = table.getValueAt(row, idColumn);
@@ -340,7 +393,7 @@ public class CertificateTable extends Form {
             throw new Exception("Invalid ID format: " + rawId);
         }
     }
-    
+
     private String getReportTypeFromTable(JTable table, int row) throws Exception {
         int typeColumn = table.convertColumnIndexToModel(table.getColumn("Type").getModelIndex());
         Object rawType = table.getValueAt(row, typeColumn);
@@ -366,166 +419,174 @@ public class CertificateTable extends Form {
                 }
             }
         }
-
         throw new Exception("Record ID not found in the table: " + recordId);
     }
-    
-private void generateReport(int recordId, String reportType) throws Exception {
-    java.util.List<Integer> selectedIDs = new ArrayList<>();
-    selectedIDs.add(recordId);
 
-    Map<String, Object> params = new HashMap<>();
-    params.put("SelectedIDs", selectedIDs);
-    params.put("ReportType", reportType);
+    private void generateReport(int recordId, String reportType) throws Exception {
+        java.util.List<Integer> selectedIDs = new ArrayList<>();
+        selectedIDs.add(recordId);
 
-    // Get the patient's name for the tab title
-    String patientName = getPatientNameByRecordId(recordId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("SelectedIDs", selectedIDs);
+        params.put("ReportType", reportType);
 
-    JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
-    updateReportTab(reportViewer, patientName);
-}
+        String patientName = getPatientNameByRecordId(recordId);
+        JPanel reportViewer = GenerateReport.generateReportPanel(params, reportType + " Report", "/assessor/ui/icons/printer.png");
+        updateReportTab(reportViewer, patientName);
+    }
 
-private String getPatientNameByRecordId(int recordId) {
-    try {
-        for (int row = 0; row < certificationTable.getRowCount(); row++) {
-            int idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
-            Object rawId = certificationTable.getValueAt(row, idColumn);
+    private String getPatientNameByRecordId(int recordId) {
+        try {
+            for (int row = 0; row < certificationTable.getRowCount(); row++) {
+                int idColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("ID").getModelIndex());
+                Object rawId = certificationTable.getValueAt(row, idColumn);
 
-            if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
-                int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Patient").getModelIndex());
-                Object rawPatientName = certificationTable.getValueAt(row, patientColumn);
+                if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
+                    int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Patient").getModelIndex());
+                    Object rawPatientName = certificationTable.getValueAt(row, patientColumn);
 
-                if (rawPatientName != null) {
-                    return rawPatientName.toString().trim();
+                    if (rawPatientName != null) {
+                        return rawPatientName.toString().trim();
+                    }
                 }
             }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error retrieving patient name by record ID", e);
         }
-    } catch (Exception e) {
-        logger.log(Level.SEVERE, "Error retrieving patient name by record ID", e);
-    }
-    return null; // Return null if the patient name cannot be found
-}
-
-private void updateReportTab(JPanel reportPanel, String patientName) {
-    final String DEFAULT_TAB_TITLE = "Report";
-    String tabTitle = (patientName != null && !patientName.isEmpty()) ? patientName : DEFAULT_TAB_TITLE;
-
-    int reportIndex = -1;
-
-    // Check if the tab with the same title already exists
-    for (int i = 0; i < tabb.getTabCount(); i++) {
-        if (tabTitle.equals(tabb.getTitleAt(i))) {
-            reportIndex = i;
-            break;
-        }
+        return null;
     }
 
-    Component tabContent = createBorder(reportPanel);
+    private void updateReportTab(JPanel reportPanel, String patientName) {
+        final String DEFAULT_TAB_TITLE = "Report";
+        String tabTitle = (patientName != null && !patientName.isEmpty()) ? patientName : DEFAULT_TAB_TITLE;
 
-    if (reportIndex == -1) {
-        // Create a new tab with the patient's name
-        reportIndex = tabb.getTabCount();
-        tabb.addTab(tabTitle, null, tabContent);
+        int reportIndex = -1;
 
-        // Add a custom tab header with a close button
-        tabb.setTabComponentAt(reportIndex, createTabHeader(tabContent, tabTitle));
-    } else {
-        // Update the existing tab content
-        tabb.setComponentAt(reportIndex, tabContent);
-
-        // Reinitialize the tab header to avoid stale event listeners
-        tabb.setTabComponentAt(reportIndex, createTabHeader(tabContent, tabTitle));
-    }
-
-    tabb.setSelectedIndex(reportIndex);
-}
-
-private JPanel createTabHeader(Component tabContent, String tabTitle) {
-    JPanel tabHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-    tabHeader.setOpaque(false);
-
-    JLabel title = new JLabel(tabTitle);
-    title.setIcon(new FlatSVGIcon("assessor/icons/printer.svg").derive(16, 16));
-    title.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-
-    JButton closeButton = new JButton(new FlatSVGIcon("assessor/icons/close.svg", 12, 12));
-    closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    closeButton.setFocusable(true);
-    closeButton.setOpaque(false);
-    closeButton.setContentAreaFilled(true);
-
-    // Remove old ActionListeners to avoid duplicates
-    for (ActionListener al : closeButton.getActionListeners()) {
-        closeButton.removeActionListener(al);
-    }
-
-    // Add the action listener for the close button
-    closeButton.addActionListener(e -> {
-        int index = tabb.indexOfComponent(tabContent);
-        if (index != -1) {
-            tabb.remove(index);
-        }
-    });
-
-    tabHeader.add(title);
-    tabHeader.add(closeButton);
-
-    return tabHeader;
-}
-
-public void setMultiColumnFilter(String patient, String barangay, String hospital, String type) {
-    if (certificationTable != null && certificationTable.getRowSorter() instanceof TableRowSorter) {
-        TableRowSorter<?> sorter = (TableRowSorter<?>) certificationTable.getRowSorter();
-
-        RowFilter<Object, Object> rf = new RowFilter<Object, Object>() {
-            @Override
-            public boolean include(RowFilter.Entry<?, ?> entry) {
-                JTable table = certificationTable;
-                boolean matches = true;
-
-                // Always look up the column index dynamically, so it works after reload
-                int patientCol = getColIndex(table, "PATIENT");
-                int barangayCol = getColIndex(table, "Barangay");
-                int hospitalCol = getColIndex(table, "HOSPITAL");
-                int typeCol = getColIndex(table, "TYPE");
-
-                if (patientCol >= 0 && patient != null && !patient.isEmpty()) {
-                    Object val = entry.getValue(patientCol);
-                    matches &= val != null && val.toString().toLowerCase().contains(patient.toLowerCase());
-}
-                if (barangayCol >= 0 && barangay != null && !barangay.isEmpty()) {
-                    Object val = entry.getValue(barangayCol);
-                    matches &= val != null && val.toString().toLowerCase().contains(barangay.toLowerCase());
-                }
-                if (hospitalCol >= 0 && hospital != null && !hospital.isEmpty()) {
-                    Object val = entry.getValue(hospitalCol);
-                    matches &= val != null && val.toString().toLowerCase().contains(hospital.toLowerCase());
-                }
-                if (typeCol >= 0 && type != null && !type.isEmpty()) {
-                    Object val = entry.getValue(typeCol);
-                    matches &= val != null && val.toString().toLowerCase().contains(type.toLowerCase());
-                }
-                return matches;
+        for (int i = 0; i < tabb.getTabCount(); i++) {
+            if (tabTitle.equals(tabb.getTitleAt(i))) {
+                reportIndex = i;
+                break;
             }
+        }
 
-            // Helper to find column index by name (case-insensitive)
-            private int getColIndex(JTable table, String name) {
-                if (table == null) return -1;
-                for (int i = 0; i < table.getColumnCount(); i++) {
-                    if (name.equalsIgnoreCase(table.getColumnName(i))) return i;
-                }
-                return -1;
-            }
-        };
+        Component tabContent = createBorder(reportPanel);
 
-        if ((patient == null || patient.isEmpty()) &&
-            (barangay == null || barangay.isEmpty()) &&
-            (hospital == null || hospital.isEmpty()) &&
-            (type == null || type.isEmpty())) {
-            sorter.setRowFilter(null);
+        if (reportIndex == -1) {
+            reportIndex = tabb.getTabCount();
+            tabb.addTab(tabTitle, null, tabContent);
+            tabb.setTabComponentAt(reportIndex, createTabHeader(tabContent, tabTitle));
         } else {
-            sorter.setRowFilter(rf);
+            tabb.setComponentAt(reportIndex, tabContent);
+            tabb.setTabComponentAt(reportIndex, createTabHeader(tabContent, tabTitle));
+        }
+        tabb.setSelectedIndex(reportIndex);
+    }
+
+    private JPanel createTabHeader(Component tabContent, String tabTitle) {
+        JPanel tabHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        tabHeader.setOpaque(false);
+
+        JLabel title = new JLabel(tabTitle);
+        title.setIcon(new FlatSVGIcon("assessor/icons/printer.svg").derive(16, 16));
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
+        JButton closeButton = new JButton(new FlatSVGIcon("assessor/icons/close.svg", 12, 12));
+        closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        closeButton.setFocusable(true);
+        closeButton.setOpaque(false);
+        closeButton.setContentAreaFilled(true);
+
+        for (ActionListener al : closeButton.getActionListeners()) {
+            closeButton.removeActionListener(al);
+        }
+        closeButton.addActionListener(e -> {
+            int index = tabb.indexOfComponent(tabContent);
+            if (index != -1) {
+                tabb.remove(index);
+            }
+        });
+
+        tabHeader.add(title);
+        tabHeader.add(closeButton);
+        return tabHeader;
+    }
+
+    public void setMultiColumnFilter(String patient, String barangay, String hospital, String type) {
+        if (certificationTable != null && certificationTable.getRowSorter() instanceof TableRowSorter) {
+            TableRowSorter<?> sorter = (TableRowSorter<?>) certificationTable.getRowSorter();
+
+            RowFilter<Object, Object> rf = new RowFilter<Object, Object>() {
+                @Override
+                public boolean include(RowFilter.Entry<?, ?> entry) {
+                    JTable table = certificationTable;
+                    boolean matches = true;
+
+                    int patientCol = getColIndex(table, "PATIENT");
+                    int barangayCol = getColIndex(table, "Barangay");
+                    int hospitalCol = getColIndex(table, "HOSPITAL");
+                    int typeCol = getColIndex(table, "TYPE");
+
+                    if (patientCol >= 0 && patient != null && !patient.isEmpty()) {
+                        Object val = entry.getValue(patientCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(patient.toLowerCase());
+                    }
+                    if (barangayCol >= 0 && barangay != null && !barangay.isEmpty()) {
+                        Object val = entry.getValue(barangayCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(barangay.toLowerCase());
+                    }
+                    if (hospitalCol >= 0 && hospital != null && !hospital.isEmpty()) {
+                        Object val = entry.getValue(hospitalCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(hospital.toLowerCase());
+                    }
+                    if (typeCol >= 0 && type != null && !type.isEmpty()) {
+                        Object val = entry.getValue(typeCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(type.toLowerCase());
+                    }
+                    return matches;
+                }
+                private int getColIndex(JTable table, String name) {
+                    if (table == null) return -1;
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        if (name.equalsIgnoreCase(table.getColumnName(i))) return i;
+                    }
+                    return -1;
+                }
+            };
+
+            if ((patient == null || patient.isEmpty()) &&
+                (barangay == null || barangay.isEmpty()) &&
+                (hospital == null || hospital.isEmpty()) &&
+                (type == null || type.isEmpty())) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(rf);
+            }
         }
     }
-}
+
+    private static class HeaderCheckBoxMouseListener extends MouseAdapter {
+        private final JCheckBox headerCheckBox;
+        private final JTable table;
+        private final int columnIndex;
+
+        public HeaderCheckBoxMouseListener(JCheckBox headerCheckBox, JTable table, int columnIndex) {
+            this.headerCheckBox = headerCheckBox;
+            this.table = table;
+            this.columnIndex = columnIndex;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JTableHeader header = table.getTableHeader();
+            int col = header.columnAtPoint(e.getPoint());
+            if (col == columnIndex) {
+                boolean newState = !headerCheckBox.isSelected();
+                headerCheckBox.setSelected(newState);
+                for (ActionListener al : headerCheckBox.getActionListeners()) {
+                    al.actionPerformed(new ActionEvent(headerCheckBox, ActionEvent.ACTION_PERFORMED, ""));
+                }
+                header.repaint();
+            }
+        }
+    }
 }

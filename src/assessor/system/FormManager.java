@@ -1,5 +1,6 @@
 package assessor.system;
 
+import assessor.component.chart.CertificateTable;
 import raven.modal.Drawer;
 import raven.modal.ModalDialog;
 import raven.modal.component.SimpleModalBorder;
@@ -33,8 +34,14 @@ public class FormManager {
     }
 
     public static void showForm(Form form) {
-        if (form != FORMS.getCurrent()) {
+        Form current = FORMS.getCurrent();
+        if (form != current) {
+            if (current instanceof CertificateTable) {
+                ((CertificateTable) current).formDispose();
+            }
             FORMS.add(form);
+//        if (form != FORMS.getCurrent()) {
+//            FORMS.add(form);
             ACTIVE_FORMS.put(form.getClass(), form); // Track active form instances
             form.formCheck();
             form.formOpen();
@@ -46,7 +53,7 @@ public class FormManager {
     public static <T extends Form> T getActiveForm(Class<T> formClass) {
         return formClass.cast(ACTIVE_FORMS.get(formClass));
     }
-        
+
     public static void undo() {
         if (FORMS.isUndoAble()) {
             Form form = FORMS.undo();
@@ -79,12 +86,18 @@ public class FormManager {
         frame.getContentPane().removeAll();
         frame.getContentPane().add(getMainForm());
 
+        // Ensure CertificateTable is created fresh and data is loaded
+        FormDashboard formDashboard = new FormDashboard();
+        ACTIVE_FORMS.put(FormDashboard.class, formDashboard);
+        formDashboard.formRefresh();
+
         Drawer.setSelectedItemClass(FormDashboard.class);
         frame.repaint();
         frame.revalidate();
     }
 
     public static void logout() {
+        ACTIVE_FORMS.remove(FormDashboard.class);
         SessionManager.getInstance().clearSession();
         Drawer.setVisible(false);
         frame.getContentPane().removeAll();
@@ -95,7 +108,7 @@ public class FormManager {
         frame.repaint();
         frame.revalidate();
     }
-    
+
     public static void signUp() {
         Drawer.setVisible(false);
         frame.getContentPane().removeAll();
@@ -106,7 +119,7 @@ public class FormManager {
         frame.repaint();
         frame.revalidate();
     }
-    
+
     public static void backtologin() {
         Drawer.setVisible(false);
         frame.getContentPane().removeAll();
@@ -135,7 +148,7 @@ public class FormManager {
         }
         return login;
     }
-    
+
     private static SignUp getSignUp() {
         if (signup == null) {
             signup = new SignUp();

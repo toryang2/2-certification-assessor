@@ -1,27 +1,16 @@
 package assessor.auth;
 
-import assessor.MainFrame;
 import assessor.component.ButtonLink;
-//import assessor.component.report.util.NameCapitalizationFilter;
-//import assessor.component.report.util.UppercaseDocumentFilter;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.DropShadowBorder;
-import assessor.system.Form;
-import assessor.system.FormManager;
+import assessor.system.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.*;
 import java.util.stream.Collectors;
-import javax.swing.text.AbstractDocument;
 import javax.swing.text.JTextComponent;
-import raven.modal.ModalDialog;
 
 public class SignUp extends Form {
     
