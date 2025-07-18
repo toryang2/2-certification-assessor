@@ -32,8 +32,8 @@ import raven.modal.component.SimpleModalBorder;
  *
  * @author Toryang
  */
-public class FormHospitalization extends Form {
-    private static final Logger logger = Logger.getLogger(FormHospitalization.class.getName());
+public class FormHospital extends Form {
+    private static final Logger logger = Logger.getLogger(FormHospital.class.getName());
     
     private Consumer<Boolean> saveCallback;
     private DatePicker datePicker;
@@ -91,7 +91,7 @@ public class FormHospitalization extends Form {
         comboParentSex.setSelectedIndex(0);
     }
     
-    public FormHospitalization() {
+    public FormHospital() {
         setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
 //        setupActions();
@@ -550,64 +550,64 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
     }
     
     private void setupReceiptNoField() {
-    // Custom formatter with strict numeric enforcement
-    txtReceiptNo = new JFormattedTextField(new DefaultFormatter() {
-        @Override
-        public Object stringToValue(String text) throws ParseException {
-            if (text == null || text.trim().isEmpty()) {
-                return null;
+        // Custom formatter with strict numeric enforcement
+        txtReceiptNo = new JFormattedTextField(new DefaultFormatter() {
+            @Override
+            public Object stringToValue(String text) throws ParseException {
+                if (text == null || text.trim().isEmpty()) {
+                    return null;
+                }
+                if (!text.matches("\\d*")) {
+                    throw new ParseException("Only digits allowed", 0);
+                }
+                return Long.parseLong(text);
             }
-            if (!text.matches("\\d*")) {
-                throw new ParseException("Only digits allowed", 0);
+
+            @Override
+            public String valueToString(Object value) throws ParseException {
+                return value == null ? "" : value.toString();
             }
-            return Long.parseLong(text);
-        }
-
-        @Override
-        public String valueToString(Object value) throws ParseException {
-            return value == null ? "" : value.toString();
-        }
-    }) {
-        @Override
-        public void replaceSelection(String content) {
-            // Filter non-digits during text selection replacement
-            super.replaceSelection(content.replaceAll("[^\\d]", ""));
-        }
-    };
-
-    // Document filter for direct input handling
-    ((PlainDocument) txtReceiptNo.getDocument()).setDocumentFilter(new DocumentFilter() {
-        @Override
-        public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
-                throws BadLocationException {
-            super.insertString(fb, offset, text.replaceAll("[^\\d]", ""), attr);
-        }
-
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            super.replace(fb, offset, length, text.replaceAll("[^\\d]", ""), attrs);
-        }
-    });
-
-    // Visual setup
-    txtReceiptNo.setHorizontalAlignment(JTextField.RIGHT);
-    txtReceiptNo.setValue(null); // Initial empty state
-
-    // Focus handling
-    txtReceiptNo.setFocusLostBehavior(JFormattedTextField.COMMIT_OR_REVERT);
-    txtReceiptNo.addFocusListener(new FocusAdapter() {
-        @Override
-        public void focusLost(FocusEvent e) {
-            try {
-                txtReceiptNo.commitEdit();
-            } catch (ParseException ex) {
-                logger.log(Level.WARNING, "Invalid receipt number format", ex);
-                txtReceiptNo.setValue(null);
+        }) {
+            @Override
+            public void replaceSelection(String content) {
+                // Filter non-digits during text selection replacement
+                super.replaceSelection(content.replaceAll("[^\\d]", ""));
             }
-        }
-    });
-}
+        };
+
+        // Document filter for direct input handling
+        ((PlainDocument) txtReceiptNo.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
+                    throws BadLocationException {
+                super.insertString(fb, offset, text.replaceAll("[^\\d]", ""), attr);
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                super.replace(fb, offset, length, text.replaceAll("[^\\d]", ""), attrs);
+            }
+        });
+
+        // Visual setup
+        txtReceiptNo.setHorizontalAlignment(JTextField.RIGHT);
+        txtReceiptNo.setValue(null); // Initial empty state
+
+        // Focus handling
+        txtReceiptNo.setFocusLostBehavior(JFormattedTextField.COMMIT_OR_REVERT);
+        txtReceiptNo.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    txtReceiptNo.commitEdit();
+                } catch (ParseException ex) {
+                    logger.log(Level.WARNING, "Invalid receipt number format", ex);
+                    txtReceiptNo.setValue(null);
+                }
+            }
+        });
+    }
     
     public void setSaveCallback(Consumer<Boolean> callback) {
         this.saveCallback = callback;
@@ -624,218 +624,218 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
 //        });
 //    }
 
-public void saveAction(ActionEvent e) {
-    try {
-        handleAmountFocusLost();
-        logger.log(Level.INFO, "Starting save action...");
+    public void saveAction(ActionEvent e) {
+        try {
+            handleAmountFocusLost();
+            logger.log(Level.INFO, "Starting save action...");
 
-        if (validateInput()) {
-            logger.log(Level.INFO, "Input validation passed");
+            if (validateInput()) {
+                logger.log(Level.INFO, "Input validation passed");
 
-            Map<String, Object> reportData = collectReportData();
-            // Save autocomplete values
-            saveAutocompleteValue("txtHospital", txtHospital.getText().trim());
-            saveAutocompleteValue("txtHospitalAddress", txtHospitalAddress.getText().trim());
-            saveAutocompleteValue("txtPlaceIssued", txtPlaceIssued.getText().trim());
-            int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Hospitalization", reportData);
+                Map<String, Object> reportData = collectReportData();
+                // Save autocomplete values
+                saveAutocompleteValue("txtHospital", txtHospital.getText().trim());
+                saveAutocompleteValue("txtHospitalAddress", txtHospitalAddress.getText().trim());
+                saveAutocompleteValue("txtPlaceIssued", txtPlaceIssued.getText().trim());
+                int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Hospital", reportData);
 
-            if (newestRecordId != -1) {
-                logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
+                if (newestRecordId != -1) {
+                    logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
 
-                // Fetch CertificateTable from FormManager
-                CertificateTable certificateTable = FormManager.getActiveForm(CertificateTable.class);
-                if (certificateTable == null) {
-                    logger.log(Level.SEVERE, "CertificateTable is not available in FormManager!");
+                    // Fetch CertificateTable from FormManager
+                    CertificateTable certificateTable = FormManager.getActiveForm(CertificateTable.class);
+                    if (certificateTable == null) {
+                        logger.log(Level.SEVERE, "CertificateTable is not available in FormManager!");
+                        JOptionPane.showMessageDialog(this,
+                                "Failed to refresh the table. CertificateTable is not active.",
+                                "Table Refresh Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (certificateTable.reportLoader == null) {
+                        logger.log(Level.SEVERE, "CertificateTable's reportLoader is null!");
+                        JOptionPane.showMessageDialog(this,
+                                "Failed to refresh the table. reportLoader is not initialized.",
+                                "Table Refresh Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Refresh the table
+                    logger.log(Level.INFO, "Found CertificateTable and reportLoader. Initiating data refresh...");
+                    certificateTable.reportLoader.loadData(() -> {
+                        logger.log(Level.INFO, "Table refresh complete. Generating report...");
+                        monitorTableInitialization(certificateTable, newestRecordId);
+                    });
+
+                    // Notify success callback and close modal
+                    saveSuccessful = true;
+                    if (saveCallback != null) {
+                        saveCallback.accept(true);
+                    }
+                } else {
+                    logger.log(Level.WARNING, "Failed to save hospitalization record.");
                     JOptionPane.showMessageDialog(this,
-                            "Failed to refresh the table. CertificateTable is not active.",
-                            "Table Refresh Error",
+                            "Failed to save hospitalization record.",
+                            "Database Error",
                             JOptionPane.ERROR_MESSAGE);
-                    return;
                 }
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Critical error in save action", ex);
+            handleSaveError(ex);
+        }
+    }
 
-                if (certificateTable.reportLoader == null) {
-                    logger.log(Level.SEVERE, "CertificateTable's reportLoader is null!");
+    private void monitorTableInitialization(CertificateTable certificateTable, int recordId) {
+        SwingUtilities.invokeLater(() -> {
+            if (isTableInitialized(certificateTable.certificationTable)) {
+                try {
+                    logger.log(Level.INFO, "Table is ready. Generating report...");
+                    certificateTable.handleReportGeneration(recordId);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, ex);
                     JOptionPane.showMessageDialog(this,
-                            "Failed to refresh the table. reportLoader is not initialized.",
-                            "Table Refresh Error",
+                            "Error generating report: " + ex.getMessage(),
+                            "Report Generation Error",
                             JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Refresh the table
-                logger.log(Level.INFO, "Found CertificateTable and reportLoader. Initiating data refresh...");
-                certificateTable.reportLoader.loadData(() -> {
-                    logger.log(Level.INFO, "Table refresh complete. Generating report...");
-                    monitorTableInitialization(certificateTable, newestRecordId);
-                });
-
-                // Notify success callback and close modal
-                saveSuccessful = true;
-                if (saveCallback != null) {
-                    saveCallback.accept(true);
                 }
             } else {
-                logger.log(Level.WARNING, "Failed to save hospitalization record.");
-                JOptionPane.showMessageDialog(this,
-                        "Failed to save hospitalization record.",
-                        "Database Error",
-                        JOptionPane.ERROR_MESSAGE);
+                logger.log(Level.INFO, "Table is not ready. Retrying...");
+                monitorTableInitialization(certificateTable, recordId);
             }
-        }
-    } catch (Exception ex) {
-        logger.log(Level.SEVERE, "Critical error in save action", ex);
-        handleSaveError(ex);
+        });
     }
-}
 
-private void monitorTableInitialization(CertificateTable certificateTable, int recordId) {
-    SwingUtilities.invokeLater(() -> {
-        if (isTableInitialized(certificateTable.certificationTable)) {
-            try {
-                logger.log(Level.INFO, "Table is ready. Generating report...");
-                certificateTable.handleReportGeneration(recordId);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, ex);
-                JOptionPane.showMessageDialog(this,
-                        "Error generating report: " + ex.getMessage(),
-                        "Report Generation Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
+    // Method to check if the table is initialized
+    private boolean isTableInitialized(JTable table) {
+        logger.log(Level.INFO, "Checking table initialization: columns={0}, rows={1}",
+                new Object[]{table.getColumnCount(), table.getRowCount()});
+        return table.getColumnCount() > 0 && table.getRowCount() > 0;
+    }
+
+    private Map<String, Object> collectReportData() {
+        Map<String, Object> reportData = new HashMap<>();
+
+        // Add signatory
+        String signatory = DatabaseSaveHelper.getAssessorName(1);
+        if (signatory != null) {
+            reportData.put("Signatory", signatory);
+            logger.log(Level.INFO, "Signatory found: {0}", signatory);
         } else {
-            logger.log(Level.INFO, "Table is not ready. Retrying...");
-            monitorTableInitialization(certificateTable, recordId);
+            logger.log(Level.WARNING, "No default assessor configured");
+            JOptionPane.showMessageDialog(this,
+                    "Default assessor not configured.",
+                    "Configuration Warning",
+                    JOptionPane.WARNING_MESSAGE);
         }
-    });
-}
 
-// Method to check if the table is initialized
-private boolean isTableInitialized(JTable table) {
-    logger.log(Level.INFO, "Checking table initialization: columns={0}, rows={1}",
-            new Object[]{table.getColumnCount(), table.getRowCount()});
-    return table.getColumnCount() > 0 && table.getRowCount() > 0;
-}
+        // Add marital status
+        reportData.put("MaritalStatus", getMaritalStatus());
 
-private Map<String, Object> collectReportData() {
-    Map<String, Object> reportData = new HashMap<>();
+        // Add text fields
+        reportData.put("ParentGuardian", txtParentGuardian.getText());
+        reportData.put("ParentGuardian2", txtParentGuardian2.getText());
+        reportData.put("Patient", txtPatientStudent.getText());
+        reportData.put("Barangay", comboAddress.getSelectedItem());
+        reportData.put("Hospital", txtHospital.getText());
+        reportData.put("HospitalAddress", txtHospitalAddress.getText());
+        reportData.put("PlaceIssued", txtPlaceIssued.getText());
 
-    // Add signatory
-    String signatory = DatabaseSaveHelper.getAssessorName(1);
-    if (signatory != null) {
-        reportData.put("Signatory", signatory);
-        logger.log(Level.INFO, "Signatory found: {0}", signatory);
-    } else {
-        logger.log(Level.WARNING, "No default assessor configured");
-        JOptionPane.showMessageDialog(this,
-                "Default assessor not configured.",
-                "Configuration Warning",
-                JOptionPane.WARNING_MESSAGE);
-    }
+        // Add parent sex
+        reportData.put("ParentSexIfSingle", getParentSex());
 
-    // Add marital status
-    reportData.put("MaritalStatus", getMaritalStatus());
+        // Add relationship
+        reportData.put("Relationship", getRelationship());
 
-    // Add text fields
-    reportData.put("ParentGuardian", txtParentGuardian.getText());
-    reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-    reportData.put("Patient", txtPatientStudent.getText());
-    reportData.put("Barangay", comboAddress.getSelectedItem());
-    reportData.put("Hospital", txtHospital.getText());
-    reportData.put("HospitalAddress", txtHospitalAddress.getText());
-    reportData.put("PlaceIssued", txtPlaceIssued.getText());
+        // Add amount paid
+        reportData.put("AmountPaid", getAmountPaid());
 
-    // Add parent sex
-    reportData.put("ParentSexIfSingle", getParentSex());
+        // Add receipt number
+        reportData.put("ReceiptNo", getReceiptNumber());
 
-    // Add relationship
-    reportData.put("Relationship", getRelationship());
-
-    // Add amount paid
-    reportData.put("AmountPaid", getAmountPaid());
-
-    // Add receipt number
-    reportData.put("ReceiptNo", getReceiptNumber());
-
-    // Add dates
-    reportData.put("CertificationDate", LocalDate.now());
-    reportData.put("CertificationTime", LocalTime.now());
-    if (datePicker.getSelectedDate() != null) {
-        reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
-    }
-    
-    String userInitials = SessionManager.getInstance().getUserInitials();
-    if (userInitials != null) {
-        reportData.put("userInitials", userInitials);
-    } else {
-        logger.log(Level.WARNING, "User initial not found");
-    }
-
-    return reportData;
-}
-
-private String getMaritalStatus() {
-    if (checkBoxMarried.isSelected()) return "MARRIED";
-    if (checkBoxSingle.isSelected()) return "SINGLE";
-    if (checkBoxGuardian.isSelected()) return "GUARDIAN";
-    return "Unknown";
-}
-
-private String getParentSex() {
-    if (comboParentSex.isEnabled()) {
-        return comboParentSex.getSelectedItem().toString();
-    }
-    return checkBoxMarried.isSelected() ? "Married" : "Guardian";
-}
-
-private String getRelationship() {
-    if (checkBoxGuardian.isSelected()) return "Guardian";
-    return comboRelationship.getSelectedItem().toString();
-}
-
-private String getAmountPaid() {
-    try {
-        double amount = parseDouble(txtAmount.getText());
-        return formatAmount(amount);
-    } catch (NumberFormatException ex) {
-        logger.log(Level.WARNING, "Invalid amount format, defaulting to ₱0.00");
-        return "₱0.00";
-    }
-}
-
-private String getReceiptNumber() {
-    try {
-        Object receiptValue = txtReceiptNo.getValue();
-        if (receiptValue instanceof Number) {
-            long numberValue = ((Number) receiptValue).longValue();
-            return numberValue == 0L ? null : String.valueOf(numberValue);
+        // Add dates
+        reportData.put("CertificationDate", LocalDate.now());
+        reportData.put("CertificationTime", LocalTime.now());
+        if (datePicker.getSelectedDate() != null) {
+            reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
         }
-        return null; // Or return ""; if you prefer an empty string instead of null
-    } catch (Exception ex) {
-        logger.log(Level.SEVERE, "Error processing receipt number", ex);
-        throw new RuntimeException("Invalid receipt number", ex);
+
+        String userInitials = SessionManager.getInstance().getUserInitials();
+        if (userInitials != null) {
+            reportData.put("userInitials", userInitials);
+        } else {
+            logger.log(Level.WARNING, "User initial not found");
+        }
+
+        return reportData;
     }
-}
-    
-public SimpleModalBorder createCustomBorder() {
-    return new SimpleModalBorder(
-        this, 
-        "Hospitalization", 
-        SimpleModalBorder.OK_CANCEL_OPTION,
-        (controller, action) -> {
-            if (action == SimpleModalBorder.OK_OPTION) {
-                saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
-                if (saveSuccessful) {
-                    controller.close();
-                    SwingUtilities.invokeLater(() -> {
-                        // Notify DataChangeNotifier to refresh tables
-                        DataChangeNotifier.getInstance().notifyDataChange();
-                    });
-                } else {
-                    controller.consume(); // Prevent closing the modal if save fails
+
+    private String getMaritalStatus() {
+        if (checkBoxMarried.isSelected()) return "MARRIED";
+        if (checkBoxSingle.isSelected()) return "SINGLE";
+        if (checkBoxGuardian.isSelected()) return "GUARDIAN";
+        return "Unknown";
+    }
+
+    private String getParentSex() {
+        if (comboParentSex.isEnabled()) {
+            return comboParentSex.getSelectedItem().toString();
+        }
+        return checkBoxMarried.isSelected() ? "Married" : "Guardian";
+    }
+
+    private String getRelationship() {
+        if (checkBoxGuardian.isSelected()) return "Guardian";
+        return comboRelationship.getSelectedItem().toString();
+    }
+
+    private String getAmountPaid() {
+        try {
+            double amount = parseDouble(txtAmount.getText());
+            return formatAmount(amount);
+        } catch (NumberFormatException ex) {
+            logger.log(Level.WARNING, "Invalid amount format, defaulting to ₱0.00");
+            return "₱0.00";
+        }
+    }
+
+    private String getReceiptNumber() {
+        try {
+            Object receiptValue = txtReceiptNo.getValue();
+            if (receiptValue instanceof Number) {
+                long numberValue = ((Number) receiptValue).longValue();
+                return numberValue == 0L ? null : String.valueOf(numberValue);
+            }
+            return null; // Or return ""; if you prefer an empty string instead of null
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error processing receipt number", ex);
+            throw new RuntimeException("Invalid receipt number", ex);
+        }
+    }
+
+    public SimpleModalBorder createCustomBorder() {
+        return new SimpleModalBorder(
+            this, 
+            "Hospital", 
+            SimpleModalBorder.OK_CANCEL_OPTION,
+            (controller, action) -> {
+                if (action == SimpleModalBorder.OK_OPTION) {
+                    saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+                    if (saveSuccessful) {
+                        controller.close();
+                        SwingUtilities.invokeLater(() -> {
+                            // Notify DataChangeNotifier to refresh tables
+                            DataChangeNotifier.getInstance().notifyDataChange();
+                        });
+                    } else {
+                        controller.consume(); // Prevent closing the modal if save fails
+                    }
                 }
             }
-        }
-    );
-}
+        );
+    }
     
     private void handleSaveError(Exception ex) {
         String errorMessage = "Save failed: " + ex.getMessage();

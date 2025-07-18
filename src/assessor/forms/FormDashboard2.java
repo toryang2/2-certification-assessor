@@ -28,7 +28,7 @@ import java.util.logging.*;
 import javax.swing.text.AbstractDocument;
 
 @SystemForm(name = "Dashboard", description = "dashboard form display some details")
-public class FormDashboard extends Form {
+public class FormDashboard2 extends Form {
     
     private final DataChangeNotifier.DataChangeListener dataChangeListener = new DataChangeNotifier.DataChangeListener() {
         @Override
@@ -38,7 +38,7 @@ public class FormDashboard extends Form {
         }
     };
     
-    public FormDashboard() {
+    public FormDashboard2() {
         init();
         DataChangeNotifier.getInstance().addListener(dataChangeListener);
         applyUppercaseFilterToTextFields();
@@ -122,7 +122,7 @@ public class FormDashboard extends Form {
     } catch (Exception e) {
         // Fallback to sample data if there's an error
         cardBox.setValueAt(0, "1,205", "+305 clients served", "+25%", true);
-        Logger.getLogger(FormDashboard.class.getName())
+        Logger.getLogger(FormDashboard2.class.getName())
             .log(Level.SEVERE, "Error loading dashboard data", e);
     }
 
@@ -184,7 +184,7 @@ public class FormDashboard extends Form {
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/income.svg", DefaultChartTheme.getColor(1)), "Total Income");
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/expense.svg", DefaultChartTheme.getColor(2)), "Total Expense");
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/profit.svg", DefaultChartTheme.getColor(3)), "Last Profit");
-//        panel.add(cardBox); /readd of needed in future
+        panel.add(cardBox);
         panelLayout.add(panel);
     }
 
@@ -297,7 +297,7 @@ public class FormDashboard extends Form {
     }
     
     public static void resetFilters() {
-        FormDashboard dashboard = (FormDashboard) FormManager.getActiveForm(FormDashboard.class);
+        FormDashboard2 dashboard = (FormDashboard2) FormManager.getActiveForm(FormDashboard2.class);
         if (dashboard != null) {
             // Reset Patient and Hospital fields
             if (dashboard.filterPatientField != null)
@@ -322,7 +322,7 @@ public class FormDashboard extends Form {
 private void createChart() {
     JPanel panel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
 
-        certificateTable = new CertificateTable();
+        certificateTable = new CertificateTableTotalLandholding();
         FormManager.showForm(certificateTable);
     
     panel.add(certificateTable, "grow, push");
@@ -337,7 +337,7 @@ private void createChart() {
     private JPanel panelLayout;
     private CardBox cardBox;
     private JTextField filterPatientField, filterHospitalField;
-    private CertificateTable certificateTable;
+    private CertificateTableTotalLandholding certificateTable;
     private JComboBox<String> filterBarangayField, filterTypeField;
 
     private TimeSeriesChart timeSeriesChart;

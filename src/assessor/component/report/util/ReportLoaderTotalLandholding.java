@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ReportLoader {
-    private static final Logger logger = Logger.getLogger(ReportLoader.class.getName());
+public class ReportLoaderTotalLandholding {
+    private static final Logger logger = Logger.getLogger(ReportLoaderTotalLandholding.class.getName());
 
     private volatile boolean refreshInProgress = false;
     private final DefaultTableModel model;
@@ -26,7 +26,7 @@ public class ReportLoader {
         void onLoadError(String message);
     }
 
-    public ReportLoader(DefaultTableModel model, LoadCallbacks callbacks) {
+    public ReportLoaderTotalLandholding(DefaultTableModel model, LoadCallbacks callbacks) {
         this.model = model;
         this.callbacks = callbacks;
 
@@ -72,10 +72,10 @@ public class ReportLoader {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                String query = "SELECT id AS ID, Type AS Type, Patient, Hospital," // Patient, ParentGuardian, ParentGuardian2, re add if necessary
-                        + " HospitalAddress, Barangay, CertificationDate, CertificationTime,"
-                        + " AmountPaid, ReceiptNo, ReceiptDateIssued, PlaceIssued, Signatory, LegalAge"
-                        + " FROM reports ORDER BY id DESC";
+                String query = "SELECT id AS ID, type AS Type, marital_status, owner, spouse, purpose,"
+                        + " requested_date, requested_time, amount_paid, receipt_no,"
+                        + " receipt_date_issued, place_issued"
+                        + " FROM reports_total_landholding ORDER BY id DESC";
                 logger.log(Level.INFO, "Executing SQL query: {0}", query);
 
                 boolean isAdmin = SessionManager.getInstance().getAccessLevel() == 1;

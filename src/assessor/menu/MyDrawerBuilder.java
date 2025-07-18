@@ -7,10 +7,13 @@ import assessor.MainFrame;
 import assessor.auth.Authenticator;
 import assessor.auth.SessionManager;
 import assessor.component.report.input.*;
+import assessor.component.report.util.ConfigHelper;
 import assessor.forms.*;
 import assessor.system.AllForms;
 import assessor.system.Form;
 import assessor.system.FormManager;
+import assessor.updater.Updater;
+import assessor.updater.VersionHelper;
 import raven.modal.drawer.DrawerPanel;
 import raven.modal.drawer.item.Item;
 import raven.modal.drawer.item.MenuItem;
@@ -28,9 +31,12 @@ import raven.modal.option.Option;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import raven.modal.ModalDialog;
 import java.util.logging.Logger;
+import static tools.AppVersionHelper.getAppVersion;
 
 public class MyDrawerBuilder extends SimpleDrawerBuilder {
 
@@ -102,7 +108,7 @@ private static void showHospitalizationModal() {
         .setAnimateDistance(0, 0);
 
     LOGGER.info("Creating new HospitalizationForm instance...");
-    FormHospitalization form = new FormHospitalization();
+    FormHospital form = new FormHospital();
     form.setSaveCallback(success -> {
         if (success) {
             LOGGER.info("Save successful. DataChangeNotifier will refresh the table.");
@@ -173,7 +179,7 @@ private static void showPhilHealthModal() {
     public SimpleFooterData getSimpleFooterData() {
         return new SimpleFooterData()
                 .setTitle("Swing Modal Dialog")
-                .setDescription("Version " + MainFrame.VERSION);
+                .setDescription("Version " + getAppVersion());
     }
 
     @Override
@@ -193,6 +199,7 @@ private static void showPhilHealthModal() {
         MenuItem items[] = new MenuItem[]{
                 new Item.Label("MAIN"),
                 new Item("Dashboard", "dashboard.svg", FormDashboard.class),
+//                new Item("Total Landholding", "dashboard.svg", FormDashboard2.class),
                 new Item.Label("No Landholding"),
 //                new Item("Forms", "forms.svg")
 //                        .subMenu(new Item("Input")
@@ -201,44 +208,46 @@ private static void showPhilHealthModal() {
 //                        )
 ////                        .subMenu("Table", FormTable.class)
 //                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
-                new Item("Hospitalization", "forms.svg", FormHospitalization.class),
-                new Item("Scholarship", "forms.svg", FormScholarship.class),
+                new Item("Hospital", "forms.svg", FormHospital.class),
                 new Item("PhilHealth", "forms.svg", FormPhilHealth2.class),
-                new Item("Components", "components.svg")
-                        .subMenu("Modal", FormModal.class)
-                        .subMenu("Toast", FormToast.class)
-                        .subMenu("Date Time", FormDateTime.class)
-                        .subMenu("Avatar Icon", FormAvatarIcon.class)
-                        .subMenu("Slide Pane", FormSlidePane.class),
-                new Item("Email", "email.svg")
-                        .subMenu("Inbox")
-                        .subMenu(
-                                new Item("Group Read")
-                                        .subMenu("Read 1")
-                                        .subMenu("Read 2")
-                                        .subMenu(
-                                                new Item("Group Item")
-                                                        .subMenu("Item 1")
-                                                        .subMenu("Item 2")
-                                                        .subMenu("Item 3")
-                                                        .subMenu("Item 4")
-                                                        .subMenu("Item 5")
-                                                        .subMenu("Item 6")
-                                        )
-                                        .subMenu("Read 3")
-                                        .subMenu("Read 4")
-                                        .subMenu("Read 5")
-                        )
-                        .subMenu("Compost"),
-                new Item("Chat", "chat.svg"),
-                new Item("Calendar", "calendar.svg"),
+//                new Item("Total Landholding", "forms.svg", FormTotalLandholding2.class),
+//                new Item("Scholarship", "forms.svg", FormScholarship.class),
+//                new Item("Components", "components.svg")
+//                        .subMenu("Modal", FormModal.class)
+//                        .subMenu("Toast", FormToast.class)
+//                        .subMenu("Date Time", FormDateTime.class)
+//                        .subMenu("Avatar Icon", FormAvatarIcon.class)
+//                        .subMenu("Slide Pane", FormSlidePane.class),
+//                new Item("Email", "email.svg")
+//                        .subMenu("Inbox")
+//                        .subMenu(
+//                                new Item("Group Read")
+//                                        .subMenu("Read 1")
+//                                        .subMenu("Read 2")
+//                                        .subMenu(
+//                                                new Item("Group Item")
+//                                                        .subMenu("Item 1")
+//                                                        .subMenu("Item 2")
+//                                                        .subMenu("Item 3")
+//                                                        .subMenu("Item 4")
+//                                                        .subMenu("Item 5")
+//                                                        .subMenu("Item 6")
+//                                        )
+//                                        .subMenu("Read 3")
+//                                        .subMenu("Read 4")
+//                                        .subMenu("Read 5")
+//                        )
+//                        .subMenu("Compost"),
+//                new Item("Chat", "chat.svg"),
+//                new Item("Calendar", "calendar.svg"),
                 new Item.Label("OTHER"),
-                new Item("Plugin", "plugin.svg")
-                        .subMenu("Plugin 1")
-                        .subMenu("Plugin 2")
-                        .subMenu("Plugin 3"),
+//                new Item("Plugin", "plugin.svg")
+//                        .subMenu("Plugin 1")
+//                        .subMenu("Plugin 2")
+//                        .subMenu("Plugin 3"),
                 new Item("Setting", "setting.svg", FormSetting.class),
-                new Item("About", "about.svg"),
+//                new Item("About", "about.svg"),
+//                new Item("Check for update", "about.svg", Updater.class),
                 new Item("Logout", "logout.svg")
         };
 
@@ -268,11 +277,12 @@ private static void showPhilHealthModal() {
                 System.out.println("Drawer menu selected " + Arrays.toString(index));
                 Class<?> itemClass = action.getItem().getItemClass();
                 int i = index[0];
-                if (i == 10) {
-                    action.consume();
-                    FormManager.showAbout();
-                    return;
-                } else if (i == 11) {
+//                if (i == 3) {
+//                    action.consume();
+//                    FormManager.showAbout();
+//                    return;
+//                }else 
+                if (i == 3) {
                     action.consume();
                     FormManager.logout();
                     return;
@@ -284,7 +294,7 @@ private static void showPhilHealthModal() {
                 Class<? extends Form> formClass = (Class<? extends Form>) itemClass;
 
                 // Special handling for HospitalizationForm
-                if (formClass == FormHospitalization.class) {
+                if (formClass == FormHospital.class) {
                     showHospitalizationModal();
                     action.consume();
                     return;

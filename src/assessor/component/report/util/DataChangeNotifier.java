@@ -8,6 +8,8 @@ public class DataChangeNotifier {
     private static DataChangeNotifier instance;
     private final List<DataChangeListener> listeners = new ArrayList<>();
     private DataChangeWebSocketClient wsClient;
+    private Runnable onReconnectStart;
+    private Runnable onReconnectSuccess;
 
     public static DataChangeNotifier getInstance() {
         if (instance == null) {
@@ -20,6 +22,13 @@ public class DataChangeNotifier {
         void onDataChanged();
     }
 
+    public void setOnReconnectStart(Runnable callback) {
+        this.onReconnectStart = callback;
+    }
+    public void setOnReconnectSuccess(Runnable callback) {
+        this.onReconnectSuccess = callback;
+    }
+    
     public void addListener(DataChangeListener listener) {
         listeners.add(listener);
     }
@@ -44,7 +53,7 @@ public class DataChangeNotifier {
 
     public void connectWebSocket(String wsUri) {
         try {
-            wsClient = new DataChangeWebSocketClient(wsUri, this::notifyRemoteDataChange);
+            wsClient = new DataChangeWebSocketClient(wsUri, msg -> notifyRemoteDataChange());
             wsClient.connect();
             System.out.println("Connecting to WebSocket server: " + wsUri);
         } catch (Exception e) {

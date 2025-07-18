@@ -70,4 +70,44 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <!-- 🛠 Compile the version bumper -->
+    <target name="compile-version-bumper">
+        <mkdir dir="build/tools"/>
+        <javac srcdir="src"
+               destdir="build/tools"
+               includeantruntime="false">
+            <include name="tools/VersionBumper.java"/>
+        </javac>
+    </target>
+
+    <!-- 🚀 Run the bumper to update version.properties -->
+    <target name="bump-version" depends="compile-version-bumper">
+        <java classname="tools.VersionBumper"
+              fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="build/tools"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- 📦 Hook into -pre-jar to run bump-version FIRST -->
+    <target name="-pre-jar" depends="bump-version">
+        <!-- Load UPDATED version properties -->
+        <property file="version.properties"/>
+        <echo>📦 Building version ${major}.${minor}.${patch} (code ${versionCode})</echo>
+
+        <manifest file="build/version.mf">
+            <attribute name="Main-Class" value="assessor.Main"/>
+            <attribute name="App-Version" value="${major}.${minor}.${patch}"/>
+            <attribute name="App-VersionCode" value="${versionCode}"/>
+        </manifest>
+
+        <property name="manifest.file" location="build/version.mf"/>
+    </target>
+
+    <!-- 📋 Inject dynamic manifest entries AFTER jar build -->
+    <target name="-post-jar">
+        <jar update="true" destfile="${dist.jar}" manifest="build/version.mf" />
+        <copy file="version.properties" todir="${dist.dir}"/>
+    </target>
 </project>

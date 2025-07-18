@@ -8,6 +8,8 @@ import net.miginfocom.swing.MigLayout;
 import raven.modal.Drawer;
 import raven.modal.ModalDialog;
 import assessor.component.AccentColorIcon;
+import static assessor.component.report.util.DatabaseReportTypeHelper.insertReportTypeToDatabase;
+import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.system.Form;
 import assessor.system.FormManager;
 import assessor.themes.PanelThemes;
@@ -24,6 +26,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.text.AbstractDocument;
 
 @SystemForm(name = "Setting", description = "application setting and configuration", tags = {"themes", "options"})
 public class FormSetting extends Form {
@@ -42,6 +46,50 @@ public class FormSetting extends Form {
         tabbedPane.addTab("Style", createStyleOption());
         add(tabbedPane, "gapy 1 0");
         add(createThemes());
+        tabbedPane.addTab("Report Types", createReportTypeOption());
+    }    
+    
+    private JPanel createReportTypeOption() {
+        JPanel panel = new JPanel(new MigLayout("wrap 2, insets 10", "[][grow]")); // two columns: label + field/button
+
+        panel.setBorder(new TitledBorder("Add new report type"));
+
+        JTextField txtReportType = new JTextField(15); // preferred column size
+
+        JButton btnAdd = new JButton("Add");
+
+        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
+        ((AbstractDocument) txtReportType.getDocument()).setDocumentFilter(uppercaseFilter);
+
+        // Define action logic separately so both can reuse
+        ActionListener addAction = e -> {
+            String reportType = txtReportType.getText().trim();
+            if (reportType.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Report type cannot be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            try {
+                insertReportTypeToDatabase(reportType);
+                JOptionPane.showMessageDialog(this, "Report type added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                txtReportType.setText("");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to add report type: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        };
+
+        btnAdd.addActionListener(addAction);
+
+        // Trigger add when pressing Enter
+        txtReportType.addActionListener(e -> btnAdd.doClick());
+
+        panel.add(new JLabel("Report Type:"));
+        panel.add(txtReportType, "wmin 150, wmax 200");
+
+        panel.add(new JLabel()); // empty cell for alignment
+        panel.add(btnAdd, "align left"); // keep button on left, fixed size
+
+        return panel;
     }
 
     private JPanel createLayoutOption() {

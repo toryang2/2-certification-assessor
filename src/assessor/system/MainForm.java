@@ -62,7 +62,7 @@ public class MainForm extends JPanel {
 //        toolBar.add(buttonRedo);
         toolBar.add(buttonRefresh);
         panel.add(toolBar);
-        panel.add(createSearchBox(), "gapx n 135");
+//        panel.add(createSearchBox(), "gapx n 135");
         return panel;
     }
 
@@ -100,13 +100,13 @@ public class MainForm extends JPanel {
         return panel;
     }
 
-    private JPanel createSearchBox() {
-        JPanel panel = new JPanel(new MigLayout("fill", "[fill,center,200:250:]", "[fill]"));
-        FormSearchButton button = new FormSearchButton();
-        button.addActionListener(e -> FormSearch.getInstance().showSearch());
-        panel.add(button);
-        return panel;
-    }
+//    private JPanel createSearchBox() {
+//        JPanel panel = new JPanel(new MigLayout("fill", "[fill,center,200:250:]", "[fill]"));
+//        FormSearchButton button = new FormSearchButton();
+//        button.addActionListener(e -> FormSearch.getInstance().showSearch());
+//        panel.add(button);
+//        return panel;
+//    }
 
     private JPanel createRefreshLine() {
         refreshLine = new RefreshLine();

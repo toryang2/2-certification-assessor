@@ -14,9 +14,9 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DatabaseSaveHelper {
-    private static final Logger logger = AdvancedLogger.getLogger(DatabaseSaveHelper.class.getName());
-    private static final String TABLE_NAME = "reports";
+public class DatabaseTotalLandholdingHelper {
+    private static final Logger logger = AdvancedLogger.getLogger(DatabaseTotalLandholdingHelper.class.getName());
+    private static final String TABLE_NAME = "reports_total_landholding";
 
     private static final Map<Class<?>, Integer> SQL_TYPES = new HashMap<>();
     static {

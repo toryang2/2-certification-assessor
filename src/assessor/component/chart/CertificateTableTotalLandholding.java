@@ -18,9 +18,9 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.*;
 
-public class CertificateTable extends Form {
+public class CertificateTableTotalLandholding extends Form {
 
-    private static final Logger logger = AdvancedLogger.getLogger(CertificateTable.class.getName());
+    private static final Logger logger = AdvancedLogger.getLogger(CertificateTableTotalLandholding.class.getName());
     public JTabbedPane tabb;
     public JTable certificationTable;
     private final DefaultTableModel tableModel;
@@ -28,7 +28,7 @@ public class CertificateTable extends Form {
     public final ReportLoader reportLoader;
     private JCheckBox selectAllCheckBox;
 
-    public CertificateTable() {
+    public CertificateTableTotalLandholding() {
         setLayout(new BorderLayout());
         tableModel = new DefaultTableModel() {
             @Override
@@ -59,16 +59,16 @@ public class CertificateTable extends Form {
         reportLoader = new ReportLoader(tableModel, new ReportLoader.LoadCallbacks() {
             @Override
             public void onLoadStart() {
-                Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Loading data...");
+                Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Loading data...");
             }
             @Override
             public void onLoadComplete() {
-                Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Data load complete.");
+                Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Data load complete.");
                 SwingUtilities.invokeLater(() -> configureColumns(certificationTable));
             }
             @Override
             public void onLoadError(String message) {
-                Logger.getLogger(CertificateTable.class.getName()).log(Level.SEVERE, "Error loading data: {0}", message);
+                Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.SEVERE, "Error loading data: {0}", message);
             }
         });
         reportLoader.startPolling(3000); // Poll every 3 seconds
@@ -188,17 +188,17 @@ public class CertificateTable extends Form {
     }
 
     private void loadData() {
-        reportLoader.loadData(() -> Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Data loaded successfully."));
+        reportLoader.loadData(() -> Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Data loaded successfully."));
     }
 
     @Override
     public void formRefresh() {
-        Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Refreshing data...");
-        reportLoader.loadData(() -> Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Data refreshed successfully."));
+        Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Refreshing data...");
+        reportLoader.loadData(() -> Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Data refreshed successfully."));
     }
 
     public void formDispose() {
-        Logger.getLogger(CertificateTable.class.getName()).log(Level.INFO, "Disposing form...");
+        Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Disposing form...");
         reportLoader.stopPolling();
         reportLoader.cleanup();
     }
@@ -267,7 +267,7 @@ public class CertificateTable extends Form {
             switch (colName) {
                 case "id":
                     column.setHeaderValue("ID");
-                    setColumnWidth(column, 0, 0, 0); break;
+                    setColumnWidth(column, 50, 50, 50); break;
                 case "patient":
                     column.setHeaderValue("Patient");
                     setColumnWidth(column, 300, 300, 300); break;
@@ -285,12 +285,12 @@ public class CertificateTable extends Form {
                 case "maritalstatus":
                     column.setHeaderValue("Marital Status");
                     setColumnWidth(column, 90, 90, 90); break;
-//                case "parentguardian":
-//                    column.setHeaderValue("Parent");
-//                    setColumnWidth(column, 300, 300, 300); break;
-//                case "parentguardian2":
-//                    column.setHeaderValue("Parent");
-//                    setColumnWidth(column, 300, 300, 300); break;
+                case "parentguardian":
+                    column.setHeaderValue("Parent");
+                    setColumnWidth(column, 300, 300, 300); break;
+                case "parentguardian2":
+                    column.setHeaderValue("Parent");
+                    setColumnWidth(column, 300, 300, 300); break;
                 case "parentsexifsingle":
                     setColumnWidth(column, 0, 0, 0); column.setResizable(false); break;
                 case "certificationdate":

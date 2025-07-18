@@ -8,10 +8,11 @@ import com.formdev.flatlaf.extras.FlatSVGUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import static tools.AppVersionHelper.getAppVersion;
 
 public class MainFrame extends JFrame {
 
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = getAppVersion();
 
     public MainFrame() {
         init();

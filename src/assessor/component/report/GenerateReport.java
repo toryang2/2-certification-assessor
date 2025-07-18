@@ -108,11 +108,12 @@ public class GenerateReport {
             throw new IllegalArgumentException("Invalid ReportType format");
         }
         String baseType = typeParts[0]; // Get first alphabetic segment
+        String normalizedType = rawType.replaceAll("[^a-z0-9]", "_");
 
         // 3. Build template path
         String templatePath = String.format(
             "/assessor/component/report/jasper/%s.jrxml",
-            baseType
+            normalizedType
         );
 
         // 4. Load resource
