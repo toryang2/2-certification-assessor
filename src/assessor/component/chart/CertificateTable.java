@@ -281,6 +281,7 @@ public class CertificateTable extends Form {
                     column.setCellRenderer(new UppercaseRenderer());
                     setColumnWidth(column, 200, 200, 200); break;
                 case "barangay":
+                    column.setHeaderValue("Barangay");
                     setColumnWidth(column, 120, 120, 120); break;
                 case "marital_status":
                     column.setHeaderValue("Marital Status");
@@ -305,6 +306,7 @@ public class CertificateTable extends Form {
                     column.setCellRenderer(new TimeRenderer());
                     setColumnWidth(column, 100, 120, 120); break;
                 case "type":
+                    column.setHeaderValue("Type");
                     setColumnWidth(column, 100, 100, 100); break;
                 case "amount_paid":
                     column.setHeaderValue("Amount Paid");
@@ -321,7 +323,10 @@ public class CertificateTable extends Form {
                 case "place_issued":
                     column.setHeaderValue("Place Issued");
                     setColumnWidth(column, 100, 100, 100); break;
-                case "lega_lage":
+                case "signatory":
+                    column.setHeaderValue("Signatory");
+                    setColumnWidth(column, 250, 250, 250); break;
+                case "legal_age":
                     column.setHeaderValue("Legal Age");
                     setColumnWidth(column, 70, 70, 70); break;
                 default:
@@ -367,7 +372,7 @@ public class CertificateTable extends Form {
             return;
         }
         try {
-            int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("type").getModelIndex());
+            int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Type").getModelIndex());
             String reportType = getReportTypeFromTable(certificationTable, recordId, typeColumn);
             generateReport(recordId, reportType);
         } catch (Exception e) {
@@ -399,7 +404,7 @@ public class CertificateTable extends Form {
     }
 
     private String getReportTypeFromTable(JTable table, int row) throws Exception {
-        int typeColumn = table.convertColumnIndexToModel(table.getColumn("type").getModelIndex());
+        int typeColumn = table.convertColumnIndexToModel(table.getColumn("Type").getModelIndex());
         Object rawType = table.getValueAt(row, typeColumn);
 
         if (rawType == null) {

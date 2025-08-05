@@ -133,7 +133,7 @@ Municipality of Kitaotao]]></text>
 				<paragraph firstLineIndent="20"/>
 				<expression><![CDATA["This is to CERTIFY further the above-mentioned Tax Declaration is " + "<style isBold=\"true\">" + "LATEST/CURRENT AND EXISTING" + "</style>" + " in our office.\n\n" +
 
-"This CERTIFICATION is being issued upon request of " + "<style isBold=\"true\">" + $F{requestor} + "</style> " + 
+"This CERTIFICATION is being issued upon request of " + "<style isBold=\"true\">" + ( $F{requestor} != null && $F{requestor}.equals($F{owner}) ? "the above name" : $F{requestor} ) + "</style> " + 
 " as " + $F{purpose} + ".\n\n" +
 
 "Done and Given this " + 

@@ -50,14 +50,14 @@ public class FormTotalLandholding2 extends Form {
     private JTextField txtAmountPaid;
     private JFormattedTextField txtReceiptNo;
     private JTextField txtPlaceIssued;
-    private JTextField txtType;
-    private JTextField txtUserInitials;
-    private JTextField txtSignatory;
+    private JTextField txtRequestor;
     private JTextField receiptDateIssuedPicker;
     private JLabel labelMaritalStatus;
     private JLabel labelTitle;
     private JLabel labelOwner;
+    private JLabel labelRequestor;
     private JLabel labelMandatoryOwner;
+    private JLabel labelMandatoryRequestor;
     private JLabel labelSpouse;
     private JLabel labelPurpose;
     private JLabel labelMandatoryPurpose;
@@ -80,6 +80,31 @@ public class FormTotalLandholding2 extends Form {
         setupAmountField();
         setupReceiptNoField();
         applyUppercaseFilterToTextFields();
+        
+        JCheckBox[] maritalCheckboxes = {
+            checkBoxMarried, 
+            checkBoxSingle,
+        };
+        
+        for (JCheckBox checkbox : maritalCheckboxes) {
+            checkbox.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    // Uncheck other boxes when one is checked
+                    for (JCheckBox other : maritalCheckboxes) {
+                        if (other != e.getSource()) {
+                            other.setSelected(false);
+                        }
+                    }
+                    
+                    // Update combos based on selection
+                    if (checkbox == checkBoxMarried) {
+                        SwingUtilities.invokeLater(() -> {
+                            txtRequestor.requestFocusInWindow();
+                        });
+                    }
+                }
+            });
+        }
         
         // Ensure the report type exists in the database
         DatabaseTotalLandholdingHelper.ensureReportTypeExists();
@@ -104,6 +129,7 @@ public class FormTotalLandholding2 extends Form {
         });
         
         labelMandatoryOwner.setVisible(false);
+        labelMandatoryRequestor.setVisible(false);
         labelMandatoryPurpose.setVisible(false);
         labelMandatoryMessage.setVisible(false);
         
@@ -129,25 +155,29 @@ public class FormTotalLandholding2 extends Form {
         maritalPanel.add(checkBoxMarried);
         contentPanel.add(maritalPanel, "span 12, center, wrap");
         //Row 2: Owner
-        contentPanel.add(labelOwner, "cell 0 2");
+        contentPanel.add(labelRequestor, "cell 0 2");
+        contentPanel.add(labelMandatoryRequestor);
+        contentPanel.add(txtRequestor, "cell 2 2 10 1, growx, pushx, w 100%, wrap");
+        
+        contentPanel.add(labelOwner, "cell 0 3");
         contentPanel.add(labelMandatoryOwner);
-        contentPanel.add(txtOwner, "cell 2 2 10 1, growx, pushx, w 100%");
+        contentPanel.add(txtOwner, "cell 2 3 10 1, growx, pushx, w 100%, wrap");
         
-        contentPanel.add(labelSpouse, "cell 0 3");
-        contentPanel.add(txtSpouse, "cell 2 3 10 1, growx, pushx, w 100%");
+        contentPanel.add(labelSpouse, "cell 0 4");
+        contentPanel.add(txtSpouse, "cell 2 4 10 1, growx, pushx, w 100%");
         
-        contentPanel.add(labelPurpose, "cell 0 4");
+        contentPanel.add(labelPurpose, "cell 0 5");
         contentPanel.add(labelMandatoryPurpose);
-        contentPanel.add(txtPurpose, "cell 2 4 3 1, growx, pushx");
-        contentPanel.add(labelAmount, "cell 5 4 3 1, split 2");
-        contentPanel.add(txtAmountPaid, "cell 5 4 3 1, growx");
-        contentPanel.add(labelReceiptNo, "cell 8 4 4 1, split 2");
-        contentPanel.add(txtReceiptNo, "cell 8 4 4 1, growx, wrap");
+        contentPanel.add(txtPurpose, "cell 2 5 3 1, growx, pushx");
+        contentPanel.add(labelAmount, "cell 5 5 3 1, split 2");
+        contentPanel.add(txtAmountPaid, "cell 5 5 3 1, growx");
+        contentPanel.add(labelReceiptNo, "cell 8 5 4 1, split 2");
+        contentPanel.add(txtReceiptNo, "cell 8 5 4 1, growx, wrap");
         
-        contentPanel.add(labelDateIssued, "cell 0 5 5 1, split 2");
-        contentPanel.add(receiptDateIssuedPicker, "cell 0 5 5 1, growx");
-        contentPanel.add(labelPlaceIssued, "cell 5 5 7 1, split 2");
-        contentPanel.add(txtPlaceIssued, "cell 5 5 7 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 6 5 1, split 2");
+        contentPanel.add(receiptDateIssuedPicker, "cell 0 6 5 1, growx");
+        contentPanel.add(labelPlaceIssued, "cell 5 6 7 1, split 2");
+        contentPanel.add(txtPlaceIssued, "cell 5 6 7 1, growx, wrap");
         
         // --- Save button logic ---
         
@@ -160,9 +190,9 @@ public class FormTotalLandholding2 extends Form {
         tableScrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE,
             "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
         
-        contentPanel.add(tableScrollPane, "cell 0 6 12 1, grow, wrap"); // Span all columns
+        contentPanel.add(tableScrollPane, "cell 0 7 12 1, grow, wrap"); // Span all columns
         
-        contentPanel.add(labelMandatoryMessage, "cell 0 7 4 1, left");
+        contentPanel.add(labelMandatoryMessage, "cell 0 8 4 1, left");
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> onSaveButtonClick());
         contentPanel.add(btnSave, "span 12, right, wrap");
@@ -177,7 +207,9 @@ public class FormTotalLandholding2 extends Form {
     
     private void initComponents() {
         labelOwner = new JLabel("Owner");
+        labelRequestor = new JLabel("Requestor");
         labelMandatoryOwner = new JLabel("<html><font color='red'>*</font></html>");
+        labelMandatoryRequestor = new JLabel("<html><font color='red'>*</font></html>");
         labelTitle = new JLabel("Total Landholding Form");
         labelSpouse = new JLabel("Spouse");
         labelPurpose = new JLabel("Purpose");
@@ -192,15 +224,13 @@ public class FormTotalLandholding2 extends Form {
         checkBoxMarried = new JCheckBox("Married");
         txtMaritalStatus = new JTextField();
         txtOwner = new JTextField();
+        txtRequestor = new JTextField();
         txtSpouse = new JTextField();
         txtPurpose = new JTextField();
         txtAmountPaid = new JTextField();
         txtReceiptNo = new JFormattedTextField();
         receiptDateIssuedPicker = new JTextField();
         txtPlaceIssued = new JTextField();
-        txtType = new JTextField();
-        txtUserInitials = new JTextField();
-        txtSignatory = new JTextField();
     }
     
     // Create the input table for report_sub_total_landholding
@@ -419,16 +449,11 @@ public class FormTotalLandholding2 extends Form {
 
         for (int i = 0; i < rowCount; i++) {
             Map<String, Object> rowData = new HashMap<>();
-            
-            // Get column names and values dynamically
+            // Get column names and values dynamically (except rtlid)
             for (int col = 0; col < inputTableModel.getColumnCount(); col++) {
                 String columnName = inputTableModel.getColumnName(col);
                 String value = getTableValue(i, col);
-                
-                if (columnName.equalsIgnoreCase("rtlid")) {
-                    // Use the parent objid as foreign key
-                    rowData.put("rtlid", parentObjid);
-                } else if (columnName.equalsIgnoreCase("total_area")) {
+                if (columnName.equalsIgnoreCase("total_area")) {
                     // Convert area to numeric
                     if (!value.isEmpty()) {
                         try {
@@ -443,10 +468,10 @@ public class FormTotalLandholding2 extends Form {
                     rowData.put(columnName, value);
                 }
             }
-            
+            // Always add rtlid for backend
+            rowData.put("rtlid", parentObjid);
             tableData.add(rowData);
         }
-        
         return tableData;
     }
     
@@ -532,6 +557,7 @@ public class FormTotalLandholding2 extends Form {
                 }
 
                 // Collect data from form fields
+                reportData.put("requestor", txtRequestor.getText());
                 reportData.put("marital_status", getMaritalStatus());
                 reportData.put("owner", txtOwner.getText());
                 reportData.put("spouse", txtSpouse.getText());
@@ -850,6 +876,7 @@ public class FormTotalLandholding2 extends Form {
         logger.log(Level.FINE, "Starting input validation");
         
         Object[][] requiredFields = {
+            {labelMandatoryRequestor, txtRequestor},
             { labelMandatoryOwner, txtOwner },
             { labelMandatoryPurpose, txtPurpose }
         };
