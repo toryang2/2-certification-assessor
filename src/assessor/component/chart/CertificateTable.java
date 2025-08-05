@@ -276,49 +276,52 @@ public class CertificateTable extends Form {
                 case "hospital":
                     column.setHeaderValue("Hospital");
                     setColumnWidth(column, 300, 300, 300); break;
-                case "hospitaladdress":
+                case "hospital_address":
                     column.setHeaderValue("Hospital Address");
                     column.setCellRenderer(new UppercaseRenderer());
                     setColumnWidth(column, 200, 200, 200); break;
                 case "barangay":
                     setColumnWidth(column, 120, 120, 120); break;
-                case "maritalstatus":
+                case "marital_status":
                     column.setHeaderValue("Marital Status");
                     setColumnWidth(column, 90, 90, 90); break;
+                case "contact_no":
+                    column.setHeaderValue("Contact No.");
+                    setColumnWidth(column, 100, 100, 00); break;
 //                case "parentguardian":
 //                    column.setHeaderValue("Parent");
 //                    setColumnWidth(column, 300, 300, 300); break;
 //                case "parentguardian2":
 //                    column.setHeaderValue("Parent");
 //                    setColumnWidth(column, 300, 300, 300); break;
-                case "parentsexifsingle":
+                case "parent_sex_if_single":
                     setColumnWidth(column, 0, 0, 0); column.setResizable(false); break;
-                case "certificationdate":
+                case "certification_date":
                     column.setHeaderValue("Certification Date");
                     column.setCellRenderer(new DateRenderer());
                     setColumnWidth(column, 120, 120, 120); break;
-                case "certificationtime":
+                case "certification_time":
                     column.setHeaderValue("Certification Time");
                     column.setCellRenderer(new TimeRenderer());
                     setColumnWidth(column, 100, 120, 120); break;
                 case "type":
                     setColumnWidth(column, 100, 100, 100); break;
-                case "amountpaid":
+                case "amount_paid":
                     column.setHeaderValue("Amount Paid");
                     column.setCellRenderer(new CurrencyRenderer());
                     setColumnWidth(column, 80, 80, 80); break;
-                case "receiptno":
+                case "receipt_no":
                     column.setHeaderValue("Receipt No.");
                     column.setCellRenderer(new RedTextRenderer());
                     setColumnWidth(column, 80, 80, 80); break;
-                case "receiptdateissued":
+                case "receipt_date_issued":
                     column.setHeaderValue("Date Issued");
                     column.setCellRenderer(new DateRenderer());
                     setColumnWidth(column, 100, 100, 100); break;
-                case "placeissued":
+                case "place_issued":
                     column.setHeaderValue("Place Issued");
                     setColumnWidth(column, 100, 100, 100); break;
-                case "legalage":
+                case "lega_lage":
                     column.setHeaderValue("Legal Age");
                     setColumnWidth(column, 70, 70, 70); break;
                 default:
@@ -364,7 +367,7 @@ public class CertificateTable extends Form {
             return;
         }
         try {
-            int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Type").getModelIndex());
+            int typeColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("type").getModelIndex());
             String reportType = getReportTypeFromTable(certificationTable, recordId, typeColumn);
             generateReport(recordId, reportType);
         } catch (Exception e) {
@@ -396,7 +399,7 @@ public class CertificateTable extends Form {
     }
 
     private String getReportTypeFromTable(JTable table, int row) throws Exception {
-        int typeColumn = table.convertColumnIndexToModel(table.getColumn("Type").getModelIndex());
+        int typeColumn = table.convertColumnIndexToModel(table.getColumn("type").getModelIndex());
         Object rawType = table.getValueAt(row, typeColumn);
 
         if (rawType == null) {

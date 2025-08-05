@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import raven.modal.component.DropShadowBorder;
 import assessor.system.*;
+import assessor.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,9 @@ import java.awt.event.*;
 import javax.swing.text.JTextComponent;
 
 public class Login extends Form {
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
+    private JCheckBox chRememberMe;
 
     public static final String ID = "login_id";
 
@@ -60,9 +64,31 @@ public class Login extends Form {
         loginContent.add(panelTitle, "gapy 10");
         loginContent.add(lbDescription);
 
-        JTextField txtUsername = new JTextField();
-        JPasswordField txtPassword = new JPasswordField();
-        JCheckBox chRememberMe = new JCheckBox("Remember Me");
+        txtUsername = new JTextField();
+        txtPassword = new JPasswordField();
+        chRememberMe = new JCheckBox("Remember Me");
+        
+        String rememberedUsername = RememberMeHelper.loadUsername();
+        boolean rememberEnabled = !rememberedUsername.isEmpty();
+
+        if (rememberEnabled) {
+            txtUsername.setText(rememberedUsername);
+            chRememberMe.setSelected(true);
+
+            // Focus password field if username is remembered
+            SwingUtilities.invokeLater(() -> {
+                txtPassword.requestFocusInWindow();
+                txtPassword.selectAll();
+            });
+        } else {
+            chRememberMe.setSelected(false);
+
+            // Focus username field otherwise
+            SwingUtilities.invokeLater(() -> {
+                txtUsername.requestFocusInWindow();
+            });
+        }
+        
         JButton cmdLogin = new JButton("Login") {
             @Override
             public boolean isDefaultButton() {
@@ -127,6 +153,11 @@ public class Login extends Form {
             String password = new String(txtPassword.getPassword());
 
             if (Authenticator.authenticate(username, password)) {
+                if (chRememberMe.isSelected()) {
+                    RememberMeHelper.saveUsername(username);
+                } else {
+                    RememberMeHelper.clear();
+                }
                 System.out.println("Login successful!");
 
                 // Refresh drawer header to reflect new session info
@@ -160,5 +191,24 @@ public class Login extends Form {
         if (panel != null) {
             panel.setBorder(new DropShadowBorder(new Insets(5, 8, 12, 8), 1, 25));
         }
+    }
+    
+    public void clearFields() {
+        boolean remember = chRememberMe.isSelected();
+
+        if (!remember) {
+            txtUsername.setText("");
+        }
+
+        txtPassword.setText("");
+
+        SwingUtilities.invokeLater(() -> {
+            if (remember && !txtUsername.getText().isEmpty()) {
+                txtPassword.requestFocusInWindow();
+                txtPassword.selectAll();
+            } else {
+                txtUsername.requestFocusInWindow();
+            }
+        });
     }
 }

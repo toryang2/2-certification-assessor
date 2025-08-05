@@ -19,8 +19,8 @@ public class AdvancedLogger {
                 logDir.mkdirs();
             }
 
-            // Set up a file handler
-            FileHandler fileHandler = new FileHandler("logs/application.log", true);
+            // Set up a file handler with no rotation
+            FileHandler fileHandler = new FileHandler("logs/application.log", /* limit */ 0, /* count */ 1, /* append */ true);
             fileHandler.setFormatter(new SimpleFormatter());
             fileHandler.setLevel(Level.ALL);
 

@@ -216,5 +216,12 @@
         </Property>
       </Properties>
     </Component>
+    <Component class="javax.swing.JLabel" name="labelContactNo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Contact No."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtContactNo">
+    </Component>
   </SubComponents>
 </Form>

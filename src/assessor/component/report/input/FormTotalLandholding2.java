@@ -13,16 +13,23 @@ import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.*;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.*;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.logging.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
+import java.sql.*;
+import java.util.Arrays;
+import javax.swing.table.TableColumnModel;
+import com.formdev.flatlaf.FlatClientProperties;
+import java.util.ArrayList;
 
 /**
  *
@@ -61,7 +68,7 @@ public class FormTotalLandholding2 extends Form {
     private JLabel labelMandatoryMessage;
     private JTable inputTable;
     private DefaultTableModel inputTableModel;
-    private JButton btnAddRow, btnRemoveRow;
+    private java.util.List<String> tableColumns;
     
     public boolean isSaveSuccessful() {
         return saveSuccessful;
@@ -73,17 +80,13 @@ public class FormTotalLandholding2 extends Form {
         setupAmountField();
         setupReceiptNoField();
         applyUppercaseFilterToTextFields();
-        List<String> columns;
-        try {
-            columns = TotalLandholding_TableUtil.getColumnNames("reports_total_landholding");
-        } catch (Exception e) {
-            e.printStackTrace();
-            columns = List.of();
-        }
-        DefaultTableModel inputTableModel = new DefaultTableModel(columns.toArray(), 0);
-        inputTable = new JTable(inputTableModel);
-        add(new JScrollPane(inputTable), "span, growx, wrap");
-    
+        
+        // Ensure the report type exists in the database
+        DatabaseTotalLandholdingHelper.ensureReportTypeExists();
+        
+        // Initialize the table for report_sub_total_landholding
+        createInputTable();
+        
         new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         
         datePicker = new DatePicker();
@@ -108,47 +111,61 @@ public class FormTotalLandholding2 extends Form {
             labelMandatoryMessage.setVisible(false);
         });
         messageTimer.setRepeats(false);
-        removeAll();
         
         JPanel contentPanel = new JPanel(new MigLayout(
         "insets 20 30 20 30, gap 5 15",
-        "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100]", 
-        "[][][][][][][][][][][]"
+        "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100][70:70:70][100:100:100][50:50:50][50:50:50][50:50:50]", 
+        "[][][][][][][][][grow][][]"
         ));
+        
+        // Apply panel styling
+        contentPanel.putClientProperty(FlatClientProperties.STYLE, "arc:20;background:$Table.background;");
+        
         //Row 0: Title
-        contentPanel.add(labelTitle, "span 7, center, wrap");
+        contentPanel.add(labelTitle, "span 12, center, wrap");
         //Row 1: Marital Status
         JPanel maritalPanel = new JPanel(new MigLayout("gap 15, insets 0, align center"));
         maritalPanel.add(checkBoxSingle);
         maritalPanel.add(checkBoxMarried);
-        contentPanel.add(maritalPanel, "span 7, center, wrap");
+        contentPanel.add(maritalPanel, "span 12, center, wrap");
         //Row 2: Owner
         contentPanel.add(labelOwner, "cell 0 2");
         contentPanel.add(labelMandatoryOwner);
-        contentPanel.add(txtOwner, "cell 2 2 5 1, growx, pushx, w 100%");
+        contentPanel.add(txtOwner, "cell 2 2 10 1, growx, pushx, w 100%");
         
         contentPanel.add(labelSpouse, "cell 0 3");
-        contentPanel.add(txtSpouse, "cell 2 3 5 1, growx, pushx, w 100%");
+        contentPanel.add(txtSpouse, "cell 2 3 10 1, growx, pushx, w 100%");
         
         contentPanel.add(labelPurpose, "cell 0 4");
         contentPanel.add(labelMandatoryPurpose);
-        contentPanel.add(txtPurpose, "cell 2 4 5 1, growx, pushx, w 100%");
+        contentPanel.add(txtPurpose, "cell 2 4 3 1, growx, pushx");
+        contentPanel.add(labelAmount, "cell 5 4 3 1, split 2");
+        contentPanel.add(txtAmountPaid, "cell 5 4 3 1, growx");
+        contentPanel.add(labelReceiptNo, "cell 8 4 4 1, split 2");
+        contentPanel.add(txtReceiptNo, "cell 8 4 4 1, growx, wrap");
         
-        contentPanel.add(labelAmount, "cell 0 5");
-        contentPanel.add(txtAmountPaid, "cell 2 5 3 1, w 120");
-        contentPanel.add(labelReceiptNo, "cell 5 5");
-        contentPanel.add(txtReceiptNo, "cell 6 5, growx, wrap");
-        
-        contentPanel.add(labelDateIssued, "cell 0 6");
-        contentPanel.add(receiptDateIssuedPicker, "cell 2 6 2 1, w 120");
-        contentPanel.add(labelPlaceIssued, "cell 4 6");
-        contentPanel.add(txtPlaceIssued, "cell 5 6 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 5 5 1, split 2");
+        contentPanel.add(receiptDateIssuedPicker, "cell 0 5 5 1, growx");
+        contentPanel.add(labelPlaceIssued, "cell 5 5 7 1, split 2");
+        contentPanel.add(txtPlaceIssued, "cell 5 5 7 1, growx, wrap");
         
         // --- Save button logic ---
+        
+        // Add the table to the form in a scroll pane
+        JScrollPane tableScrollPane = new JScrollPane(inputTable);
+        
+        // Apply scroll pane styling
+        tableScrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
+        tableScrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
+        
+        contentPanel.add(tableScrollPane, "cell 0 6 12 1, grow, wrap"); // Span all columns
+        
         contentPanel.add(labelMandatoryMessage, "cell 0 7 4 1, left");
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> onSaveButtonClick());
-        contentPanel.add(btnSave, "span 7, right, wrap");
+        contentPanel.add(btnSave, "span 12, right, wrap");
         
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(contentPanel);
@@ -156,10 +173,12 @@ public class FormTotalLandholding2 extends Form {
         add(wrapper);
     }
     
+
+    
     private void initComponents() {
         labelOwner = new JLabel("Owner");
-        labelMandatoryOwner = new JLabel("<html><font color='red'>*</font></html>"); // or whatever indicator you want for mandatory
-        labelTitle = new JLabel("Total Landholding Form"); // or your preferred title
+        labelMandatoryOwner = new JLabel("<html><font color='red'>*</font></html>");
+        labelTitle = new JLabel("Total Landholding Form");
         labelSpouse = new JLabel("Spouse");
         labelPurpose = new JLabel("Purpose");
         labelMandatoryPurpose = new JLabel("<html><font color='red'>*</font></html>");
@@ -184,11 +203,302 @@ public class FormTotalLandholding2 extends Form {
         txtSignatory = new JTextField();
     }
     
+    // Create the input table for report_sub_total_landholding
+    private void createInputTable() {
+        // Get columns from the report_sub_total_landholding table
+        try {
+            tableColumns = TotalLandholding_TableUtil.getColumnNames("report_sub_total_landholding");
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to get columns from database, using default columns", e);
+            // Fallback to default columns for report_sub_total_landholding
+            tableColumns = Arrays.asList("rtlid", "td", "location", "lot_no", "total_area", "kind", "objid");
+        }
+
+        // Remove 'rtlid' and 'objid' from the UI table columns
+        tableColumns = tableColumns.stream()
+            .filter(col -> !col.equalsIgnoreCase("rtlid") && !col.equalsIgnoreCase("objid"))
+            .collect(java.util.stream.Collectors.toList());
+
+        // Create the table model
+        inputTableModel = new DefaultTableModel(tableColumns.toArray(), 0) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return String.class;
+            }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // All columns editable in UI (no rtlid/objid in UI)
+                return true;
+            }
+        };
+
+        // Create the table
+        inputTable = new JTable(inputTableModel);
+        
+        // Set table properties
+        inputTable.setFillsViewportHeight(true);
+        inputTable.setRowHeight(25);
+        // Only allow single row or single cell selection
+        inputTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        inputTable.setCellSelectionEnabled(false); // Allows single cell selection
+        inputTable.getTableHeader().setReorderingAllowed(false);
+        
+        // Add many empty rows to make table appear infinite
+        for (int i = 0; i < 50; i++) {
+            addEmptyRow();
+        }
+        
+        // Apply table styling
+        inputTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE,
+            "height:30;hoverBackground:null;pressedBackground:null;separatorColor:$TableHeader.background;");
+        inputTable.putClientProperty(FlatClientProperties.STYLE,
+            "rowHeight:30;showHorizontalLines:true;showVerticalLines:true;intercellSpacing:0,1;");
+        
+        // Set column widths based on column names
+        TableColumnModel columnModel = inputTable.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            String columnName = tableColumns.get(i).toLowerCase();
+            switch (columnName) {
+                case "td":
+                    columnModel.getColumn(i).setHeaderValue("Tax Declaration No.");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "location":
+                    columnModel.getColumn(i).setHeaderValue("Location");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "market_value":
+                    columnModel.getColumn(i).setHeaderValue("Market Value");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "total_area":
+                    columnModel.getColumn(i).setHeaderValue("Total Area");
+                    columnModel.getColumn(i).setPreferredWidth(80);
+                    columnModel.getColumn(i).setMaxWidth(80);
+                    columnModel.getColumn(i).setMinWidth(80);
+                    break;
+                case "kind":
+                    columnModel.getColumn(i).setHeaderValue("Kind");
+                    columnModel.getColumn(i).setPreferredWidth(180);
+                    columnModel.getColumn(i).setMaxWidth(180);
+                    columnModel.getColumn(i).setMinWidth(180);
+                    break;
+                default:
+                    columnModel.getColumn(i).setPreferredWidth(100);
+                    break;
+            }
+        }
+        
+        // Set up custom cell editors for specific columns
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            String columnName = tableColumns.get(i).toLowerCase();
+            
+            if (columnName.equals("total_area")) {
+                columnModel.getColumn(i).setCellEditor(new DefaultCellEditor(new JTextField()) {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                        JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                        
+                        // Set up document filter for this text field
+                        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+                            @Override
+                            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) 
+                                throws BadLocationException {
+                                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                String newText = currentText.substring(0, offset) + text + currentText.substring(offset);
+                                if (isValidDecimalInput(newText)) {
+                                    super.insertString(fb, offset, text, attr);
+                                }
+                            }
+                            
+                            @Override
+                            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+                                throws BadLocationException {
+                                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+                                if (isValidDecimalInput(newText)) {
+                                    super.replace(fb, offset, length, text, attrs);
+                                }
+                            }
+                            
+                            private boolean isValidDecimalInput(String text) {
+                                // Allow empty string
+                                if (text.isEmpty()) {
+                                    return true;
+                                }
+                                
+                                // Allow partial decimal input (will be formatted later)
+                                if (text.matches("^\\d{0,6}$") || text.matches("^\\d{0,6}\\.$") || text.matches("^\\d{0,6}\\.\\d{0,4}$")) {
+                                    return true;
+                                }
+                                
+                                return false;
+                            }
+                        });
+                        
+                        // Add focus listener to format the value when focus is lost
+                        textField.addFocusListener(new FocusAdapter() {
+                            @Override
+                            public void focusLost(FocusEvent e) {
+                                formatDecimalValue(textField);
+                            }
+                        });
+                        
+                        return textField;
+                    }
+                    
+                    @Override
+                    public Object getCellEditorValue() {
+                        JTextField textField = (JTextField) getComponent();
+                        formatDecimalValue(textField);
+                        return textField.getText();
+                    }
+                });
+            } else if (columnName.equals("location") || columnName.equals("lot_no") || columnName.equals("kind")) {
+                columnModel.getColumn(i).setCellEditor(new DefaultCellEditor(new JTextField()) {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                        JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                        
+                        // Set up document filter to convert to uppercase
+                        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+                            @Override
+                            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) 
+                                throws BadLocationException {
+                                super.insertString(fb, offset, text.toUpperCase(), attr);
+                            }
+                            
+                            @Override
+                            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+                                throws BadLocationException {
+                                super.replace(fb, offset, length, text.toUpperCase(), attrs);
+                            }
+                        });
+                        
+                        return textField;
+                    }
+                });
+            }
+        }
+    }
+    
+    // Get table values
+    private String getTableValue(int row, int col) {
+        Object value = inputTableModel.getValueAt(row, col);
+        return value != null ? value.toString().trim() : "";
+    }
+    
+    // Add empty row to table
+    private void addEmptyRow() {
+        int columnCount = inputTableModel.getColumnCount();
+        Object[] rowData = new Object[columnCount];
+        
+        // Initialize with empty values, rtlid will be set during save
+        for (int i = 0; i < columnCount; i++) {
+            String columnName = inputTableModel.getColumnName(i).toLowerCase();
+            if (columnName.equals("rtlid")) {
+                rowData[i] = ""; // Will be set during save
+            } else {
+                rowData[i] = "";
+            }
+        }
+        
+        inputTableModel.addRow(rowData);
+    }
+    
+    // Prepare table data for saving to database
+    private List<Map<String, Object>> prepareTableData(String parentObjid) {
+        List<Map<String, Object>> tableData = new ArrayList<>();
+        int rowCount = inputTableModel.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            Map<String, Object> rowData = new HashMap<>();
+            
+            // Get column names and values dynamically
+            for (int col = 0; col < inputTableModel.getColumnCount(); col++) {
+                String columnName = inputTableModel.getColumnName(col);
+                String value = getTableValue(i, col);
+                
+                if (columnName.equalsIgnoreCase("rtlid")) {
+                    // Use the parent objid as foreign key
+                    rowData.put("rtlid", parentObjid);
+                } else if (columnName.equalsIgnoreCase("total_area")) {
+                    // Convert area to numeric
+                    if (!value.isEmpty()) {
+                        try {
+                            rowData.put(columnName, Double.parseDouble(value));
+                        } catch (NumberFormatException e) {
+                            rowData.put(columnName, null);
+                        }
+                    } else {
+                        rowData.put(columnName, null);
+                    }
+                } else {
+                    rowData.put(columnName, value);
+                }
+            }
+            
+            tableData.add(rowData);
+        }
+        
+        return tableData;
+    }
+    
+    // Format decimal value to always have 4 decimal places
+    private void formatDecimalValue(JTextField textField) {
+        String text = textField.getText().trim();
+        
+        if (text.isEmpty()) {
+            return;
+        }
+        
+        try {
+            // Handle different input formats
+            if (text.matches("^\\d+$")) {
+                // Just digits (e.g., "123") -> add ".0000"
+                textField.setText(text + ".0000");
+            } else if (text.matches("^\\d+\\.$")) {
+                // Digits with decimal point (e.g., "123.") -> add "0000"
+                textField.setText(text + "0000");
+            } else if (text.matches("^\\d+\\.\\d+$")) {
+                // Digits with decimal (e.g., "123.4") -> pad with zeros
+                String[] parts = text.split("\\.");
+                String wholePart = parts[0];
+                String decimalPart = parts[1];
+                
+                // Pad decimal part with zeros to make it 4 digits
+                while (decimalPart.length() < 4) {
+                    decimalPart += "0";
+                }
+                
+                // Truncate if more than 4 decimal places
+                if (decimalPart.length() > 4) {
+                    decimalPart = decimalPart.substring(0, 4);
+                }
+                
+                textField.setText(wholePart + "." + decimalPart);
+            }
+        } catch (Exception e) {
+            // If formatting fails, leave the text as is
+            logger.log(Level.WARNING, "Error formatting decimal value: " + text, e);
+        }
+    }
+
+
+    
     private void applyUppercaseFilterToTextFields() {
         UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
         JTextField[] textFields = {
-//            txtTemp,
-//            txtTemp
+            txtOwner,
+            txtSpouse,
+            txtPurpose,
+            txtPlaceIssued
         };
         for (JTextField textField : textFields) {
             ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
@@ -199,35 +509,29 @@ public class FormTotalLandholding2 extends Form {
         try {
             handleAmountFocusLost();
             logger.log(Level.INFO, "Starting save action...");
-            
+
             if (validateInput()) {
                 logger.log(Level.INFO, "Input validation passed");
-                
+
                 Map<String, Object> reportData = new HashMap<>();
                 // Add signatory
-                saveAutocompleteValue("txtPlaceIssued", txtPlaceIssued.getText().trim());
-                
                 String signatory = DatabaseTotalLandholdingHelper.getAssessorName(1);
                 if (signatory != null) {
                     reportData.put("signatory", signatory);
-                    logger.log(Level.INFO, "Signatory found : {0}", signatory);
                 } else {
                     logger.log(Level.WARNING, "No default assessor configured");
-                    JOptionPane.showMessageDialog(this,
-                            "Default assessor not configured.",
-                            "Configuration Warning",
-                            JOptionPane.WARNING_MESSAGE);
                 }
+
                 String userInitials = SessionManager.getInstance().getUserInitials();
                 if (userInitials != null) {
                     reportData.put("user_initials", userInitials);
-                } else {
-                    logger.log(Level.WARNING, "User initial not found");
                 }
+
                 if (datePicker.getSelectedDate() != null) {
                     reportData.put("receipt_date_issued", datePicker.getSelectedDate());
                 }
-                // Collect data from your form fields
+
+                // Collect data from form fields
                 reportData.put("marital_status", getMaritalStatus());
                 reportData.put("owner", txtOwner.getText());
                 reportData.put("spouse", txtSpouse.getText());
@@ -237,20 +541,40 @@ public class FormTotalLandholding2 extends Form {
                 reportData.put("amount_paid", getAmountPaid());
                 reportData.put("receipt_no", getReceiptNumber());
                 reportData.put("place_issued", txtPlaceIssued.getText());
-                // Add other fields as needed, matching your database column names
 
-                // Save to DB
-                boolean success = DatabaseTotalLandholdingHelper.saveReport("Total Landholding", reportData);
+                // Save main report first - this will generate the objid
+                boolean mainSaved = DatabaseTotalLandholdingHelper.saveReport("Total Landholding", reportData);
 
-                // Show result
-                if (success) {
-                    JOptionPane.showMessageDialog(this, "Saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    saveSuccessful = true;
-                    if (saveCallBack != null) {
-                        saveCallBack.accept(true);
+                if (mainSaved) {
+                    logger.log(Level.INFO, "Main report saved successfully");
+                    
+                    // Get the generated objid from the main report
+                    String generatedObjid = DatabaseTotalLandholdingHelper.getLastGeneratedObjid();
+                    
+                    if (generatedObjid != null) {
+                        logger.log(Level.INFO, "Retrieved generated objid: {0}", generatedObjid);
+                        
+                        // Prepare table data for saving
+                        List<Map<String, Object>> tableData = prepareTableData(generatedObjid);
+                        
+                        // Save table data to sub-table using the foreign key relationship
+                        int savedRows = DatabaseTotalLandholdingHelper.saveTableDataWithForeignKey(generatedObjid, tableData);
+
+                        JOptionPane.showMessageDialog(this, "Saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        saveSuccessful = true;
+                        if (saveCallBack != null) {
+                            saveCallBack.accept(true);
+                        }
+                        
+                        // Clear all fields after successful save
+                        clearAllFields();
+                    } else {
+                        logger.log(Level.SEVERE, "Failed to retrieve generated objid");
+                        JOptionPane.showMessageDialog(this, 
+                            "Failed to retrieve report ID. Please try again.",
+                            "System Error",
+                            JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Failed to save. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (Exception ex) {
@@ -258,6 +582,8 @@ public class FormTotalLandholding2 extends Form {
             handleSaveError(ex);
         }
     }
+    
+
     
     private String getMaritalStatus() {
         if (checkBoxMarried.isSelected()) return "MARRIED";
@@ -282,7 +608,7 @@ public class FormTotalLandholding2 extends Form {
                 long numberValue = ((Number) receiptValue).longValue();
                 return numberValue == 0L ? null : String.valueOf(numberValue);
             }
-            return null; // Or return ""; if you prefer an empty string instead of null
+            return null;
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error processing receipt number", ex);
             throw new RuntimeException("Invalid receipt number", ex);
@@ -331,7 +657,7 @@ public class FormTotalLandholding2 extends Form {
 
             private boolean isValid(String text) {
                 if (!text.startsWith("₱")) return false;
-                String numericPart = text.substring(1).replace(",", ""); // Allow commas by ignoring them in validation
+                String numericPart = text.substring(1).replace(",", "");
                 return numericPart.matches("^\\d*(\\.\\d*)?$");
             }
             
@@ -343,7 +669,6 @@ public class FormTotalLandholding2 extends Form {
                     // Handle empty case
                     if (text.isEmpty()) {
                         txtAmountPaid.setText("₱");
-                        
                         return;
                     }
 
@@ -360,7 +685,6 @@ public class FormTotalLandholding2 extends Form {
                             NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
                             integerPart = nf.format(num);
                         } catch (NumberFormatException e) {
-                            // Fallback to unformatted if invalid number
                             integerPart = text.split("\\.")[0];
                         }
                     }
@@ -403,20 +727,9 @@ public class FormTotalLandholding2 extends Form {
                 }
             }
         });
-        txtAmountPaid.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                handleAmountFocusGained();
-            }
-
-            @Override
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                handleAmountFocusLost();
-            }
-        });
     }
     
-        private void handleAmountFocusGained() {
+    private void handleAmountFocusGained() {
         if (txtAmountPaid.getText().equals("₱0.00")) {
             txtAmountPaid.setText("₱.00");
             txtAmountPaid.setCaretPosition(1);
@@ -574,5 +887,42 @@ public class FormTotalLandholding2 extends Form {
             if (field.getText().trim().isEmpty()) count++;
         }
         return count;
+    }
+    
+    // Clear all form fields after successful save
+    private void clearAllFields() {
+        // Clear form text fields
+        txtOwner.setText("");
+        txtSpouse.setText("");
+        txtPurpose.setText("");
+        txtAmountPaid.setText("₱0.00");
+        txtReceiptNo.setValue(null);
+        txtPlaceIssued.setText("");
+        
+        datePicker.clearSelectedDate();
+        
+        // Reset date picker - clear the receiptDateIssuedPicker field
+        try {
+            receiptDateIssuedPicker.setText("");
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Could not clear date picker field", e);
+        }
+        
+        // Reset checkboxes
+        checkBoxSingle.setSelected(false);
+        checkBoxMarried.setSelected(false);
+        
+        // Clear table data
+        inputTableModel.setRowCount(0);
+        
+        // Add empty rows back to table
+        for (int i = 0; i < 50; i++) {
+            addEmptyRow();
+        }
+        
+        // Reset focus to first field
+        txtOwner.requestFocus();
+        
+        logger.log(Level.INFO, "All form fields cleared after successful save");
     }
 }

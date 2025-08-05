@@ -4,6 +4,7 @@ public class SessionManager {
     private static SessionManager instance;
     private String loggedInUsername;
     private String userInitials;
+    private String userFullName;
     private int accessLevel = -1; // 0 = user, 1 = admin
 
     // Private constructor to prevent direct instantiation
@@ -33,6 +34,15 @@ public class SessionManager {
 
     public void setUserInitials(String initials) {
         this.userInitials = initials;
+    }
+    
+    // Getter and Setter for userInitials
+    public String getFullName() {
+        return userFullName;
+    }
+
+    public void setFullName(String name) {
+        this.userFullName = name;
     }
     
     public int getAccessLevel() {

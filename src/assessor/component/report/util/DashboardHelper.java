@@ -33,7 +33,7 @@ public class DashboardHelper {
 
     public static int getTodayClientsServed() {
         final String SQL = "SELECT COUNT(*) AS today_total FROM reports "
-                          + "WHERE DATE(CertificationDate) = CURDATE()";
+                          + "WHERE DATE(certification_date) = CURDATE()";
                           
         try (Connection conn = DriverManager.getConnection(
                 ConfigHelper.getDbUrl(),
@@ -51,7 +51,7 @@ public class DashboardHelper {
     
     public static int getYesterdayClientsServed() {
         final String SQL = "SELECT COUNT(*) AS yesterday_total FROM reports "
-                          + "WHERE DATE(CertificationDate) = CURDATE() - INTERVAL 1 DAY";
+                          + "WHERE DATE(certification_date) = CURDATE() - INTERVAL 1 DAY";
 
         try (Connection conn = DriverManager.getConnection(
                 ConfigHelper.getDbUrl(),
@@ -70,10 +70,10 @@ public class DashboardHelper {
 public static TimeTableXYDataset getDailyClientsDataset() {
     TimeTableXYDataset dataset = new TimeTableXYDataset();
     String seriesName = "Clients Served";
-    final String SQL = "SELECT CertificationDate, CertificationTime, COUNT(*) AS count " +
+    final String SQL = "SELECT certification_date, certification_time, COUNT(*) AS count " +
                        "FROM reports " +
-                       "GROUP BY CertificationDate, CertificationTime " +
-                       "ORDER BY CertificationDate, CertificationTime";
+                       "GROUP BY certification_date, certification_time " +
+                       "ORDER BY certification_date, certification_time";
 
         try (Connection conn = DriverManager.getConnection(
                  ConfigHelper.getDbUrl(), 
@@ -83,8 +83,8 @@ public static TimeTableXYDataset getDailyClientsDataset() {
              ResultSet rs = stmt.executeQuery(SQL)) {
 
             while (rs.next()) {
-            java.sql.Date certDate = rs.getDate("CertificationDate");
-            java.sql.Time certTime = rs.getTime("CertificationTime");
+            java.sql.Date certDate = rs.getDate("certification_date");
+            java.sql.Time certTime = rs.getTime("certification_time");
             if (certDate != null && certTime != null) {
                 // Combine date and time
                 long datetime = certDate.getTime() + certTime.getTime();

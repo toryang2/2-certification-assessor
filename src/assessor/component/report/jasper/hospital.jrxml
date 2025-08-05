@@ -23,80 +23,84 @@
 	</style>
 	<parameter name="SelectedIDs" class="java.lang.List"/>
 	<query language="sql"><![CDATA[SELECT id,
-	`MaritalStatus`,
-	`ParentGuardian`,
-	`ParentGuardian2`,
+	`marital_status`,
+	`parent_guardian`,
+	`parent_guardian_2`,
     /* New computed column */
     CASE 
-        WHEN `ParentGuardian2` IS NOT NULL AND TRIM(`ParentGuardian2`) <> ''
-        THEN CONCAT(COALESCE(`ParentGuardian`, ''), ' AND ', `ParentGuardian2`)
-        ELSE COALESCE(`ParentGuardian`, '')
-    END AS `ParentDisplay`,
-	`ParentSexIfSingle`,
-	`Barangay`,
-	`Patient`,
-	`Hospital`,
-	`Relationship`,
-	`HospitalAddress`,
-	`CertificationDate`,
-	`CertificationTime`,
-	`AmountPaid`,
-	`ReceiptNo`,
-	`ReceiptDateIssued`,
-	`PlaceIssued`,
-	`Type`,
-	`Guardian`,
-	`userInitials`,
-	`Signatory`
+        WHEN `parent_guardian_2` IS NOT NULL AND TRIM(`parent_guardian_2`) <> ''
+        THEN CONCAT(COALESCE(`parent_guardian`, ''), ' AND ', `parent_guardian_2`)
+        ELSE COALESCE(`parent_guardian`, '')
+    END AS `parent_display`,
+	`parent_sex_if_single`,
+	`barangay`,
+	`patient`,
+	`hospital`,
+	`relationship`,
+	`hospital_address`,
+	`certification_date`,
+	`certification_time`,
+	`amount_paid`,
+	`receipt_no`,
+	`receipt_date_issued`,
+	`place_issued`,
+	`type`,
+	`guardian`,
+	`user_initials`,
+	`signatory`
 FROM certificationdb.reports
 WHERE $X{IN, id, SelectedIDs}]]></query>
-	<field name="MaritalStatus" class="java.lang.String">
+	<field name="marital_status" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="MaritalStatus"/>
 		<property name="com.jaspersoft.studio.field.name" value="MaritalStatus"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value=""/>
 	</field>
-	<field name="ParentGuardian" class="java.lang.String"/>
-	<field name="ParentGuardian2" class="java.lang.String"/>
-	<field name="ParentDisplay" class="java.lang.String"/>
-	<field name="ParentSexIfSingle" class="java.lang.String"/>
-	<field name="Barangay" class="java.lang.String"/>
-	<field name="Patient" class="java.lang.String"/>
-	<field name="Hospital" class="java.lang.String"/>
-	<field name="Relationship" class="java.lang.String"/>
-	<field name="HospitalAddress" class="java.lang.String"/>
-	<field name="CertificationDate" class="java.sql.Date"/>
-	<field name="CertificationTime" class="java.sql.Time"/>
-	<field name="AmountPaid" class="java.lang.String"/>
-	<field name="ReceiptNo" class="java.lang.String"/>
-	<field name="ReceiptDateIssued" class="java.sql.Date"/>
-	<field name="PlaceIssued" class="java.lang.String"/>
-	<field name="Type" class="java.lang.String"/>
-	<field name="Guardian" class="java.lang.String"/>
-	<field name="userInitials" class="java.lang.String"/>
-	<field name="Signatory" class="java.lang.String"/>
+	<field name="parent_guardian" class="java.lang.String"/>
+	<field name="parent_guardian_2" class="java.lang.String"/>
+	<field name="parent_display" class="java.lang.String"/>
+	<field name="parent_sex_if_single" class="java.lang.String"/>
+	<field name="barangay" class="java.lang.String"/>
+	<field name="patient" class="java.lang.String"/>
+	<field name="hospital" class="java.lang.String"/>
+	<field name="relationship" class="java.lang.String"/>
+	<field name="hospital_address" class="java.lang.String"/>
+	<field name="certification_date" class="java.sql.Date"/>
+	<field name="certification_time" class="java.sql.Time"/>
+	<field name="amount_paid" class="java.lang.String"/>
+	<field name="receipt_no" class="java.lang.String"/>
+	<field name="receipt_date_issued" class="java.sql.Date"/>
+	<field name="place_issued" class="java.lang.String"/>
+	<field name="type" class="java.lang.String"/>
+	<field name="guardian" class="java.lang.String"/>
+	<field name="user_initials" class="java.lang.String"/>
+	<field name="signatory" class="java.lang.String"/>
 	<background height="214" splitType="Stretch"/>
-	<title height="71" splitType="Stretch">
+	<title height="67" splitType="Stretch">
 		<element kind="frame" uuid="4ba5b306-2a93-4ff1-bf1c-24aa5cda4036" x="0" y="0" width="443" height="60">
 			<element kind="staticText" uuid="f1931209-6297-4723-b540-3b616fcc399b" x="0" y="10" width="443" height="50" fontName="Bookman Old Style" fontSize="14.0" hTextAlign="Center">
 				<text><![CDATA[Republic of the Philippines
 PROVINCE OF BUKIDNON
 Municipality of Kitaotao]]></text>
 			</element>
-			<element kind="image" uuid="32d31038-a3a6-463a-bcf8-f41d01a38add" x="0" y="10" width="50" height="50">
+			<element kind="image" uuid="32d31038-a3a6-463a-bcf8-f41d01a38add" x="0" y="-5" width="70" height="70">
 				<expression><![CDATA["assessor/component/report/jasper/icon/kitaotao.png"]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</element>
-			<element kind="image" uuid="50c18bab-3416-4296-873a-103a70967c2f" x="393" y="10" width="50" height="50">
+			<element kind="image" uuid="50c18bab-3416-4296-873a-103a70967c2f" x="373" y="-5" width="70" height="70">
 				<expression><![CDATA["assessor/component/report/jasper/icon/bagongpilipinas.png"]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
 			</element>
 			<element kind="line" uuid="d8fd2dd8-f9a7-45a9-99fb-d677a8574455" x="0" y="65" width="443" height="2"/>
 		</element>
 	</title>
 	<pageHeader splitType="Stretch"/>
 	<columnHeader height="70" splitType="Stretch">
-		<element kind="staticText" uuid="4542ecbb-4d61-4270-b170-5ed16e7518a2" x="0" y="12" width="443" height="18" fontName="Berlin Sans FB" fontSize="12.0" hTextAlign="Center">
+		<element kind="staticText" uuid="4542ecbb-4d61-4270-b170-5ed16e7518a2" x="0" y="12" width="443" height="20" fontName="Berlin Sans FB" fontSize="18.0" hTextAlign="Center">
 			<text><![CDATA[OFFICE OF THE MUNICIPAL ASSESSOR]]></text>
 		</element>
-		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="35" fontName="Bernard MT Condensed" fontSize="28.0" hTextAlign="Center">
+		<element kind="staticText" uuid="b1dc0259-7f47-4360-9776-a2e6bb966a26" positionType="FixRelativeToBottom" x="0" y="35" width="443" height="30" fontName="Bernard MT Condensed" fontSize="24.0" hTextAlign="Center">
 			<text><![CDATA[CERTIFICATION]]></text>
 		</element>
 	</columnHeader>
@@ -106,54 +110,54 @@ Municipality of Kitaotao]]></text>
 				<paragraph firstLineIndent="20"/>
 				<expression><![CDATA["THIS IS TO CERTIFY that " + 
 "<style isBold=\"true\">" + 
-(assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}).isEmpty() 
+(assessor.component.report.StatusUtil.getParentStatus($F{marital_status}).isEmpty() 
     ? "" 
-    : assessor.component.report.StatusUtil.getParentStatus($F{MaritalStatus}) + " "
-) + " " +  $F{ParentDisplay} + "</style> " + 
-" of Barangay " + "<style isBold=\"true\">" + $F{Barangay} + "</style> " +
+    : assessor.component.report.StatusUtil.getParentStatus($F{marital_status}) + " "
+) + " " +  $F{parent_display} + "</style> " + 
+" of Barangay " + "<style isBold=\"true\">" + $F{barangay} + "</style> " +
 " this municipality has no declared real property ownership such as building, land, and machinery as far as our record is concerned.\n\n" +
 
 "THIS CERTIFICATION is being done to facilitate their request for financial/medical assistance of " + 
 (
   // Condition 1: Married + spouse = blank
-  ($F{ParentSexIfSingle} != null && $F{ParentSexIfSingle}.equals("Married") &&
-   $F{Relationship} != null && $F{Relationship}.equalsIgnoreCase("spouse"))
+  ($F{parent_sex_if_single} != null && $F{parent_sex_if_single}.equals("Married") &&
+   $F{relationship} != null && $F{relationship}.equalsIgnoreCase("spouse"))
     ? ""
     // Condition 2: Male/Female + self = blank
     : (
-      ($F{ParentSexIfSingle} != null &&
-       ($F{ParentSexIfSingle}.equalsIgnoreCase("Male") || $F{ParentSexIfSingle}.equalsIgnoreCase("Female")) &&
-       $F{Relationship} != null && $F{Relationship}.equalsIgnoreCase("self"))
+      ($F{parent_sex_if_single} != null &&
+       ($F{parent_sex_if_single}.equalsIgnoreCase("Male") || $F{parent_sex_if_single}.equalsIgnoreCase("Female")) &&
+       $F{relationship} != null && $F{relationship}.equalsIgnoreCase("self"))
         ? ""
     // Condition 3: Live-in + husband/wife or self = blank
     	: (
-      	  ($F{ParentSexIfSingle} != null &&
-      		 $F{ParentSexIfSingle}.equalsIgnoreCase("Live-in") &&
-      		 $F{Relationship} != null && 
-      		 ($F{Relationship}.equalsIgnoreCase("husband") || $F{Relationship}.equalsIgnoreCase("wife") || 
-      		 	$F{Relationship}.equalsIgnoreCase("self")
+      	  ($F{parent_sex_if_single} != null &&
+      		 $F{parent_sex_if_single}.equalsIgnoreCase("Live-in") &&
+      		 $F{relationship} != null && 
+      		 ($F{relationship}.equalsIgnoreCase("husband") || $F{relationship}.equalsIgnoreCase("wife") || 
+      		 	$F{relationship}.equalsIgnoreCase("self")
       		 ))
       		  ? ""
         // Default case
        		 : (
-          		  (assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}).isEmpty()
+          		  (assessor.component.report.GrammarHelper.getPossessive($F{parent_sex_if_single}).isEmpty()
              		 ? ""
-           	   		 : assessor.component.report.GrammarHelper.getPossessive($F{ParentSexIfSingle}) + " "
+           	   		 : assessor.component.report.GrammarHelper.getPossessive($F{parent_sex_if_single}) + " "
             		) +
            		 (
-              		($F{Relationship} == null || $F{Relationship}.isEmpty())
+              		($F{relationship} == null || $F{relationship}.isEmpty())
                 	? ""
-                	: $F{Relationship} + " "
+                	: $F{relationship} + " "
                 	)
             	 )
           )
     )
 ) + 
-"  <style isBold=\"true\">" + $F{Patient} + " (Patient)</style> at " + $F{Hospital} + " – " + assessor.component.report.TextNormalizer.toProperCase($F{HospitalAddress}) + ".\n\n" +
+"  <style isBold=\"true\">" + $F{patient} + " (Patient)</style> at " + $F{hospital} + " – " + assessor.component.report.TextNormalizer.toProperCase($F{hospital_address}) + ".\n\n" +
 
 "Done and Given this " + 
-	( ($F{CertificationDate} != null) ? 
-  		assessor.component.report.DateUtil.formatCertificationDate($F{CertificationDate}) : 
+	( ($F{certification_date} != null) ? 
+  		assessor.component.report.DateUtil.formatCertificationDate($F{certification_date}) : 
  	   "[DATE MISSING]"
 	) +
 " at the Office of the Municipal Assessor, Poblacion, Kitaotao, Bukidnon."
@@ -164,10 +168,10 @@ Municipality of Kitaotao]]></text>
 			<element kind="staticText" uuid="24cccd8c-34bd-4632-8b8f-36b325f835f2" x="0" y="40" width="443" height="15" fontName="Bookman Old Style" fontSize="12.0">
 				<text><![CDATA[TO WHOM IT MAY CONCERN:]]></text>
 			</element>
-			<element kind="textField" uuid="4fc81109-490d-4764-9b03-9a3d5028d34d" x="220" y="320" width="223" height="13" fontName="Bookman Old Style" linkType="None" linkTarget="Self" bold="true" hTextAlign="Center">
-				<expression><![CDATA[$F{Signatory}]]></expression>
+			<element kind="textField" uuid="4fc81109-490d-4764-9b03-9a3d5028d34d" x="200" y="325" width="243" height="15" markup="styled" fontName="Bookman Old Style" fontSize="12.0" linkType="None" linkTarget="Self" bold="true" hTextAlign="Center">
+				<expression><![CDATA[($F{signatory} == null ? "" : $F{signatory}.replaceFirst("(,.*)", "<style isBold=\"false\"><font size='10'>$1</font></style>"))]]></expression>
 			</element>
-			<element kind="staticText" uuid="fd42a9f8-83dd-4b93-bc43-d524f4871537" x="220" y="333" width="223" height="16" fontName="Bookman Old Style" fontSize="12.0" hTextAlign="Center">
+			<element kind="staticText" uuid="fd42a9f8-83dd-4b93-bc43-d524f4871537" x="200" y="340" width="243" height="16" fontName="Bookman Old Style" fontSize="12.0" hTextAlign="Center">
 				<text><![CDATA[Municipal Assessor]]></text>
 			</element>
 			<element kind="staticText" uuid="d26b1d10-c2eb-458b-a4d1-b4c3db4d391f" x="0" y="370" width="70" height="70" fontName="Times New Roman" fontSize="12.0">
@@ -178,21 +182,21 @@ Place Issued
 Prepared By]]></text>
 			</element>
 			<element kind="textField" uuid="1f2580b7-9386-4721-a0bc-bb6a23d0ac41" x="70" y="370" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
-				<expression><![CDATA[": " + $F{AmountPaid}]]></expression>
+				<expression><![CDATA[": " + $F{amount_paid}]]></expression>
 			</element>
 			<element kind="textField" uuid="2069c0a1-a46e-45cb-b569-3b6acb68c6e8" x="70" y="384" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
-				<expression><![CDATA[": " + ($F{ReceiptNo} == null ? "" : $F{ReceiptNo})]]></expression>
+				<expression><![CDATA[": " + ($F{receipt_no} == null ? "" : $F{receipt_no})]]></expression>
 			</element>
 			<element kind="textField" uuid="da4d1b1a-bd2b-46c5-86f9-83498f8a3193" x="70" y="398" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="false">
-				<expression><![CDATA[": " + ($F{ReceiptDateIssued} == null ? "" : $F{ReceiptDateIssued})]]></expression>
+				<expression><![CDATA[": " + ($F{receipt_date_issued} 	!= null ? new java.text.SimpleDateFormat("MM/dd/yyyy").format($F{receipt_date_issued}) : " ")]]></expression>
 			</element>
 			<element kind="textField" uuid="d549d644-60bd-44cb-85cc-29cd15e0b8e4" x="70" y="412" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
-				<expression><![CDATA[": " + ($F{PlaceIssued} == null ? "" : $F{PlaceIssued})]]></expression>
+				<expression><![CDATA[": " + ($F{place_issued} == null ? "" : $F{place_issued})]]></expression>
 			</element>
 			<element kind="textField" uuid="24d06479-0959-4133-b63d-620f92afde50" x="70" y="426" width="373" height="14" fontName="Times New Roman" fontSize="12.0" blankWhenNull="true">
-				<expression><![CDATA[": " + $F{userInitials} +" " + (($F{CertificationDate} != null) ? new java.text.SimpleDateFormat("MM/dd/yyyy").format($F{CertificationDate}) : "[DATE MISSING]")  + " @ " + 
-( ($F{CertificationTime} != null) ? 
-    new java.text.SimpleDateFormat("hh:mm a").format($F{CertificationTime}) : 
+				<expression><![CDATA[": " + $F{user_initials} +" " + (($F{certification_date} != null) ? new java.text.SimpleDateFormat("MM/dd/yyyy").format($F{certification_date}) : "[DATE MISSING]")  + " @ " + 
+( ($F{certification_time} != null) ? 
+    new java.text.SimpleDateFormat("hh:mm a").format($F{certification_time}) : 
     "[TIME MISSING]"
 )]]></expression>
 			</element>

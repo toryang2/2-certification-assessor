@@ -8,6 +8,8 @@ import net.miginfocom.swing.MigLayout;
 import raven.modal.Drawer;
 import raven.modal.ModalDialog;
 import assessor.component.AccentColorIcon;
+import static assessor.component.report.util.DatabaseAddHospitalHelper.insertHospitalAddressToDatabase;
+import static assessor.component.report.util.DatabaseAddHospitalHelper.insertHospitalNameToDatabase;
 import static assessor.component.report.util.DatabaseReportTypeHelper.insertReportTypeToDatabase;
 import assessor.component.report.util.UppercaseDocumentFilter;
 import assessor.system.Form;
@@ -47,7 +49,67 @@ public class FormSetting extends Form {
         add(tabbedPane, "gapy 1 0");
         add(createThemes());
         tabbedPane.addTab("Report Types", createReportTypeOption());
+        tabbedPane.addTab("Add Hospital Name", addHospitalOption());
     }    
+    
+    private JPanel addHospitalOption() {
+        JPanel panel = new JPanel(new MigLayout("wrap 2, insets 10", "[][grow]"));
+        
+        panel.setBorder(new TitledBorder("Add hospital information on the cache list"));
+        
+        JTextField txtAddHospital = new JTextField(15);
+        JTextField txtAddHospitalAddress = new JTextField(15);
+        
+        JButton btnAdd = new JButton("Add");
+        
+        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
+        ((AbstractDocument) txtAddHospital.getDocument()).setDocumentFilter(uppercaseFilter);
+        ((AbstractDocument) txtAddHospitalAddress.getDocument()).setDocumentFilter(uppercaseFilter);
+        
+        // Define action logic separately so both can reuse
+        ActionListener addAction = e -> {
+            String addHospital = txtAddHospital.getText().trim();
+            String addHospitalAddress = txtAddHospitalAddress.getText().trim();
+            if (addHospital.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Hospital name cannot be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (addHospitalAddress.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Hospital address cannot be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            try {
+                insertHospitalNameToDatabase(addHospital);
+                insertHospitalAddressToDatabase(addHospitalAddress);
+                JOptionPane.showMessageDialog(this, "Hospital information added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                txtAddHospital.setText("");
+                txtAddHospitalAddress.setText("");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to add new hospital information to the cache: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        };
+        
+        btnAdd.addActionListener(addAction);
+        
+        //Trigger add when pressing Enter
+        txtAddHospital.addActionListener(e -> btnAdd.doClick());
+        txtAddHospitalAddress.addActionListener(e -> btnAdd.doClick());
+        
+        panel.add(new JLabel("Hospital Name:"));
+        
+        panel.add(txtAddHospital, "wmin 200, wmax 250");
+        
+        panel.add(new JLabel("Hospital Address:"));
+        
+        panel.add(txtAddHospitalAddress, "wmin 200, wmax 250");
+        
+        panel.add(new JLabel()); // empty cell for alignment
+        
+        panel.add(btnAdd, "align left");
+        
+        return panel;
+    }
     
     private JPanel createReportTypeOption() {
         JPanel panel = new JPanel(new MigLayout("wrap 2, insets 10", "[][grow]")); // two columns: label + field/button

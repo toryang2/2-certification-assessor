@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         init();
+        FormManager.install(this);
     }
 
     private void init() {

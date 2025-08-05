@@ -6,6 +6,22 @@ import java.security.*;
 import java.sql.*;
 
 public class Authenticator {
+    private static volatile boolean isInitialized = false;
+    
+        // Add this method
+    public static void initializeDriver() {
+        if (isInitialized) return;
+        
+        try (Connection connection = DriverManager.getConnection(
+                ConfigHelper.getDbUrl(),
+                ConfigHelper.getDbUser(),
+                ConfigHelper.getDbPassword())) {
+            System.out.println("Database connection pre-initialized");
+            isInitialized = true;
+        } catch (SQLException e) {
+            System.err.println("Pre-initialization warning: " + e.getMessage());
+        }
+    }
 
     public static boolean authenticate(String username, String password) {
         String hashedPassword = hashPassword(password);
@@ -18,7 +34,7 @@ public class Authenticator {
                 ConfigHelper.getDbUser(),
                 ConfigHelper.getDbPassword())) {
 
-            String query = "SELECT initial, accesslevel FROM sys_login_credentials WHERE username = ? AND password = ?";
+            String query = "SELECT initial, accesslevel, name FROM sys_login_credentials WHERE username = ? AND password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
                 preparedStatement.setString(2, hashedPassword);
@@ -29,9 +45,11 @@ public class Authenticator {
                         SessionManager.getInstance().setLoggedInUsername(username);
                         SessionManager.getInstance().setUserInitials(resultSet.getString("initial"));
                         SessionManager.getInstance().setAccessLevel(resultSet.getInt("accesslevel"));
+                        SessionManager.getInstance().setFullName(resultSet.getString("name"));
 
                         // Debugging: Print stored values
                         System.out.println("Session - Username: " + SessionManager.getInstance().getLoggedInUsername());
+                        System.out.println("Session - Full Name: " + SessionManager.getInstance().getFullName());
                         System.out.println("Session - User Initials: " + SessionManager.getInstance().getUserInitials());
                         System.out.println("Session - Access Level: " + SessionManager.getInstance().getAccessLevel());
 

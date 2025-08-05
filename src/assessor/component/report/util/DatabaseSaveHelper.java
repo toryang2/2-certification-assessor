@@ -143,7 +143,7 @@ public class DatabaseSaveHelper {
     public static boolean saveReport(String reportType, Map<String, Object> data) {
         logger.log(Level.INFO, "Saving report of type: {0} with data: {1}", new Object[]{reportType, data});
         try (Connection conn = getConnection()) {
-            data.put("Type", reportType);
+            data.put("type", reportType);
             data.put("objid", generateFullObjId(conn, reportType)); // Add objid before saving
 
             String sql = buildInsertQuery(data.keySet());
@@ -161,7 +161,7 @@ public class DatabaseSaveHelper {
     }
 
     public static int getNewestRecordId(String reportType) {
-        String sql = "SELECT MAX(id) AS newestId FROM " + TABLE_NAME + " WHERE Type = ?";
+        String sql = "SELECT MAX(id) AS newestId FROM " + TABLE_NAME + " WHERE type = ?";
         logger.log(Level.FINE, "Querying newest record ID for report type: {0}", reportType);
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

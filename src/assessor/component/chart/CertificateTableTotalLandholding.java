@@ -25,7 +25,7 @@ public class CertificateTableTotalLandholding extends Form {
     public JTable certificationTable;
     private final DefaultTableModel tableModel;
     private java.util.List<Runnable> dataLoadListeners = new CopyOnWriteArrayList<>();
-    public final ReportLoader reportLoader;
+    public final ReportLoaderTotalLandholding reportLoader;
     private JCheckBox selectAllCheckBox;
 
     public CertificateTableTotalLandholding() {
@@ -56,7 +56,7 @@ public class CertificateTableTotalLandholding extends Form {
                 return super.getColumnClass(columnIndex);
             }
         };
-        reportLoader = new ReportLoader(tableModel, new ReportLoader.LoadCallbacks() {
+        reportLoader = new ReportLoaderTotalLandholding(tableModel, new ReportLoaderTotalLandholding.LoadCallbacks() {
             @Override
             public void onLoadStart() {
                 Logger.getLogger(CertificateTableTotalLandholding.class.getName()).log(Level.INFO, "Loading data...");
@@ -268,21 +268,21 @@ public class CertificateTableTotalLandholding extends Form {
                 case "id":
                     column.setHeaderValue("ID");
                     setColumnWidth(column, 50, 50, 50); break;
-                case "patient":
-                    column.setHeaderValue("Patient");
+                case "owner":
+                    column.setHeaderValue("Owner");
                     setColumnWidth(column, 300, 300, 300); break;
-                case "relationship":
+                case "":
                     setColumnWidth(column, 80, 80, 80); break;
-                case "hospital":
-                    column.setHeaderValue("Hospital");
+                case "spouse":
+                    column.setHeaderValue("Spouse");
                     setColumnWidth(column, 300, 300, 300); break;
-                case "hospitaladdress":
-                    column.setHeaderValue("Hospital Address");
+                case "purpose":
+                    column.setHeaderValue("Purpose");
                     column.setCellRenderer(new UppercaseRenderer());
                     setColumnWidth(column, 200, 200, 200); break;
                 case "barangay":
                     setColumnWidth(column, 120, 120, 120); break;
-                case "maritalstatus":
+                case "marital_status":
                     column.setHeaderValue("Marital Status");
                     setColumnWidth(column, 90, 90, 90); break;
                 case "parentguardian":
@@ -443,7 +443,7 @@ public class CertificateTableTotalLandholding extends Form {
                 Object rawId = certificationTable.getValueAt(row, idColumn);
 
                 if (rawId != null && Integer.parseInt(rawId.toString()) == recordId) {
-                    int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Patient").getModelIndex());
+                    int patientColumn = certificationTable.convertColumnIndexToModel(certificationTable.getColumn("Owner").getModelIndex());
                     Object rawPatientName = certificationTable.getValueAt(row, patientColumn);
 
                     if (rawPatientName != null) {

@@ -99,7 +99,7 @@ public class ReportLoaderTotalLandholding {
                         colOffset = 1;
                     }
                     for (int i = 0; i < colCount; i++) {
-                        columns[i + colOffset] = meta.getColumnName(i + 1);
+                        columns[i + colOffset] = meta.getColumnLabel(i + 1);
                     }
                     logger.log(Level.INFO, "Retrieved {0} columns from database.", colCount);
 
@@ -203,7 +203,7 @@ public class ReportLoaderTotalLandholding {
                 ConfigHelper.getDbUser(),
                 ConfigHelper.getDbPassword());
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM reports")) {
+             ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM reports_total_landholding")) {
             if (rs.next()) {
                 long maxID = rs.getLong(1);
                 if (maxID != lastMaxId) {

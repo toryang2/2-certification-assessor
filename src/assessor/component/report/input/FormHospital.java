@@ -9,6 +9,7 @@ import assessor.component.chart.*;
 import assessor.component.report.util.*;
 import static assessor.component.report.util.DatabaseSaveHelper.saveAutocompleteValue;
 import assessor.system.*;
+import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
 import java.math.BigDecimal;
@@ -91,9 +92,16 @@ public class FormHospital extends Form {
         comboParentSex.setSelectedIndex(0);
     }
     
+    private void init() {
+        txtContactNo.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "09XXXXXXXXX");
+        txtPlaceIssued.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "MTO KITAOTAO");
+        ((AbstractDocument) txtContactNo.getDocument()).setDocumentFilter(new NumericDocumentFilter());
+    }
+    
     public FormHospital() {
         setLayout(new MigLayout("al center center, insets 0"));
         initComponents();
+        init();
 //        setupActions();
         setupAmountField();
         setupReceiptNoField();
@@ -334,21 +342,24 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         contentPanel.add(labelHospitalAddress, "cell 0 7");
         contentPanel.add(jLabelMandatoryHospitalAddress);
         contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
+        
+        contentPanel.add(labelContactNo, "cell 0 8");
+        contentPanel.add(txtContactNo, "cell 2 8 5 1, growx, pushx, w 100%, wrap");
 
         // Row 8: Amount & Receipt
-        contentPanel.add(labelAmount, "cell 0 8");
-        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
-        contentPanel.add(labelReceiptNo, "cell 5 8");
-        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
+        contentPanel.add(labelAmount, "cell 0 9");
+        contentPanel.add(txtAmount, "cell 2 9 3 1, w 120");
+        contentPanel.add(labelReceiptNo, "cell 5 9");
+        contentPanel.add(txtReceiptNo, "cell 6 9, growx, wrap");
 
         // Row 9: Date & Place
-        contentPanel.add(labelDateIssued, "cell 0 9");
-        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
-        contentPanel.add(labelPlaceIssued, "cell 4 9");
-        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
+        contentPanel.add(labelDateIssued, "cell 0 10");
+        contentPanel.add(receiptDateIssuedPicker, "cell 2 10 2 1, w 120"); // Using DatePicker
+        contentPanel.add(labelPlaceIssued, "cell 4 10");
+        contentPanel.add(txtPlaceIssued, "cell 5 10 2 1, growx, wrap");
 
         // Row 10: Buttons
-        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
+        contentPanel.add(jLabelMandatoryMessage,"cell 0 11 3 1, left");
 //        buttonPanel.add(btnSave);
 //        buttonPanel.add(btnCancel);
 //        contentPanel.add(buttonPanel, "span 6, right");
@@ -742,6 +753,7 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         reportData.put("Hospital", txtHospital.getText());
         reportData.put("HospitalAddress", txtHospitalAddress.getText());
         reportData.put("PlaceIssued", txtPlaceIssued.getText());
+        reportData.put("contact_no", txtContactNo.getText());
 
         // Add parent sex
         reportData.put("ParentSexIfSingle", getParentSex());
@@ -955,6 +967,8 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         receiptDateIssuedPicker = new javax.swing.JTextField();
         jLabelMandatoryMessage = new javax.swing.JLabel();
         txtReceiptNo = new javax.swing.JFormattedTextField();
+        labelContactNo = new javax.swing.JLabel();
+        txtContactNo = new javax.swing.JTextField();
 
         labelTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1058,6 +1072,10 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
 
         txtReceiptNo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         add(txtReceiptNo);
+
+        labelContactNo.setText("Contact No.");
+        add(labelContactNo);
+        add(txtContactNo);
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboRelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRelationshipActionPerformed
@@ -1081,6 +1099,7 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
     private javax.swing.JLabel jLabelMandatoryParentStudent;
     private javax.swing.JLabel labelAddress;
     private javax.swing.JLabel labelAmount;
+    private javax.swing.JLabel labelContactNo;
     private javax.swing.JLabel labelDateIssued;
     private javax.swing.JLabel labelHospital;
     private javax.swing.JLabel labelHospitalAddress;
@@ -1094,6 +1113,7 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
     private javax.swing.JTextField receiptDateIssuedPicker;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAmount;
+    private javax.swing.JTextField txtContactNo;
     private javax.swing.JTextField txtHospital;
     private javax.swing.JTextField txtHospitalAddress;
     public javax.swing.JTextField txtParentGuardian;

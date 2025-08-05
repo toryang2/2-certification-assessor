@@ -184,7 +184,7 @@ public class FormDashboard2 extends Form {
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/income.svg", DefaultChartTheme.getColor(1)), "Total Income");
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/expense.svg", DefaultChartTheme.getColor(2)), "Total Expense");
         cardBox.addCardItem(createIcon("assessor/icons/dashboard/profit.svg", DefaultChartTheme.getColor(3)), "Last Profit");
-        panel.add(cardBox);
+//        panel.add(cardBox);
         panelLayout.add(panel);
     }
 

@@ -56,14 +56,15 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
 public SimpleHeaderData getSimpleHeaderData() {
     // Retrieve the username and initials from SessionManager
     String username = SessionManager.getInstance().getLoggedInUsername();
+    String fullName = SessionManager.getInstance().getFullName();
     if (username != null) {
         username = username.toLowerCase();
     }
     String userInitials = SessionManager.getInstance().getUserInitials();
 
     // Debugging: Verify fetched values
-    System.out.println("getSimpleHeaderData - Username: " + username);
-    System.out.println("getSimpleHeaderData - User Initials: " + userInitials);
+//    System.out.println("getSimpleHeaderData - Username: " + username);
+//    System.out.println("getSimpleHeaderData - User Initials: " + userInitials);
     
     if ("admin".equalsIgnoreCase(userInitials)) {
         userInitials = "admin";
@@ -83,12 +84,12 @@ public SimpleHeaderData getSimpleHeaderData() {
 
     return new SimpleHeaderData()
             .setIcon(icon)
-            .setTitle("Welcome back!")
-            .setDescription(
-    username != null && !username.isEmpty() && userInitials != null && !userInitials.isEmpty()
-        ? username + " (" + userInitials + ")"
-        : (username != null ? username : "Default Username")
-);
+            .setTitle("<html><span style='font-weight:normal; font-size:11pt;'>Welcome back!</span><br>" + fullName + "</html>");
+//            .setDescription(
+//    username != null && !username.isEmpty() && userInitials != null && !userInitials.isEmpty()
+//        ? username + " (" + userInitials + ")"
+//        : (username != null ? username : "Default Username")
+//);
 }
 
     private void changeAvatarIconBorderColor(AvatarIcon icon) {
@@ -197,20 +198,23 @@ private static void showPhilHealthModal() {
         MenuOption simpleMenuOption = new MenuOption();
 
         MenuItem items[] = new MenuItem[]{
-                new Item.Label("MAIN"),
-                new Item("Dashboard", "dashboard.svg", FormDashboard.class),
+                new Item("Dashboard", "dashboard.svg")
+                        .subMenu("No Landholding", FormDashboard.class)
+                        .subMenu("Total Landholding", FormDashboard2.class),
+//            
+//                new Item("No Landholding", "dashboard.svg", FormDashboard.class),
+//                new Item.Label("------------------------------------------------------"),
 //                new Item("Total Landholding", "dashboard.svg", FormDashboard2.class),
-                new Item.Label("No Landholding"),
+//                new Item.Label("Input:"),
 //                new Item("Forms", "forms.svg")
 //                        .subMenu(new Item("Input")
 //                                    .subMenu("TestInput", FormInput.class)
-//                                    .subMenu("Hospitalization", HospitalizationForm.class)
 //                        )
 ////                        .subMenu("Table", FormTable.class)
 //                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
                 new Item("Hospital", "forms.svg", FormHospital.class),
-                new Item("PhilHealth", "forms.svg", FormPhilHealth2.class),
-//                new Item("Total Landholding", "forms.svg", FormTotalLandholding2.class),
+//                new Item("PhilHealth", "forms.svg", FormPhilHealth2.class),
+                new Item("Total Landholding", "forms.svg", FormTotalLandholding2.class),
 //                new Item("Scholarship", "forms.svg", FormScholarship.class),
 //                new Item("Components", "components.svg")
 //                        .subMenu("Modal", FormModal.class)
@@ -282,7 +286,7 @@ private static void showPhilHealthModal() {
 //                    FormManager.showAbout();
 //                    return;
 //                }else 
-                if (i == 3) {
+                if (i == 5) {
                     action.consume();
                     FormManager.logout();
                     return;

@@ -103,6 +103,9 @@ public class FormManager {
         frame.getContentPane().removeAll();
         Form login = getLogin();
         login.formCheck();
+        if (login instanceof Login) {
+            ((Login) login).clearFields();
+        }
         frame.getContentPane().add(login);
         FORMS.clear();
         frame.repaint();
@@ -125,6 +128,9 @@ public class FormManager {
         frame.getContentPane().removeAll();
         Form login = getLogin();
         login.formCheck();
+        if (login instanceof Login) {
+            ((Login) login).clearFields();
+        }
         frame.getContentPane().add(login);
         FORMS.clear();
         frame.repaint();

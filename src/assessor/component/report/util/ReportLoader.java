@@ -72,9 +72,9 @@ public class ReportLoader {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                String query = "SELECT id AS ID, Type AS Type, Patient, Hospital," // Patient, ParentGuardian, ParentGuardian2, re add if necessary
-                        + " HospitalAddress, Barangay, CertificationDate, CertificationTime,"
-                        + " AmountPaid, ReceiptNo, ReceiptDateIssued, PlaceIssued, Signatory, LegalAge"
+                String query = "SELECT id AS ID, type AS Type, patient, hospital," // Patient, ParentGuardian, ParentGuardian2, re add if necessary
+                        + " hospital_address, barangay, contact_no, certification_date, certification_time,"
+                        + " amount_paid, receipt_no, receipt_date_issued, place_issued, signatory, legal_age"
                         + " FROM reports ORDER BY id DESC";
                 logger.log(Level.INFO, "Executing SQL query: {0}", query);
 
