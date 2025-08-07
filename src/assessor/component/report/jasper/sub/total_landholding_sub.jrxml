@@ -2,7 +2,7 @@
 <jasperReport name="total_landholding_sub" language="java" pageWidth="460" pageHeight="842" columnWidth="460" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="06af4c2e-3f06-4899-9ac9-b5f9e7d3413e">
 	<parameter name="rtlid" class="java.lang.String"/>
 	<query language="sql"><![CDATA[SELECT td, location, market_value, total_area, kind
-FROM report_sub_total_landholding 
+FROM report_sub_total_landholding
 WHERE rtlid = $P{rtlid}
 ORDER BY td]]></query>
 	<field name="td" class="java.lang.String"/>

@@ -79,7 +79,7 @@ public class CertificateTableTotalLandholding extends Form {
     private Component createTab() {
         tabb = new JTabbedPane();
         tabb.putClientProperty(FlatClientProperties.STYLE, "tabType:card");
-        tabb.addTab("Certification",
+        tabb.addTab("Total Landholding Certification",
             new FlatSVGIcon("assessor/icons/certificate.svg").derive(16, 16),
             createBorder(createCertificationTable())
         );
@@ -267,60 +267,56 @@ public class CertificateTableTotalLandholding extends Form {
             switch (colName) {
                 case "id":
                     column.setHeaderValue("ID");
-                    setColumnWidth(column, 50, 50, 50); break;
+                    setColumnWidth(column, 0, 0, 0); break;
+                case "requestor":
+                    column.setHeaderValue("Requestor");
+                    setColumnWidth(column, 200, 200, 200); break;
                 case "owner":
                     column.setHeaderValue("Owner");
-                    setColumnWidth(column, 300, 300, 300); break;
-                case "":
-                    setColumnWidth(column, 80, 80, 80); break;
+                    setColumnWidth(column, 200, 200, 200); break;
                 case "spouse":
                     column.setHeaderValue("Spouse");
-                    setColumnWidth(column, 300, 300, 300); break;
+                    setColumnWidth(column, 200, 200, 200); break;
                 case "purpose":
                     column.setHeaderValue("Purpose");
                     column.setCellRenderer(new UppercaseRenderer());
-                    setColumnWidth(column, 200, 200, 200); break;
+                    setColumnWidth(column, 300, 300, 300); break;
+                case "contact_no":
+                    column.setHeaderValue("Contact No.");
+                    setColumnWidth(column, 100, 100, 00); break;
                 case "barangay":
                     setColumnWidth(column, 120, 120, 120); break;
                 case "marital_status":
                     column.setHeaderValue("Marital Status");
                     setColumnWidth(column, 90, 90, 90); break;
-                case "parentguardian":
-                    column.setHeaderValue("Parent");
-                    setColumnWidth(column, 300, 300, 300); break;
-                case "parentguardian2":
-                    column.setHeaderValue("Parent");
-                    setColumnWidth(column, 300, 300, 300); break;
-                case "parentsexifsingle":
-                    setColumnWidth(column, 0, 0, 0); column.setResizable(false); break;
-                case "certificationdate":
-                    column.setHeaderValue("Certification Date");
+                case "requested_date":
+                    column.setHeaderValue("Requested Date");
                     column.setCellRenderer(new DateRenderer());
                     setColumnWidth(column, 120, 120, 120); break;
-                case "certificationtime":
-                    column.setHeaderValue("Certification Time");
+                case "requested_time":
+                    column.setHeaderValue("Requested Time");
                     column.setCellRenderer(new TimeRenderer());
                     setColumnWidth(column, 100, 120, 120); break;
                 case "type":
-                    setColumnWidth(column, 100, 100, 100); break;
-                case "amountpaid":
+                    setColumnWidth(column, 120, 120, 120); break;
+                case "amount_paid":
                     column.setHeaderValue("Amount Paid");
                     column.setCellRenderer(new CurrencyRenderer());
                     setColumnWidth(column, 80, 80, 80); break;
-                case "receiptno":
+                case "receipt_no":
                     column.setHeaderValue("Receipt No.");
                     column.setCellRenderer(new RedTextRenderer());
                     setColumnWidth(column, 80, 80, 80); break;
-                case "receiptdateissued":
+                case "receipt_date_issued":
                     column.setHeaderValue("Date Issued");
                     column.setCellRenderer(new DateRenderer());
                     setColumnWidth(column, 100, 100, 100); break;
-                case "placeissued":
+                case "place_issued":
                     column.setHeaderValue("Place Issued");
                     setColumnWidth(column, 100, 100, 100); break;
-                case "legalage":
-                    column.setHeaderValue("Legal Age");
-                    setColumnWidth(column, 70, 70, 70); break;
+                case "signatory":
+                    column.setHeaderValue("Signatory");
+                    setColumnWidth(column, 250, 250, 250); break;
                 default:
                     setColumnWidth(column, 250, 250, 250);
             }
@@ -512,7 +508,7 @@ public class CertificateTableTotalLandholding extends Form {
         return tabHeader;
     }
 
-    public void setMultiColumnFilter(String patient, String barangay, String hospital, String type) {
+    public void setMultiColumnFilter(String owner, String barangay, String spouse, String requestor, String type) {
         if (certificationTable != null && certificationTable.getRowSorter() instanceof TableRowSorter) {
             TableRowSorter<?> sorter = (TableRowSorter<?>) certificationTable.getRowSorter();
 
@@ -522,26 +518,31 @@ public class CertificateTableTotalLandholding extends Form {
                     JTable table = certificationTable;
                     boolean matches = true;
 
-                    int patientCol = getColIndex(table, "PATIENT");
-                    int barangayCol = getColIndex(table, "Barangay");
-                    int hospitalCol = getColIndex(table, "HOSPITAL");
-                    int typeCol = getColIndex(table, "TYPE");
+                    int ownerCol = getColIndex(table, "Owner");
+                    int barangayCol = getColIndex(table, "barangay");
+                    int spouseCol = getColIndex(table, "Spouse");
+                    int requestorCol = getColIndex(table, "Requestor");
+                    int typeCol = getColIndex(table, "type");
 
-                    if (patientCol >= 0 && patient != null && !patient.isEmpty()) {
-                        Object val = entry.getValue(patientCol);
-                        matches &= val != null && val.toString().toLowerCase().contains(patient.toLowerCase());
+                    if (ownerCol >= 0 && owner != null && !owner.isEmpty()) {
+                        Object val = entry.getValue(ownerCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(owner.toLowerCase());
                     }
                     if (barangayCol >= 0 && barangay != null && !barangay.isEmpty()) {
                         Object val = entry.getValue(barangayCol);
                         matches &= val != null && val.toString().toLowerCase().contains(barangay.toLowerCase());
                     }
-                    if (hospitalCol >= 0 && hospital != null && !hospital.isEmpty()) {
-                        Object val = entry.getValue(hospitalCol);
-                        matches &= val != null && val.toString().toLowerCase().contains(hospital.toLowerCase());
+                    if (spouseCol >= 0 && spouse != null && !spouse.isEmpty()) {
+                        Object val = entry.getValue(spouseCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(spouse.toLowerCase());
                     }
                     if (typeCol >= 0 && type != null && !type.isEmpty()) {
                         Object val = entry.getValue(typeCol);
                         matches &= val != null && val.toString().toLowerCase().contains(type.toLowerCase());
+                    }
+                    if (requestorCol >= 0 && requestor != null && !requestor.isEmpty()) {
+                        Object val = entry.getValue(requestorCol);
+                        matches &= val != null && val.toString().toLowerCase().contains(requestor.toLowerCase());
                     }
                     return matches;
                 }
@@ -554,9 +555,11 @@ public class CertificateTableTotalLandholding extends Form {
                 }
             };
 
-            if ((patient == null || patient.isEmpty()) &&
+            if (
+                (requestor == null || requestor.isEmpty()) &&
+                (owner == null || owner.isEmpty()) &&
+                (spouse == null || spouse.isEmpty()) &&
                 (barangay == null || barangay.isEmpty()) &&
-                (hospital == null || hospital.isEmpty()) &&
                 (type == null || type.isEmpty())) {
                 sorter.setRowFilter(null);
             } else {

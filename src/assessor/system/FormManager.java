@@ -8,7 +8,9 @@ import assessor.auth.Login;
 import assessor.auth.SessionManager;
 import assessor.auth.SignUp;
 import assessor.component.About;
+import assessor.component.chart.CertificateTableTotalLandholding;
 import assessor.forms.FormDashboard;
+import assessor.forms.FormDashboardTotalLandholding;
 import assessor.utils.UndoRedo;
 import java.util.*;
 
@@ -38,6 +40,9 @@ public class FormManager {
         if (form != current) {
             if (current instanceof CertificateTable) {
                 ((CertificateTable) current).formDispose();
+            }
+            if (current instanceof CertificateTableTotalLandholding) {
+                ((CertificateTableTotalLandholding) current).formDispose();
             }
             FORMS.add(form);
 //        if (form != FORMS.getCurrent()) {
@@ -89,6 +94,9 @@ public class FormManager {
         // Ensure CertificateTable is created fresh and data is loaded
         FormDashboard formDashboard = new FormDashboard();
         ACTIVE_FORMS.put(FormDashboard.class, formDashboard);
+        formDashboard.formRefresh();
+        FormDashboardTotalLandholding formDashboard2 = new FormDashboardTotalLandholding();
+        ACTIVE_FORMS.put(FormDashboardTotalLandholding.class, formDashboard2);
         formDashboard.formRefresh();
 
         Drawer.setSelectedItemClass(FormDashboard.class);

@@ -55,7 +55,7 @@ public class FormDashboard extends Form {
         createTitle();
         createPanelLayout();
         createCard();
-        createFilterPanel();
+//        createFilterPanel();
         createChart();
         formRefresh();
 //        createOtherChart();
@@ -204,10 +204,11 @@ public class FormDashboard extends Form {
     }
     
         // New: filter panel goes below cardbox, but above the chart
-    private void createFilterPanel() {
+    private JPanel createFilterPanelContent() {
         JPanel filterPanel = new JPanel(new MigLayout("insets 5 8 5 0", "[][]10[][]10[][]10[][]", "[]"));
         filterPanel.setOpaque(false);
 
+        JLabel labelTitle = new JLabel("Filter:");
         JLabel labelPatient = new JLabel("Patient:");
         filterPatientField = new JTextField(12);
         JLabel labelBarangay = new JLabel("Barangay:");
@@ -230,15 +231,19 @@ public class FormDashboard extends Form {
                 filterTypeField.addItem(typeset);
             }
         });
-
+        
+        // Apply uppercase filter to text fields
+        applyUppercaseFilterToTextFields();
+        
+        filterPanel.add(labelTitle, "wrap");
         filterPanel.add(labelPatient);
-        filterPanel.add(filterPatientField);
+        filterPanel.add(filterPatientField, "w 150");
         filterPanel.add(labelBarangay);
-        filterPanel.add(filterBarangayField);
+        filterPanel.add(filterBarangayField, "w 150");
         filterPanel.add(labelHospital);
-        filterPanel.add(filterHospitalField);
+        filterPanel.add(filterHospitalField, "w 150");
         filterPanel.add(labelType);
-        filterPanel.add(filterTypeField);
+        filterPanel.add(filterTypeField, "w 150");
 
         panelLayout.add(filterPanel);
 
@@ -284,6 +289,8 @@ public class FormDashboard extends Form {
                 );
             }
         });
+        
+        return filterPanel;
     }
     
     private String getSelectedBarangay() {
@@ -320,12 +327,20 @@ public class FormDashboard extends Form {
     }
 
 private void createChart() {
-    JPanel panel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
-
-        certificateTable = new CertificateTable();
-        FormManager.showForm(certificateTable);
+    JPanel panel = new JPanel(new BorderLayout());
     
-    panel.add(certificateTable, "grow, push");
+    // Create the chart panel
+    JPanel chartPanel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
+    certificateTable = new CertificateTable();
+    FormManager.showForm(certificateTable);
+    chartPanel.add(certificateTable, "grow, push");
+    
+    // Create the filter panel
+    JPanel filterPanel = createFilterPanelContent();
+    
+    // Add both panels to the main panel - chart takes center, filter takes south
+    panel.add(chartPanel, BorderLayout.CENTER);
+    panel.add(filterPanel, BorderLayout.SOUTH);
 
     panelLayout.add(panel, "grow, push");
 }
@@ -337,7 +352,7 @@ private void createChart() {
     private JPanel panelLayout;
     private CardBox cardBox;
     private JTextField filterPatientField, filterHospitalField;
-    private CertificateTable certificateTable;
+    public CertificateTable certificateTable;
     private JComboBox<String> filterBarangayField, filterTypeField;
 
     private TimeSeriesChart timeSeriesChart;

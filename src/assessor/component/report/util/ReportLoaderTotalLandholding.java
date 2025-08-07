@@ -72,9 +72,9 @@ public class ReportLoaderTotalLandholding {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                String query = "SELECT id AS ID, type AS Type, marital_status, owner, spouse, purpose,"
+                String query = "SELECT id AS ID, type AS Type, requestor, owner, spouse, marital_status, purpose, contact_no,"
                         + " requested_date, requested_time, amount_paid, receipt_no,"
-                        + " receipt_date_issued, place_issued"
+                        + " receipt_date_issued, place_issued, signatory"
                         + " FROM reports_total_landholding ORDER BY id DESC";
                 logger.log(Level.INFO, "Executing SQL query: {0}", query);
 

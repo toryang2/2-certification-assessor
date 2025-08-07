@@ -79,7 +79,7 @@ public class CertificateTable extends Form {
     private Component createTab() {
         tabb = new JTabbedPane();
         tabb.putClientProperty(FlatClientProperties.STYLE, "tabType:card");
-        tabb.addTab("Certification",
+        tabb.addTab("No Landholding Certification",
             new FlatSVGIcon("assessor/icons/certificate.svg").derive(16, 16),
             createBorder(createCertificationTable())
         );

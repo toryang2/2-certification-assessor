@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package assessor.component.report.input;
 
 import assessor.auth.SessionManager;
-import assessor.component.chart.*;
 import assessor.component.report.util.*;
 import static assessor.component.report.util.DatabaseSaveHelper.saveAutocompleteValue;
 import assessor.system.*;
-import java.awt.GridBagLayout;
+import assessor.component.chart.CertificateTableTotalLandholding;
+import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.time.*;
@@ -17,82 +13,98 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import javax.swing.JRootPane;
+import javax.swing.JComponent;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.*;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
-import java.util.logging.*;
-import raven.modal.component.SimpleModalBorder;
+import raven.modal.Drawer;
+import java.sql.*;
+import java.util.Arrays;
+import javax.swing.table.TableColumnModel;
+import com.formdev.flatlaf.FlatClientProperties;
+import java.util.ArrayList;
+import assessor.component.report.TextNormalizer;
+import assessor.forms.FormDashboardTotalLandholding;
+import assessor.menu.MyDrawerBuilder;
+import raven.modal.drawer.DrawerPanel;
+import raven.modal.Toast;
+import raven.modal.toast.option.ToastOption;
+import assessor.system.FormManager;
 
 /**
  *
- * @author Toryang
+ * @author user
  */
 public class FormTotalLandholding extends Form {
     private static final Logger logger = Logger.getLogger(FormTotalLandholding.class.getName());
-    
-    private Consumer<Boolean> saveCallback;
+    private Consumer<Boolean> saveCallBack;
     private DatePicker datePicker;
     private Timer messageTimer;
     private boolean saveSuccessful = false;
-
+    private JCheckBox checkBoxSingle;
+    private JCheckBox checkBoxMarried;
+    private JTextField txtMaritalStatus;
+    private JTextField txtOwner;
+    private JTextField txtSpouse;
+    private JTextField txtPurpose;
+    private JTextField txtAmountPaid;
+    private JFormattedTextField txtReceiptNo;
+    private JTextField txtPlaceIssued;
+    private JTextField txtRequestor;
+    private JTextField receiptDateIssuedPicker;
+    private JTextField txtContactNo;
+    private JLabel labelMaritalStatus;
+    private JLabel labelTitle;
+    private JLabel labelOwner;
+    private JLabel labelRequestor;
+    private JLabel labelMandatoryOwner;
+    private JLabel labelMandatoryRequestor;
+    private JLabel labelSpouse;
+    private JLabel labelPurpose;
+    private JLabel labelMandatoryPurpose;
+    private JLabel labelAmount;
+    private JLabel labelReceiptNo;
+    private JLabel labelDateIssued;
+    private JLabel labelPlaceIssued;
+    private JLabel labelMandatoryMessage;
+    private JLabel labelContactNo;
+    private JTable inputTable;
+    private DefaultTableModel inputTableModel;
+    private java.util.List<String> tableColumns;
+    
     public boolean isSaveSuccessful() {
         return saveSuccessful;
     }
     
-    private void applyUppercaseFilterToTextFields() {
-        // Create an instance of the UppercaseDocumentFilter
-        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
-
-        // Apply the filter to all relevant text fields
-        JTextField[] textFields = {
-            txtParentGuardian,
-            txtParentGuardian2,
-            txtPatientStudent,
-            txtAddress,
-            txtHospital,
-            txtHospitalAddress,
-            txtPlaceIssued
-        };
-
-        for (JTextField textField : textFields) {
-            ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
-        }
-    }
-    
-    private void updateRelationshipCombo(String maritalStatus, String gender) {
-        List<String> relationships = DatabaseSaveHelper.fetchRelationships(maritalStatus, gender);
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        for (String rel : relationships) model.addElement(rel);
-        comboRelationship.setModel(model);
-        if (model.getSize() > 0) comboRelationship.setSelectedIndex(0);
-    }
-
-    private void updateParentSexCombo() {
-        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Live-in", "Male", "Female"}));
-        comboParentSex.setSelectedIndex(0);
-    }
-    
     public FormTotalLandholding() {
-        setLayout(new MigLayout("al center center, insets 0"));
+        setLayout(new MigLayout("al, insets 0"));
         initComponents();
-//        setupActions();
         setupAmountField();
         setupReceiptNoField();
-        populateAddressCombo();
         applyUppercaseFilterToTextFields();
-
+        
+        checkBoxSingle.setSelected(true);
+        txtSpouse.setEnabled(false);
+        txtSpouse.setText("");
         JCheckBox[] maritalCheckboxes = {
             checkBoxMarried, 
-            checkBoxSingle, 
-            checkBoxGuardian
+            checkBoxSingle,
         };
-
-        // Add item listener to each checkbox
+        
         for (JCheckBox checkbox : maritalCheckboxes) {
             checkbox.addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -100,79 +112,23 @@ public class FormTotalLandholding extends Form {
                     for (JCheckBox other : maritalCheckboxes) {
                         if (other != e.getSource()) {
                             other.setSelected(false);
+                            txtRequestor.requestFocusInWindow();
+                            txtSpouse.setEnabled(false);
+                            txtSpouse.setText("");
                         }
                     }
-
+                    
                     // Update combos based on selection
                     if (checkbox == checkBoxMarried) {
-                        comboParentSex.setEnabled(false);
-                        txtParentGuardian2.setEnabled(true);
-                        txtParentGuardian2.setText("");
-                        labelParentGuardian.setText("Parent/ Guardian");
-                        labelParentGuardian2.setText("Parent/ Guardian");
-                        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Married"}));
-                        updateRelationshipCombo("Married", null);
                         SwingUtilities.invokeLater(() -> {
-                            txtParentGuardian.requestFocusInWindow();
-                        });
-                    } 
-                    else if (checkbox == checkBoxSingle) {
-                        comboParentSex.setEnabled(true);
-                        txtParentGuardian2.setText("");
-                        labelParentGuardian.setText("Requestor");
-                        updateParentSexCombo();
-                        
-                        // Remove existing listeners to avoid multiple triggers
-                        for (ActionListener al : comboParentSex.getActionListeners()) {
-                            comboParentSex.removeActionListener(al);
-                        }
-                        
-                        // When parent sex change, update relationships for selected sex:
-                        comboParentSex.addActionListener(evt -> {
-                            String gender = comboParentSex.getSelectedItem().toString();
-                            updateRelationshipCombo("Single", gender);
-                            
-                            // Enable ParentGuardian2 only if gender is Live-in
-                            if ("Live-in".equalsIgnoreCase(gender)) {
-                                txtParentGuardian2.setEnabled(true);
-                                labelParentGuardian2.setText("Requestor");
-                            } else {
-                                txtParentGuardian2.setEnabled(false);
-                                txtParentGuardian2.setText("");
-                                labelParentGuardian2.setText("");
-                            }
-                        });
-                        String gender = comboParentSex.getSelectedItem().toString();
-                        updateRelationshipCombo("Single", gender);
-                            if ("Live-in".equalsIgnoreCase(gender)) {
-                                txtParentGuardian2.setEnabled(true);
-                                labelParentGuardian2.setText("Requestor");
-                            } else {
-                                txtParentGuardian2.setEnabled(false);
-                                txtParentGuardian2.setText("");
-                                labelParentGuardian2.setText("");
-                            }
-                        SwingUtilities.invokeLater(() -> {
-                            txtParentGuardian.requestFocusInWindow();
-                        });
-                    }
-                    else if (checkbox == checkBoxGuardian) {
-                        comboParentSex.setEnabled(false);
-                        txtParentGuardian2.setEnabled(false);
-                        txtParentGuardian2.setText("");
-                        labelParentGuardian.setText("Guardian");
-                        labelParentGuardian2.setText("");
-                        comboParentSex.setModel(new DefaultComboBoxModel<>(new String[]{"Guardian"}));
-                        DefaultComboBoxModel<String> guardianModel = new DefaultComboBoxModel<>();
-                        guardianModel.addElement("Guardian");
-                        comboRelationship.setModel(guardianModel);
-                        SwingUtilities.invokeLater(() -> {
-                            txtParentGuardian.requestFocusInWindow();
+                            txtRequestor.requestFocusInWindow();
+                            txtSpouse.setEnabled(true);
+                            txtSpouse.setText("");
                         });
                     }
                 }
                 else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    // Check if any checkbox is still selected
+                    // Check of any checkbox is still selected
                     boolean anySelected = false;
                     for (JCheckBox cb : maritalCheckboxes) {
                         if (cb.isSelected()) {
@@ -180,30 +136,22 @@ public class FormTotalLandholding extends Form {
                             break;
                         }
                     }
-
                     // If none selected, force Married to be checked
                     if (!anySelected) {
-                        checkBoxMarried.setSelected(true);
+                        checkBoxSingle.setSelected(true);
+                        txtRequestor.requestFocusInWindow();
                     }
                 }
             });
         }
-
-        new AutocompleteSupport(txtHospital, "txtHospital");
-        new AutocompleteSupport(txtHospitalAddress, "txtHospitalAddress");
-        new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
-
-        // Initial state setup
-        checkBoxMarried.setSelected(true);
-        comboParentSex.setEnabled(false);
-        comboParentSex.setSelectedItem("Married");
-//        comboRelationship.setModel(relationshipModel);
-        comboRelationship.setSelectedIndex(0);
-        comboAddress.setSelectedIndex(0);
         
-        SwingUtilities.invokeLater(() -> {
-            txtParentGuardian.requestFocusInWindow();
-        });
+        // Ensure the report type exists in the database
+        DatabaseTotalLandholdingHelper.ensureReportTypeExists();
+        
+        // Initialize the table for report_sub_total_landholding
+        createInputTable();
+        
+        new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         
         datePicker = new DatePicker();
         JFormattedTextField receiptDateIssuedPicker = new JFormattedTextField();
@@ -212,127 +160,572 @@ public class FormTotalLandholding extends Form {
         datePicker.setDateFormat("MM/dd/yyyy");
         datePicker.setUsePanelOption(true);
         datePicker.setCloseAfterSelected(true);
-        datePicker.setDateSelectionAble(new DateSelectionAble() {
+        datePicker.setDateSelectionAble(new DateSelectionAble(){
             @Override
             public boolean isDateSelectedAble(LocalDate localDate) {
                 return !localDate.isAfter(LocalDate.now());
             }
         });
         
-        jLabelMandatoryMessage.setVisible(false);
-        jLabelMandatoryParentGuardian.setVisible(false); 
-        jLabelMandatoryParentStudent.setVisible(false); 
-        jLabelMandatoryAddress.setVisible(false); 
-        jLabelMandatoryHospital.setVisible(false); 
-        jLabelMandatoryHospitalAddress.setVisible(false); 
-        jLabelMandatoryMessage.setVisible(false);
-            
-        messageTimer = new Timer(3000, e -> {
-            jLabelMandatoryMessage.setVisible(false);
-        });
-        messageTimer.setRepeats(false); // Only trigger once
+        labelMandatoryOwner.setVisible(false);
+        labelMandatoryRequestor.setVisible(false);
+        labelMandatoryPurpose.setVisible(false);
+        labelMandatoryMessage.setVisible(false);
         
-        removeAll();
-
-        // Set up MigLayout
+        messageTimer = new Timer(3000, e -> {
+            labelMandatoryMessage.setVisible(false);
+        });
+        messageTimer.setRepeats(false);
+        
         JPanel contentPanel = new JPanel(new MigLayout(
-            "insets 20 30 20 30, gap 5 15",
-            // 6-column layout: [labels][field1][field2][labels][field3][fill]
-            "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100]", 
-            "[][][][][][][][][][][]"
+        "insets 20 30 20 30, gap 5 15",
+        "[left][5:5:5][50:50:50][50:50:50][70:70:70][left][100:100:100][70:70:70][100:100:100][50:50:50][50:50:50][50:50:50]", 
+        "[][][][][][][][][grow][][]"
         ));
-
-        // Row 0: Title
-        contentPanel.add(labelTitle, "span 7, center, wrap");
-
-        // Row 1: Marital Status
+        
+        // Apply panel styling
+//        contentPanel.putClientProperty(FlatClientProperties.STYLE, "arc:20;background:$Table.background;");
+        
+        //Row 0: Title
+        contentPanel.add(labelTitle, "span 12, center, wrap");
+        //Row 1: Marital Status
         JPanel maritalPanel = new JPanel(new MigLayout("gap 15, insets 0, align center"));
-        maritalPanel.add(checkBoxMarried);
         maritalPanel.add(checkBoxSingle);
-        maritalPanel.add(checkBoxGuardian);
-        contentPanel.add(maritalPanel, "span 7, center, wrap");
-
-        // Row 2: Parent/Guardian
-        contentPanel.add(labelParentGuardian, "cell 0 2");
-        contentPanel.add(jLabelMandatoryParentGuardian);
-        contentPanel.add(txtParentGuardian, "cell 2 2 4 1, growx, pushx, w 100%");
-        contentPanel.add(comboParentSex, "cell 6 2, growx, pushx, w 100%, wrap");
-
-        // Row 3: Parent/Guardian 2
-        contentPanel.add(labelParentGuardian2, "cell 0 3");
-        contentPanel.add(txtParentGuardian2, "cell 2 3 5 1, growx, pushx, w 100%, wrap");
-
-        // Row 4: Patient/Student
-        contentPanel.add(labelPatientStudent);
-        contentPanel.add(jLabelMandatoryParentStudent);
-        contentPanel.add(txtPatientStudent, "cell 2 4 5 1, growx, pushx, w 100%, wrap");
-
-        // Row 5: Address
-        contentPanel.add(labelAddress);
-        contentPanel.add(jLabelMandatoryAddress);
-        contentPanel.add(comboAddress, "cell 2 5 3 1, growx, pushx, w 100%, wrap");
-        contentPanel.add(labelRelationship, "cell 5 5");
-        contentPanel.add(comboRelationship, "cell 6 5, growx, wrap");
-
-        // Row 6: Hospital
-        contentPanel.add(labelHospital, "cell 0 6");
-        contentPanel.add(jLabelMandatoryHospital);
-        contentPanel.add(txtHospital, "cell 2 6 5 1, growx, pushx, w 100%, wrap");
-
-        // Row 7: Hospital Address
-        contentPanel.add(labelHospitalAddress, "cell 0 7");
-        contentPanel.add(jLabelMandatoryHospitalAddress);
-        contentPanel.add(txtHospitalAddress, "cell 2 7 5 1, growx, pushx, w 100%, wrap");
-
-        // Row 8: Amount & Receipt
-        contentPanel.add(labelAmount, "cell 0 8");
-        contentPanel.add(txtAmount, "cell 2 8 3 1, w 120");
-        contentPanel.add(labelReceiptNo, "cell 5 8");
-        contentPanel.add(txtReceiptNo, "cell 6 8, growx, wrap");
-
-        // Row 9: Date & Place
-        contentPanel.add(labelDateIssued, "cell 0 9");
-        contentPanel.add(receiptDateIssuedPicker, "cell 2 9 2 1, w 120"); // Using DatePicker
-        contentPanel.add(labelPlaceIssued, "cell 4 9");
-        contentPanel.add(txtPlaceIssued, "cell 5 9 2 1, growx, wrap");
-
-        // Row 10: Buttons
-        contentPanel.add(jLabelMandatoryMessage,"cell 0 10 3 1, left");
-
+        maritalPanel.add(checkBoxMarried);
+        contentPanel.add(maritalPanel, "span 12, center, wrap");
+        //Row 2: Owner
+        contentPanel.add(labelRequestor, "cell 0 2");
+        contentPanel.add(labelMandatoryRequestor);
+        contentPanel.add(txtRequestor, "cell 2 2 10 1, growx, pushx, w 100%, wrap");
+        
+        contentPanel.add(labelOwner, "cell 0 3");
+        contentPanel.add(labelMandatoryOwner);
+        contentPanel.add(txtOwner, "cell 2 3 10 1, growx, pushx, w 100%, wrap");
+        
+        contentPanel.add(labelSpouse, "cell 0 4");
+        contentPanel.add(txtSpouse, "cell 2 4 10 1, growx, pushx, w 100%");
+        
+        contentPanel.add(labelPurpose, "cell 0 5");
+        contentPanel.add(labelMandatoryPurpose);
+        contentPanel.add(txtPurpose, "cell 2 5 12 1, growx, pushx, wrap");
+        
+        contentPanel.add(labelAmount, "cell 0 6");
+        contentPanel.add(txtAmountPaid, "cell 2 6 2 1, growx");
+        contentPanel.add(labelReceiptNo, "cell 4 6 4 1, split 2");
+        contentPanel.add(txtReceiptNo, "cell 4 6 4 1, growx, wrap");
+        
+        contentPanel.add(labelDateIssued, "cell 8 6 5 1, split 2");
+        contentPanel.add(receiptDateIssuedPicker, "cell 8 6 5 1, growx");
+        
+        contentPanel.add(labelPlaceIssued, "cell 0 7");
+        contentPanel.add(txtPlaceIssued, "cell 2 7 4 1, growx");
+        contentPanel.add(labelContactNo, "cell 6 7 2 1, split 2");
+        contentPanel.add(txtContactNo, "cell 6 7 2 1, growx, wrap");
+        
+        // --- Save button logic ---
+        
+        // Add the table to the form in a scroll pane
+        JScrollPane tableScrollPane = new JScrollPane(inputTable);
+        
+        // Apply scroll pane styling
+        tableScrollPane.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
+        tableScrollPane.getHorizontalScrollBar().putClientProperty(FlatClientProperties.STYLE,
+            "trackArc:$ScrollBar.thumbArc;trackInsets:3,3,3,3;thumbInsets:3,3,3,3;background:$Table.background;");
+        
+        contentPanel.add(tableScrollPane, "cell 0 8 12 1, grow, wrap"); // Span all columns
+        
+        contentPanel.add(labelMandatoryMessage, "cell 0 9 4 1, left");
+        JButton btnClear = new JButton("Clear");
+        btnClear.addActionListener(e -> clearAllFields());
+        contentPanel.add(btnClear, "span 12, right, split 2");
+        JButton btnSave = new JButton("Save");
+        btnSave.addActionListener(e -> onSaveButtonClick());
+        contentPanel.add(btnSave, "span 12, right, wrap");
+        
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(contentPanel);
         
         add(wrapper);
+        
+        // Add Enter key listener to the entire form after the form is fully initialized
+        SwingUtilities.invokeLater(() -> {
+            // Delay the setup to ensure the form is properly displayed and has a root pane
+            Timer setupTimer = new Timer(200, e -> {
+                setupEnterKeyListener();
+                ((Timer) e.getSource()).stop();
+            });
+            setupTimer.setRepeats(false);
+            setupTimer.start();
+        });
     }
     
-    private void populateAddressCombo() {
-        // Fetch barangay data from the database
-        List<String> barangays = DatabaseSaveHelper.fetchBarangays();
 
-        // Clear existing items in the combo box
-        comboAddress.removeAllItems();
-
-        // Add barangay names to the combo box
-        for (String barangay : barangays) {
-            comboAddress.addItem(barangay);
+    
+    private void initComponents() {
+        labelOwner = new JLabel("Owner");
+        labelRequestor = new JLabel("Requestor");
+        labelMandatoryOwner = new JLabel("<html><font color='red'>*</font></html>");
+        labelMandatoryRequestor = new JLabel("<html><font color='red'>*</font></html>");
+        labelTitle = new JLabel("CLIENT INFORMATION");
+        labelSpouse = new JLabel("Spouse");
+        labelPurpose = new JLabel("Purpose");
+        labelMandatoryPurpose = new JLabel("<html><font color='red'>*</font></html>");
+        labelMandatoryMessage = new JLabel("<html><font color='red'>*</font> Mandatory fields required</html>");
+        labelAmount = new JLabel("Amount");
+        labelReceiptNo = new JLabel("Receipt No.");
+        labelDateIssued = new JLabel("Date Issued");
+        labelPlaceIssued = new JLabel("Place Issued");
+        labelContactNo = new JLabel("Contact No.");
+        labelMaritalStatus = new JLabel();
+        checkBoxSingle = new JCheckBox("Single");
+        checkBoxMarried = new JCheckBox("Married");
+        txtMaritalStatus = new JTextField();
+        txtOwner = new JTextField();
+        txtRequestor = new JTextField();
+        txtSpouse = new JTextField();
+        txtPurpose = new JTextField();
+        txtAmountPaid = new JTextField();
+        txtContactNo = new JTextField();
+        txtReceiptNo = new JFormattedTextField();
+        receiptDateIssuedPicker = new JTextField();
+        txtPlaceIssued = new JTextField();
+        
+        txtPlaceIssued.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "MTO, Kitaotao, Bukidnon");
+        txtRequestor.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "JUAN DELA CRUZ (SON)");
+        txtRequestor.setToolTipText("example: JUAN DELA CRUZ (SON)");
+        txtPurpose.setToolTipText("example: DAR Purpose");
+        txtContactNo.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "09XXXXXXXXX");
+        ((AbstractDocument) txtContactNo.getDocument()).setDocumentFilter(new NumericDocumentFilter());
+    }
+    
+    // Create the input table for report_sub_total_landholding
+    private void createInputTable() {
+        // Get columns from the report_sub_total_landholding table
+        try {
+            tableColumns = TotalLandholding_TableUtil.getColumnNames("report_sub_total_landholding");
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to get columns from database, using default columns", e);
+            // Fallback to default columns for report_sub_total_landholding
+            tableColumns = Arrays.asList("rtlid", "td", "location", "lot_no", "total_area", "kind", "objid");
         }
 
-        // Optionally set a default selection
-        comboAddress.setSelectedIndex(-1); // No selection by default
+        // Remove 'rtlid' and 'objid' from the UI table columns
+        tableColumns = tableColumns.stream()
+            .filter(col -> !col.equalsIgnoreCase("rtlid") && !col.equalsIgnoreCase("objid"))
+            .collect(java.util.stream.Collectors.toList());
+
+        // Create the table model
+        inputTableModel = new DefaultTableModel(tableColumns.toArray(), 0) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return String.class;
+            }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // All columns editable in UI (no rtlid/objid in UI)
+                return true;
+            }
+        };
+
+        // Create the table
+        inputTable = new JTable(inputTableModel);
+        
+        // Set table properties
+        inputTable.setFillsViewportHeight(true);
+        inputTable.setRowHeight(25);
+        // Only allow single row or single cell selection
+        inputTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        inputTable.setCellSelectionEnabled(false); // Allows single cell selection
+        inputTable.getTableHeader().setReorderingAllowed(false);
+        
+        // Add many empty rows to make table appear infinite
+        for (int i = 0; i < 50; i++) {
+            addEmptyRow();
+        }
+        
+        // Apply table styling
+        inputTable.getTableHeader().putClientProperty(FlatClientProperties.STYLE,
+            "height:30;hoverBackground:null;pressedBackground:null;separatorColor:$TableHeader.background;");
+        inputTable.putClientProperty(FlatClientProperties.STYLE,
+            "rowHeight:30;showHorizontalLines:true;showVerticalLines:true;intercellSpacing:0,1;");
+        
+        // Set column widths based on column names
+        TableColumnModel columnModel = inputTable.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            String columnName = tableColumns.get(i).toLowerCase();
+            switch (columnName) {
+                case "td":
+                    columnModel.getColumn(i).setHeaderValue("Tax Declaration No.");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "location":
+                    columnModel.getColumn(i).setHeaderValue("Location");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "market_value":
+                    columnModel.getColumn(i).setHeaderValue("Market Value");
+                    columnModel.getColumn(i).setPreferredWidth(150);
+                    columnModel.getColumn(i).setMaxWidth(150);
+                    columnModel.getColumn(i).setMinWidth(150);
+                    break;
+                case "total_area":
+                    columnModel.getColumn(i).setHeaderValue("Total Area");
+                    columnModel.getColumn(i).setPreferredWidth(80);
+                    columnModel.getColumn(i).setMaxWidth(80);
+                    columnModel.getColumn(i).setMinWidth(80);
+                    break;
+                case "kind":
+                    columnModel.getColumn(i).setHeaderValue("Kind");
+                    columnModel.getColumn(i).setPreferredWidth(180);
+                    columnModel.getColumn(i).setMaxWidth(180);
+                    columnModel.getColumn(i).setMinWidth(180);
+                    break;
+                default:
+                    columnModel.getColumn(i).setPreferredWidth(100);
+                    break;
+            }
+        }
+        
+        // Set up custom cell editors for specific columns
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            String columnName = tableColumns.get(i).toLowerCase();
+            
+            if (columnName.equals("total_area")) {
+                columnModel.getColumn(i).setCellEditor(new DefaultCellEditor(new JTextField()) {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                        JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                        
+                        // Set up document filter for this text field
+                        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+                            @Override
+                            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) 
+                                throws BadLocationException {
+                                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                String newText = currentText.substring(0, offset) + text + currentText.substring(offset);
+                                if (isValidDecimalInput(newText)) {
+                                    super.insertString(fb, offset, text, attr);
+                                }
+                            }
+                            
+                            @Override
+                            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+                                throws BadLocationException {
+                                String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                String newText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+                                if (isValidDecimalInput(newText)) {
+                                    super.replace(fb, offset, length, text, attrs);
+                                }
+                            }
+                            
+                            private boolean isValidDecimalInput(String text) {
+                                // Allow empty string
+                                if (text.isEmpty()) {
+                                    return true;
+                                }
+                                
+                                // Allow partial decimal input (will be formatted later)
+                                if (text.matches("^\\d{0,6}$") || text.matches("^\\d{0,6}\\.$") || text.matches("^\\d{0,6}\\.\\d{0,4}$")) {
+                                    return true;
+                                }
+                                
+                                return false;
+                            }
+                        });
+                        
+                        // Add focus listener to format the value when focus is lost
+                        textField.addFocusListener(new FocusAdapter() {
+                            @Override
+                            public void focusLost(FocusEvent e) {
+                                formatDecimalValue(textField);
+                            }
+                        });
+                        
+                        return textField;
+                    }
+                    
+                    @Override
+                    public Object getCellEditorValue() {
+                        JTextField textField = (JTextField) getComponent();
+                        formatDecimalValue(textField);
+                        return textField.getText();
+                    }
+                });
+            } else if (columnName.equals("location") || columnName.equals("lot_no") || columnName.equals("kind")) {
+                columnModel.getColumn(i).setCellEditor(new DefaultCellEditor(new JTextField()) {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                        JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                        
+                        // Set up document filter to convert to uppercase
+                        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+                            @Override
+                            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) 
+                                throws BadLocationException {
+                                super.insertString(fb, offset, text.toUpperCase(), attr);
+                            }
+                            
+                            @Override
+                            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+                                throws BadLocationException {
+                                super.replace(fb, offset, length, text.toUpperCase(), attrs);
+                            }
+                        });
+                        
+                        return textField;
+                    }
+                });
+            }
+        }
     }
     
-    public void cleanup() {
-        if (datePicker != null) {
-            datePicker.closePopup();
+    // Get table values
+    private String getTableValue(int row, int col) {
+        Object value = inputTableModel.getValueAt(row, col);
+        return value != null ? value.toString().trim() : "";
+    }
+    
+    // Add empty row to table
+    private void addEmptyRow() {
+        int columnCount = inputTableModel.getColumnCount();
+        Object[] rowData = new Object[columnCount];
+        
+        // Initialize with empty values, rtlid will be set during save
+        for (int i = 0; i < columnCount; i++) {
+            String columnName = inputTableModel.getColumnName(i).toLowerCase();
+            if (columnName.equals("rtlid")) {
+                rowData[i] = ""; // Will be set during save
+            } else {
+                rowData[i] = "";
+            }
+        }
+        
+        inputTableModel.addRow(rowData);
+    }
+    
+    // Prepare table data for saving to database
+    private List<Map<String, Object>> prepareTableData(String parentObjid) {
+        List<Map<String, Object>> tableData = new ArrayList<>();
+        int rowCount = inputTableModel.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            Map<String, Object> rowData = new HashMap<>();
+            // Get column names and values dynamically (except rtlid)
+            for (int col = 0; col < inputTableModel.getColumnCount(); col++) {
+                String columnName = inputTableModel.getColumnName(col);
+                String value = getTableValue(i, col);
+                if (columnName.equalsIgnoreCase("total_area")) {
+                    // Convert area to numeric
+                    if (!value.isEmpty()) {
+                        try {
+                            rowData.put(columnName, Double.parseDouble(value));
+                        } catch (NumberFormatException e) {
+                            rowData.put(columnName, null);
+                        }
+                    } else {
+                        rowData.put(columnName, null);
+                    }
+                } else if (columnName.equalsIgnoreCase("kind")) {
+                    rowData.put(columnName, TextNormalizer.toProperCase(value));
+                } else {
+                    rowData.put(columnName, value);
+                }
+            }
+            // Always add rtlid for backend
+            rowData.put("rtlid", parentObjid);
+            tableData.add(rowData);
+        }
+        return tableData;
+    }
+    
+    // Format decimal value to always have 4 decimal places
+    private void formatDecimalValue(JTextField textField) {
+        String text = textField.getText().trim();
+        
+        if (text.isEmpty()) {
+            return;
+        }
+        
+        try {
+            // Handle different input formats
+            if (text.matches("^\\d+$")) {
+                // Just digits (e.g., "123") -> add ".0000"
+                textField.setText(text + ".0000");
+            } else if (text.matches("^\\d+\\.$")) {
+                // Digits with decimal point (e.g., "123.") -> add "0000"
+                textField.setText(text + "0000");
+            } else if (text.matches("^\\d+\\.\\d+$")) {
+                // Digits with decimal (e.g., "123.4") -> pad with zeros
+                String[] parts = text.split("\\.");
+                String wholePart = parts[0];
+                String decimalPart = parts[1];
+                
+                // Pad decimal part with zeros to make it 4 digits
+                while (decimalPart.length() < 4) {
+                    decimalPart += "0";
+                }
+                
+                // Truncate if more than 4 decimal places
+                if (decimalPart.length() > 4) {
+                    decimalPart = decimalPart.substring(0, 4);
+                }
+                
+                textField.setText(wholePart + "." + decimalPart);
+            }
+        } catch (Exception e) {
+            // If formatting fails, leave the text as is
+            logger.log(Level.WARNING, "Error formatting decimal value: " + text, e);
+        }
+    }
+
+
+    
+    private void applyUppercaseFilterToTextFields() {
+        UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
+        JTextField[] textFields = {
+            txtRequestor,
+            txtOwner,
+            txtSpouse
+//            txtPurpose,
+//            txtPlaceIssued
+        };
+        for (JTextField textField : textFields) {
+            ((AbstractDocument) textField.getDocument()).setDocumentFilter(uppercaseFilter);
+        }
+    }
+    
+    private void onSaveButtonClick() {
+        try {
+            handleAmountFocusLost();
+            logger.log(Level.INFO, "Starting save action...");
+
+            if (validateInput()) {
+                logger.log(Level.INFO, "Input validation passed");
+
+                Map<String, Object> reportData = new HashMap<>();
+                // Add signatory
+                String signatory = DatabaseTotalLandholdingHelper.getAssessorName(1);
+                if (signatory != null) {
+                    reportData.put("signatory", signatory);
+                } else {
+                    logger.log(Level.WARNING, "No default assessor configured");
+                }
+
+                String userInitials = SessionManager.getInstance().getUserInitials();
+                if (userInitials != null) {
+                    reportData.put("user_initials", userInitials);
+                }
+
+                if (datePicker.getSelectedDate() != null) {
+                    reportData.put("receipt_date_issued", datePicker.getSelectedDate());
+                }
+
+                // Collect data from form fields
+                reportData.put("requestor", txtRequestor.getText());
+                reportData.put("marital_status", getMaritalStatus());
+                reportData.put("owner", txtOwner.getText());
+                reportData.put("spouse", txtSpouse.getText());
+                reportData.put("purpose", txtPurpose.getText());
+                reportData.put("requested_date", LocalDate.now());
+                reportData.put("requested_time", LocalTime.now());
+                reportData.put("amount_paid", getAmountPaid());
+                reportData.put("receipt_no", getReceiptNumber());
+                reportData.put("place_issued", txtPlaceIssued.getText());
+                reportData.put("contact_no", txtContactNo.getText());
+
+                // Save main report and get the generated id directly
+                int generatedId = DatabaseTotalLandholdingHelper.saveReportAndGetNewestId("Total Landholding", reportData);
+
+                if (generatedId != -1) {
+                    logger.log(Level.INFO, "Main report saved successfully with ID: {0}", generatedId);
+                    // Get the generated objid for the foreign key relationship
+                    String generatedObjid = DatabaseTotalLandholdingHelper.getLastGeneratedObjid();
+                    if (generatedObjid != null) {
+                        logger.log(Level.INFO, "Retrieved generated objid: {0}", generatedObjid);
+                        // Prepare table data for saving
+                        List<Map<String, Object>> tableData = prepareTableData(generatedObjid);
+                        // Save table data to sub-table using the foreign key relationship
+                        int savedRows = DatabaseTotalLandholdingHelper.saveTableDataWithForeignKey(generatedObjid, tableData);
+                        // Fetch CertificateTableTotalLandholding from FormManager
+                        CertificateTableTotalLandholding certificateTable = FormManager.getActiveForm(CertificateTableTotalLandholding.class);
+                        if (certificateTable == null) {
+                            logger.log(Level.SEVERE, "CertificateTableTotalLandholding is not available in FormManager!");
+                            JOptionPane.showMessageDialog(this,
+                                    "Failed to refresh the table. CertificateTableTotalLandholding is not active.",
+                                    "Table Refresh Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else if (certificateTable.reportLoader == null) {
+                            logger.log(Level.SEVERE, "CertificateTableTotalLandholding's reportLoader is null!");
+                            JOptionPane.showMessageDialog(this,
+                                    "Failed to refresh the table. reportLoader is not initialized.",
+                                    "Table Refresh Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Refresh the table
+                            logger.log(Level.INFO, "Found CertificateTableTotalLandholding and reportLoader. Initiating data refresh...");
+                            certificateTable.reportLoader.loadData(() -> {
+                                logger.log(Level.INFO, "Table refresh complete. Generating report...");
+                                monitorTableInitialization(certificateTable, generatedId);
+                            });
+                        }
+                    }
+                } else {
+                    logger.log(Level.SEVERE, "Failed to retrieve generated objid");
+                    JOptionPane.showMessageDialog(this, 
+                        "Failed to retrieve report ID. Please try again.",
+                        "System Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Critical error in save action", ex);
+            handleSaveError(ex);
+        }
+    }
+    
+
+    
+    private String getMaritalStatus() {
+        if (checkBoxMarried.isSelected()) return "MARRIED";
+        if (checkBoxSingle.isSelected()) return "SINGLE";
+        return "Unknown";
+    }
+    
+    private String getAmountPaid() {
+        try {
+            double amount = parseDouble(txtAmountPaid.getText());
+            return formatAmount(amount);
+        } catch (NumberFormatException ex) {
+            logger.log(Level.WARNING, "Invalid amount format, defaulting to ₱0.00");
+            return "₱0.00";
+        }
+    }
+    
+    private String getReceiptNumber() {
+        try {
+            Object receiptValue = txtReceiptNo.getValue();
+            if (receiptValue instanceof Number) {
+                long numberValue = ((Number) receiptValue).longValue();
+                return numberValue == 0L ? null : String.valueOf(numberValue);
+            }
+            return null;
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error processing receipt number", ex);
+            throw new RuntimeException("Invalid receipt number", ex);
         }
     }
     
     private void setupAmountField() {
         // Initial placeholder
-        txtAmount.setText("₱0.00");
+        txtAmountPaid.setText("₱0.00");
         
         // Focus listeners for formatting
-        txtAmount.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtAmountPaid.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent evt) {
                 handleAmountFocusGained();
@@ -345,23 +738,23 @@ public class FormTotalLandholding extends Form {
         });
 
         // Document filter for input validation
-        ((AbstractDocument) txtAmount.getDocument()).setDocumentFilter(new DocumentFilter() {
+        ((AbstractDocument) txtAmountPaid.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
-            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) 
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) 
                 throws BadLocationException {
                 super.insertString(fb, offset, text, attr);
                 SwingUtilities.invokeLater(() -> reformatAmount(fb.getDocument()));
             }
 
             @Override
-            public void remove(FilterBypass fb, int offset, int length) 
+            public void remove(DocumentFilter.FilterBypass fb, int offset, int length) 
                 throws BadLocationException {
                 super.remove(fb, offset, length);
                 SwingUtilities.invokeLater(() -> reformatAmount(fb.getDocument()));
             }
 
             @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
                 throws BadLocationException {
                 super.replace(fb, offset, length, text, attrs);
                 SwingUtilities.invokeLater(() -> reformatAmount(fb.getDocument()));
@@ -369,7 +762,7 @@ public class FormTotalLandholding extends Form {
 
             private boolean isValid(String text) {
                 if (!text.startsWith("₱")) return false;
-                String numericPart = text.substring(1).replace(",", ""); // Allow commas by ignoring them in validation
+                String numericPart = text.substring(1).replace(",", "");
                 return numericPart.matches("^\\d*(\\.\\d*)?$");
             }
             
@@ -380,8 +773,7 @@ public class FormTotalLandholding extends Form {
 
                     // Handle empty case
                     if (text.isEmpty()) {
-                        txtAmount.setText("₱");
-                        
+                        txtAmountPaid.setText("₱");
                         return;
                     }
 
@@ -398,16 +790,15 @@ public class FormTotalLandholding extends Form {
                             NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
                             integerPart = nf.format(num);
                         } catch (NumberFormatException e) {
-                            // Fallback to unformatted if invalid number
                             integerPart = text.split("\\.")[0];
                         }
                     }
 
-                    int originalCaretPos = txtAmount.getCaretPosition();
+                    int originalCaretPos = txtAmountPaid.getCaretPosition();
 
                     // Build new formatted text
                     String newText = "₱" + integerPart + decimalPart;
-                    txtAmount.setText(newText);
+                    txtAmountPaid.setText(newText);
 
                     // Calculate new caret position
                     String cleanOriginal = originalText.replaceAll("[^0-9.]", "");
@@ -434,39 +825,28 @@ public class FormTotalLandholding extends Form {
 
                     // Ensure valid position
                     newCaretPos = Math.min(Math.max(newCaretPos, 1), newText.length());
-                    txtAmount.setCaretPosition(newCaretPos);
+                    txtAmountPaid.setCaretPosition(newCaretPos);
 
                 } catch (BadLocationException | NumberFormatException ex) {
                     ex.printStackTrace();
                 }
             }
         });
-        txtAmount.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                handleAmountFocusGained();
-            }
-
-            @Override
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                handleAmountFocusLost();
-            }
-        });
     }
     
     private void handleAmountFocusGained() {
-        if (txtAmount.getText().equals("₱0.00")) {
-            txtAmount.setText("₱.00");
-            txtAmount.setCaretPosition(1);
+        if (txtAmountPaid.getText().equals("₱0.00")) {
+            txtAmountPaid.setText("₱.00");
+            txtAmountPaid.setCaretPosition(1);
         }
     }
 
     private void handleAmountFocusLost() {
         try {
-            double amount = parseDouble(txtAmount.getText());
-            txtAmount.setText(formatAmount(amount));
+            double amount = parseDouble(txtAmountPaid.getText());
+            txtAmountPaid.setText(formatAmount(amount));
         } catch (NumberFormatException ex) {
-            txtAmount.setText("₱0.00");
+            txtAmountPaid.setText("₱0.00");
         }
     }
     
@@ -496,139 +876,339 @@ public class FormTotalLandholding extends Form {
     }
     
     private void setupReceiptNoField() {
-    // Custom formatter with strict numeric enforcement
-    txtReceiptNo = new JFormattedTextField(new DefaultFormatter() {
-        @Override
-        public Object stringToValue(String text) throws ParseException {
-            if (text == null || text.trim().isEmpty()) {
-                return null;
+        // Custom formatter with strict numeric enforcement
+        txtReceiptNo = new JFormattedTextField(new DefaultFormatter() {
+            @Override
+            public Object stringToValue(String text) throws ParseException {
+                if (text == null || text.trim().isEmpty()) {
+                    return null;
+                }
+                if (!text.matches("\\d*")) {
+                    throw new ParseException("Only digits allowed", 0);
+                }
+                return Long.parseLong(text);
             }
-            if (!text.matches("\\d*")) {
-                throw new ParseException("Only digits allowed", 0);
+
+            @Override
+            public String valueToString(Object value) throws ParseException {
+                return value == null ? "" : value.toString();
             }
-            return Long.parseLong(text);
-        }
-
-        @Override
-        public String valueToString(Object value) throws ParseException {
-            return value == null ? "" : value.toString();
-        }
-    }) {
-        @Override
-        public void replaceSelection(String content) {
-            // Filter non-digits during text selection replacement
-            super.replaceSelection(content.replaceAll("[^\\d]", ""));
-        }
-    };
-
-    // Document filter for direct input handling
-    ((PlainDocument) txtReceiptNo.getDocument()).setDocumentFilter(new DocumentFilter() {
-        @Override
-        public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
-                throws BadLocationException {
-            super.insertString(fb, offset, text.replaceAll("[^\\d]", ""), attr);
-        }
-
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                throws BadLocationException {
-            super.replace(fb, offset, length, text.replaceAll("[^\\d]", ""), attrs);
-        }
-    });
-
-    // Visual setup
-    txtReceiptNo.setHorizontalAlignment(JTextField.RIGHT);
-    txtReceiptNo.setValue(null); // Initial empty state
-
-    // Focus handling
-    txtReceiptNo.setFocusLostBehavior(JFormattedTextField.COMMIT_OR_REVERT);
-    txtReceiptNo.addFocusListener(new FocusAdapter() {
-        @Override
-        public void focusLost(FocusEvent e) {
-            try {
-                txtReceiptNo.commitEdit();
-            } catch (ParseException ex) {
-                logger.log(Level.WARNING, "Invalid receipt number format", ex);
-                txtReceiptNo.setValue(null);
+        }) {
+            @Override
+            public void replaceSelection(String content) {
+                // Filter non-digits during text selection replacement
+                super.replaceSelection(content.replaceAll("[^\\d]", ""));
             }
-        }
-    });
-}
-    
-    public void setSaveCallback(Consumer<Boolean> callback) {
-        this.saveCallback = callback;
-    }
+        };
 
-    public void saveAction(ActionEvent e) {
-        try {
-            handleAmountFocusLost();
-            logger.log(Level.INFO, "Starting save action...");
+        // Document filter for direct input handling
+        ((PlainDocument) txtReceiptNo.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr)
+                    throws BadLocationException {
+                super.insertString(fb, offset, text.replaceAll("[^\\d]", ""), attr);
+            }
 
-            if (validateInput()) {
-                logger.log(Level.INFO, "Input validation passed");
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                super.replace(fb, offset, length, text.replaceAll("[^\\d]", ""), attrs);
+            }
+        });
 
-                Map<String, Object> reportData = collectReportData();
-                // Save autocomplete values
-                saveAutocompleteValue("txtHospital", txtHospital.getText().trim());
-                saveAutocompleteValue("txtHospitalAddress", txtHospitalAddress.getText().trim());
-                saveAutocompleteValue("txtPlaceIssued", txtPlaceIssued.getText().trim());
-                int newestRecordId = DatabaseSaveHelper.saveReportAndGetNewestId("Total Landholding", reportData);
+        // Visual setup
+        txtReceiptNo.setHorizontalAlignment(JTextField.RIGHT);
+        txtReceiptNo.setValue(null); // Initial empty state
 
-                if (newestRecordId != -1) {
-                    logger.log(Level.INFO, "Database save successful. Newest record ID: {0}", newestRecordId);
-
-                    // Fetch CertificateTable from FormManager
-                    CertificateTable certificateTable = FormManager.getActiveForm(CertificateTable.class);
-                    if (certificateTable == null) {
-                        logger.log(Level.SEVERE, "CertificateTable is not available in FormManager!");
-                        JOptionPane.showMessageDialog(this,
-                                "Failed to refresh the table. CertificateTable is not active.",
-                                "Table Refresh Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    if (certificateTable.reportLoader == null) {
-                        logger.log(Level.SEVERE, "CertificateTable's reportLoader is null!");
-                        JOptionPane.showMessageDialog(this,
-                                "Failed to refresh the table. reportLoader is not initialized.",
-                                "Table Refresh Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Refresh the table
-                    logger.log(Level.INFO, "Found CertificateTable and reportLoader. Initiating data refresh...");
-                    certificateTable.reportLoader.loadData(() -> {
-                        logger.log(Level.INFO, "Table refresh complete. Generating report...");
-                        monitorTableInitialization(certificateTable, newestRecordId);
-                    });
-
-                    // Notify success callback and close modal
-                    saveSuccessful = true;
-                    if (saveCallback != null) {
-                        saveCallback.accept(true);
-                    }
-                } else {
-                    logger.log(Level.WARNING, "Failed to save hospitalization record.");
-                    JOptionPane.showMessageDialog(this,
-                            "Failed to save hospitalization record.",
-                            "Database Error",
-                            JOptionPane.ERROR_MESSAGE);
+        // Focus handling
+        txtReceiptNo.setFocusLostBehavior(JFormattedTextField.COMMIT_OR_REVERT);
+        txtReceiptNo.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    txtReceiptNo.commitEdit();
+                } catch (ParseException ex) {
+                    logger.log(Level.WARNING, "Invalid receipt number format", ex);
+                    txtReceiptNo.setValue(null);
                 }
             }
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Critical error in save action", ex);
-            handleSaveError(ex);
+        });
+    }
+    
+    private void handleSaveError(Exception ex) {
+        String errorMessage = "Save failed: " + ex.getMessage();
+        logger.log(Level.SEVERE, errorMessage, ex);
+        
+        if (ex.getCause() instanceof SQLException) {
+            SQLException sqlEx = (SQLException) ex.getCause();
+            errorMessage += "\nSQL State: " + sqlEx.getSQLState();
+            logger.log(Level.SEVERE, "SQL Exception details", sqlEx);
         }
+        
+        JOptionPane.showMessageDialog(this,
+            errorMessage,
+            "Save Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private boolean validateInput() {
+        logger.log(Level.FINE, "Starting input validation");
+        
+        Object[][] requiredFields = {
+            {labelMandatoryRequestor, txtRequestor},
+            { labelMandatoryOwner, txtOwner },
+            { labelMandatoryPurpose, txtPurpose }
+        };
+
+        boolean isValid = true;
+
+        // Text field validation
+        for (Object[] pair : requiredFields) {
+            JLabel mandatoryLabel = (JLabel) pair[0];
+            JTextField field = (JTextField) pair[1];
+            boolean isEmpty = field.getText().trim().isEmpty();
+
+            if (isEmpty) {
+                logger.log(Level.WARNING, "Required field empty: {0}", field.getName());
+                mandatoryLabel.setVisible(true);
+                if (isValid) field.requestFocus();
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            logger.log(Level.WARNING, "Validation failed with {0} errors", 
+                countValidationErrors(requiredFields));
+            labelMandatoryMessage.setVisible(true);
+            messageTimer.start();
+        }
+        
+        return isValid;
     }
 
-    private void monitorTableInitialization(CertificateTable certificateTable, int recordId) {
+    private int countValidationErrors(Object[][] fields) {
+        int count = 0;
+        for (Object[] pair : fields) {
+            JTextField field = (JTextField) pair[1];
+            if (field.getText().trim().isEmpty()) count++;
+        }
+        return count;
+    }
+    
+    // Clear all form fields after successful save
+    private void clearAllFields() {
+        // Clear form text fields
+        txtRequestor.setText("");
+        txtOwner.setText("");
+        txtSpouse.setText("");
+        txtPurpose.setText("");
+        txtAmountPaid.setText("₱0.00");
+        txtReceiptNo.setValue(null);
+        txtPlaceIssued.setText("");
+        txtContactNo.setText("");
+        
+        datePicker.clearSelectedDate();
+        
+        // Reset date picker - clear the receiptDateIssuedPicker field
+        try {
+            receiptDateIssuedPicker.setText("");
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Could not clear date picker field", e);
+        }
+        
+        // Reset checkboxes
+        checkBoxSingle.setSelected(false);
+        checkBoxMarried.setSelected(false);
+        
+        // Clear table data
+        inputTableModel.setRowCount(0);
+        
+        // Add empty rows back to table
+        for (int i = 0; i < 50; i++) {
+            addEmptyRow();
+        }
+        
+        // Reset focus to first field
+        txtRequestor.requestFocus();
+        
+        logger.log(Level.INFO, "All form fields cleared after successful save");
+    }
+    
+    /**
+     * Sets up Enter key listener for the entire form using KeyBindings
+     * This allows the save action to be triggered by pressing Enter anywhere on the form
+     */
+    private void setupEnterKeyListener() {
+        try {
+            // Try to get the root pane from the top-level ancestor
+            Container topLevel = this.getTopLevelAncestor();
+            JRootPane rootPane = null;
+            
+            if (topLevel instanceof JFrame) {
+                rootPane = ((JFrame) topLevel).getRootPane();
+            } else if (topLevel instanceof JDialog) {
+                rootPane = ((JDialog) topLevel).getRootPane();
+            } else if (topLevel instanceof JWindow) {
+                rootPane = ((JWindow) topLevel).getRootPane();
+            }
+            
+            if (rootPane != null) {
+                // Create a key stroke for Enter key
+                KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+                
+                // Create an action for the Enter key
+                Action enterAction = new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Enter key pressed - triggering save");
+                        onSaveButtonClick();
+                    }
+                };
+                
+                // Register the key binding with the root pane
+                rootPane.registerKeyboardAction(
+                    enterAction,
+                    "EnterKeyAction",
+                    enterKey,
+                    JComponent.WHEN_IN_FOCUSED_WINDOW
+                );
+                
+                System.out.println("Enter key binding registered successfully on root pane");
+            } else {
+                System.out.println("Could not find root pane for key binding, using fallback");
+                // Fallback: use a simpler approach with key listeners
+                setupFallbackEnterKeyListener();
+            }
+        } catch (Exception e) {
+            System.out.println("Error setting up Enter key binding: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback: use a simpler approach with key listeners
+            setupFallbackEnterKeyListener();
+        }
+    }
+    
+    /**
+     * Fallback method using key listeners if KeyBindings don't work
+     */
+    private void setupFallbackEnterKeyListener() {
+        System.out.println("Setting up fallback Enter key listener");
+        
+        // Create a key listener that responds to Enter key
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    System.out.println("Fallback: Enter key pressed - triggering save");
+                    onSaveButtonClick();
+                    e.consume();
+                }
+            }
+        };
+        
+        // Add the key listener to the form itself
+        this.addKeyListener(enterKeyListener);
+        
+        // Make the form focusable so it can receive key events
+        this.setFocusable(true);
+        
+        // Add key listener to all child components recursively
+        addKeyListenerToComponent(this, enterKeyListener);
+        
+        // Also try to add to the top-level ancestor
+        Container topLevel = this.getTopLevelAncestor();
+        if (topLevel != null && topLevel != this) {
+            topLevel.addKeyListener(enterKeyListener);
+            System.out.println("Added key listener to top-level ancestor");
+        }
+    }
+    
+    /**
+     * Recursively adds key listener to a component and all its children
+     */
+    private void addKeyListenerToComponent(Container container, KeyAdapter keyListener) {
+        // Add key listener to all child components
+        for (Component component : container.getComponents()) {
+            if (component instanceof Container) {
+                addKeyListenerToComponent((Container) component, keyListener);
+            } else {
+                // Add key listener to non-container components
+                component.addKeyListener(keyListener);
+            }
+        }
+    }
+    
+    private void monitorTableInitialization(CertificateTableTotalLandholding certificateTable, int recordId) {
         SwingUtilities.invokeLater(() -> {
             if (isTableInitialized(certificateTable.certificationTable)) {
                 try {
                     logger.log(Level.INFO, "Table is ready. Generating report...");
                     certificateTable.handleReportGeneration(recordId);
+                    
+                    // After report generation, switch to dashboard and highlight it
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            // Get or create FormDashboardTotalLandholding
+                            final FormDashboardTotalLandholding dashboard = FormManager.getActiveForm(FormDashboardTotalLandholding.class) != null ? 
+                                FormManager.getActiveForm(FormDashboardTotalLandholding.class) : new FormDashboardTotalLandholding();
+                            
+                            // Show the dashboard form
+                            
+                            clearAllFields();
+                            FormManager.showForm(dashboard);
+                            
+                            // Refresh the dashboard to show latest data
+                            dashboard.formRefresh();
+                            
+                            // Select the latest row in the table (the newly saved record)
+                            Timer selectionTimer = new Timer(500, e -> {
+                                if (dashboard.certificateTable != null && dashboard.certificateTable.certificationTable != null) {
+                                    JTable table = dashboard.certificateTable.certificationTable;
+                                    if (table.getRowCount() > 0) {
+                                        // Select the first row (latest record since data is ordered by ID DESC)
+                                        table.setRowSelectionInterval(0, 0);
+                                        table.scrollRectToVisible(table.getCellRect(0, 0, true));
+                                    }
+                                }
+                            });
+                            selectionTimer.setRepeats(false);
+                            selectionTimer.start();
+                            
+                            // Ensure Dashboard is expanded before highlighting
+                            SwingUtilities.invokeLater(() -> {
+                                Timer drawerTimer = new Timer(100, e -> {
+                                    try {
+                                        // Get the drawer panel and select Total Landholding
+                                        DrawerPanel drawerPanel = MyDrawerBuilder.getDrawerPanelInstance();
+                                        if (drawerPanel != null) {
+                                            MyDrawerBuilder.selectTotalLandholdingDrawer(drawerPanel);
+                                        }
+                                    } catch (Exception ex) {
+                                        logger.log(Level.WARNING, "Could not select Total Landholding: " + ex.getMessage());
+                                    }
+                                });
+                                drawerTimer.setRepeats(false);
+                                drawerTimer.start();
+                            });
+                            
+                            // Highlight the dashboard in the drawer (let automatic highlighting work)
+                            Drawer.setSelectedItemClass(FormDashboardTotalLandholding.class);
+                            
+                            logger.log(Level.INFO, "Successfully switched to FormDashboard2 and highlighted in drawer");
+                            
+                            // Show success toast message
+                            ToastOption option = Toast.createOption()
+                                .setAnimationEnabled(true)
+                                .setAutoClose(true)
+                                .setCloseOnClick(true);
+                            
+                            // Use the main frame as parent to avoid null parent error
+                            Toast.show(FormManager.getFrame(), Toast.Type.SUCCESS, 
+                                "Data saved successfully! Report generated and redirected to dashboard.", 
+                                option);
+                        } catch (Exception ex) {
+                            logger.log(Level.SEVERE, "Error switching to dashboard: " + ex.getMessage(), ex);
+                        }
+                    });
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, ex);
                     JOptionPane.showMessageDialog(this,
@@ -649,392 +1229,6 @@ public class FormTotalLandholding extends Form {
                 new Object[]{table.getColumnCount(), table.getRowCount()});
         return table.getColumnCount() > 0 && table.getRowCount() > 0;
     }
-
-    private Map<String, Object> collectReportData() {
-        Map<String, Object> reportData = new HashMap<>();
-
-        // Add signatory
-        String signatory = DatabaseSaveHelper.getAssessorName(1);
-        if (signatory != null) {
-            reportData.put("Signatory", signatory);
-            logger.log(Level.INFO, "Signatory found: {0}", signatory);
-        } else {
-            logger.log(Level.WARNING, "No default assessor configured");
-            JOptionPane.showMessageDialog(this,
-                    "Default assessor not configured.",
-                    "Configuration Warning",
-                    JOptionPane.WARNING_MESSAGE);
-        }
-
-        // Add marital status
-        reportData.put("MaritalStatus", getMaritalStatus());
-
-        // Add text fields
-        reportData.put("ParentGuardian", txtParentGuardian.getText());
-        reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-        reportData.put("Patient", txtPatientStudent.getText());
-        reportData.put("Barangay", comboAddress.getSelectedItem());
-        reportData.put("Hospital", txtHospital.getText());
-        reportData.put("HospitalAddress", txtHospitalAddress.getText());
-        reportData.put("PlaceIssued", txtPlaceIssued.getText());
-
-        // Add parent sex
-        reportData.put("ParentSexIfSingle", getParentSex());
-
-        // Add relationship
-        reportData.put("Relationship", getRelationship());
-
-        // Add amount paid
-        reportData.put("AmountPaid", getAmountPaid());
-
-        // Add receipt number
-        reportData.put("ReceiptNo", getReceiptNumber());
-
-        // Add dates
-        reportData.put("CertificationDate", LocalDate.now());
-        reportData.put("CertificationTime", LocalTime.now());
-        if (datePicker.getSelectedDate() != null) {
-            reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
-        }
-
-        String userInitials = SessionManager.getInstance().getUserInitials();
-        if (userInitials != null) {
-            reportData.put("userInitials", userInitials);
-        } else {
-            logger.log(Level.WARNING, "User initial not found");
-        }
-
-        return reportData;
-    }
-
-    private String getMaritalStatus() {
-        if (checkBoxMarried.isSelected()) return "MARRIED";
-        if (checkBoxSingle.isSelected()) return "SINGLE";
-        if (checkBoxGuardian.isSelected()) return "GUARDIAN";
-        return "Unknown";
-    }
-
-    private String getParentSex() {
-        if (comboParentSex.isEnabled()) {
-            return comboParentSex.getSelectedItem().toString();
-        }
-        return checkBoxMarried.isSelected() ? "Married" : "Guardian";
-    }
-
-    private String getRelationship() {
-        if (checkBoxGuardian.isSelected()) return "Guardian";
-        return comboRelationship.getSelectedItem().toString();
-    }
-
-    private String getAmountPaid() {
-        try {
-            double amount = parseDouble(txtAmount.getText());
-            return formatAmount(amount);
-        } catch (NumberFormatException ex) {
-            logger.log(Level.WARNING, "Invalid amount format, defaulting to ₱0.00");
-            return "₱0.00";
-        }
-    }
-
-    private String getReceiptNumber() {
-        try {
-            Object receiptValue = txtReceiptNo.getValue();
-            if (receiptValue instanceof Number) {
-                long numberValue = ((Number) receiptValue).longValue();
-                return numberValue == 0L ? null : String.valueOf(numberValue);
-            }
-            return null; // Or return ""; if you prefer an empty string instead of null
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Error processing receipt number", ex);
-            throw new RuntimeException("Invalid receipt number", ex);
-        }
-    }
-
-    public SimpleModalBorder createCustomBorder() {
-        return new SimpleModalBorder(
-            this, 
-            "Total Landholding", 
-            SimpleModalBorder.OK_CANCEL_OPTION,
-            (controller, action) -> {
-                if (action == SimpleModalBorder.OK_OPTION) {
-                    saveAction(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
-                    if (saveSuccessful) {
-                        controller.close();
-                        SwingUtilities.invokeLater(() -> {
-                            // Notify DataChangeNotifier to refresh tables
-                            DataChangeNotifier.getInstance().notifyDataChange();
-                        });
-                    } else {
-                        controller.consume(); // Prevent closing the modal if save fails
-                    }
-                }
-            }
-        );
-    }
     
-    private void handleSaveError(Exception ex) {
-        String errorMessage = "Save failed: " + ex.getMessage();
-        logger.log(Level.SEVERE, errorMessage, ex);
-        
-        if (ex.getCause() instanceof SQLException) {
-            SQLException sqlEx = (SQLException) ex.getCause();
-            errorMessage += "\nSQL State: " + sqlEx.getSQLState();
-            logger.log(Level.SEVERE, "SQL Exception details", sqlEx);
-        }
-        
-        JOptionPane.showMessageDialog(this,
-            errorMessage,
-            "Save Error",
-            JOptionPane.ERROR_MESSAGE);
-    }
-    
-    // Update validation to match your actual form fields
-    private boolean validateInput() {
-        logger.log(Level.FINE, "Starting input validation");
-        
-        Object[][] requiredFields = {
-            { jLabelMandatoryParentGuardian, txtParentGuardian },
-            { jLabelMandatoryParentStudent, txtPatientStudent },
-            { jLabelMandatoryHospital, txtHospital },
-            { jLabelMandatoryHospitalAddress, txtHospitalAddress }
-        };
 
-        boolean isValid = true;
-        
-        // Combo box validation
-        if (comboParentSex.getSelectedItem() == null) {
-            logger.log(Level.WARNING, "Parent sex not selected");
-            isValid = false;
-        }
-    
-        if (comboRelationship.getSelectedItem() == null) {
-            logger.log(Level.WARNING, "Relationship not selected");
-            isValid = false;
-        }
-
-        // Text field validation
-        for (Object[] pair : requiredFields) {
-            JLabel mandatoryLabel = (JLabel) pair[0];
-            JTextField field = (JTextField) pair[1];
-            boolean isEmpty = field.getText().trim().isEmpty();
-
-            if (isEmpty) {
-                logger.log(Level.WARNING, "Required field empty: {0}", field.getName());
-                mandatoryLabel.setVisible(true);
-                if (isValid) field.requestFocus();
-                isValid = false;
-            }
-        }
-
-        if (!isValid) {
-            logger.log(Level.WARNING, "Validation failed with {0} errors", 
-                countValidationErrors(requiredFields));
-            jLabelMandatoryMessage.setVisible(true);
-            messageTimer.start();
-        }
-        
-        return isValid;
-    }
-
-    private int countValidationErrors(Object[][] fields) {
-        int count = 0;
-        for (Object[] pair : fields) {
-            JTextField field = (JTextField) pair[1];
-            if (field.getText().trim().isEmpty()) count++;
-        }
-        return count;
-    }
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        labelTitle = new javax.swing.JLabel();
-        labelParentGuardian = new javax.swing.JLabel();
-        txtParentGuardian = new javax.swing.JTextField();
-        jLabelMandatoryParentGuardian = new javax.swing.JLabel();
-        comboParentSex = new javax.swing.JComboBox<>();
-        labelParentGuardian2 = new javax.swing.JLabel();
-        txtParentGuardian2 = new javax.swing.JTextField();
-        checkBoxSingle = new javax.swing.JCheckBox();
-        checkBoxMarried = new javax.swing.JCheckBox();
-        checkBoxGuardian = new javax.swing.JCheckBox();
-        labelPatientStudent = new javax.swing.JLabel();
-        txtPatientStudent = new javax.swing.JTextField();
-        labelRelationship = new javax.swing.JLabel();
-        txtAddress = new javax.swing.JTextField();
-        comboAddress = new javax.swing.JComboBox<>();
-        comboRelationship = new javax.swing.JComboBox<>();
-        labelAddress = new javax.swing.JLabel();
-        labelHospital = new javax.swing.JLabel();
-        txtHospital = new javax.swing.JTextField();
-        labelHospitalAddress = new javax.swing.JLabel();
-        txtHospitalAddress = new javax.swing.JTextField();
-        labelAmount = new javax.swing.JLabel();
-        txtAmount = new javax.swing.JTextField();
-        labelReceiptNo = new javax.swing.JLabel();
-        labelDateIssued = new javax.swing.JLabel();
-        labelPlaceIssued = new javax.swing.JLabel();
-        txtPlaceIssued = new javax.swing.JTextField();
-        btnSave = new javax.swing.JToggleButton();
-        jLabelMandatoryParentStudent = new javax.swing.JLabel();
-        jLabelMandatoryAddress = new javax.swing.JLabel();
-        jLabelMandatoryHospital = new javax.swing.JLabel();
-        jLabelMandatoryHospitalAddress = new javax.swing.JLabel();
-        btnCancel = new javax.swing.JButton();
-        receiptDateIssuedPicker = new javax.swing.JTextField();
-        jLabelMandatoryMessage = new javax.swing.JLabel();
-        txtReceiptNo = new javax.swing.JFormattedTextField();
-
-        labelTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTitle.setText("CLIENT INFORMATION");
-        add(labelTitle);
-
-        labelParentGuardian.setText("Parent/ Guardian  ");
-        add(labelParentGuardian);
-
-        txtParentGuardian.setToolTipText("");
-        txtParentGuardian.setActionCommand("<Not Set>");
-        add(txtParentGuardian);
-
-        jLabelMandatoryParentGuardian.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryParentGuardian.setText("*");
-        add(jLabelMandatoryParentGuardian);
-
-        add(comboParentSex);
-
-        labelParentGuardian2.setText("Parent/ Guardian");
-        add(labelParentGuardian2);
-        add(txtParentGuardian2);
-
-        checkBoxSingle.setText("Single");
-        checkBoxSingle.setToolTipText("");
-        add(checkBoxSingle);
-
-        checkBoxMarried.setText("Married");
-        add(checkBoxMarried);
-
-        checkBoxGuardian.setText("Guardian");
-        add(checkBoxGuardian);
-
-        labelPatientStudent.setText("Patient/ Student");
-        add(labelPatientStudent);
-        add(txtPatientStudent);
-
-        labelRelationship.setText("Relationship");
-        add(labelRelationship);
-        add(txtAddress);
-
-        add(comboAddress);
-
-        comboRelationship.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboRelationshipActionPerformed(evt);
-            }
-        });
-        add(comboRelationship);
-
-        labelAddress.setText("Address");
-        add(labelAddress);
-
-        labelHospital.setText("Hospital");
-        add(labelHospital);
-        add(txtHospital);
-
-        labelHospitalAddress.setText("Hospital Address");
-        add(labelHospitalAddress);
-        add(txtHospitalAddress);
-
-        labelAmount.setText("Amount");
-        add(labelAmount);
-        add(txtAmount);
-
-        labelReceiptNo.setText("Receipt No.");
-        add(labelReceiptNo);
-
-        labelDateIssued.setText("Date Issued");
-        add(labelDateIssued);
-
-        labelPlaceIssued.setText("Place Issued");
-        add(labelPlaceIssued);
-        add(txtPlaceIssued);
-
-        btnSave.setText("Save");
-        add(btnSave);
-
-        jLabelMandatoryParentStudent.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryParentStudent.setText("*");
-        add(jLabelMandatoryParentStudent);
-
-        jLabelMandatoryAddress.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryAddress.setText("*");
-        add(jLabelMandatoryAddress);
-
-        jLabelMandatoryHospital.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryHospital.setText("*");
-        add(jLabelMandatoryHospital);
-
-        jLabelMandatoryHospitalAddress.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelMandatoryHospitalAddress.setText("*");
-        add(jLabelMandatoryHospitalAddress);
-
-        btnCancel.setText("Cancel");
-        add(btnCancel);
-        add(receiptDateIssuedPicker);
-
-        jLabelMandatoryMessage.setText("<html><font color='red'>*</font> Mandatory fields required</html>");
-        add(jLabelMandatoryMessage);
-
-        txtReceiptNo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        add(txtReceiptNo);
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void comboRelationshipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRelationshipActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboRelationshipActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancel;
-    private javax.swing.JToggleButton btnSave;
-    private javax.swing.JCheckBox checkBoxGuardian;
-    private javax.swing.JCheckBox checkBoxMarried;
-    private javax.swing.JCheckBox checkBoxSingle;
-    private javax.swing.JComboBox<String> comboAddress;
-    private javax.swing.JComboBox<String> comboParentSex;
-    private javax.swing.JComboBox<String> comboRelationship;
-    private javax.swing.JLabel jLabelMandatoryAddress;
-    private javax.swing.JLabel jLabelMandatoryHospital;
-    private javax.swing.JLabel jLabelMandatoryHospitalAddress;
-    private javax.swing.JLabel jLabelMandatoryMessage;
-    private javax.swing.JLabel jLabelMandatoryParentGuardian;
-    private javax.swing.JLabel jLabelMandatoryParentStudent;
-    private javax.swing.JLabel labelAddress;
-    private javax.swing.JLabel labelAmount;
-    private javax.swing.JLabel labelDateIssued;
-    private javax.swing.JLabel labelHospital;
-    private javax.swing.JLabel labelHospitalAddress;
-    private javax.swing.JLabel labelParentGuardian;
-    private javax.swing.JLabel labelParentGuardian2;
-    private javax.swing.JLabel labelPatientStudent;
-    private javax.swing.JLabel labelPlaceIssued;
-    private javax.swing.JLabel labelReceiptNo;
-    private javax.swing.JLabel labelRelationship;
-    private javax.swing.JLabel labelTitle;
-    private javax.swing.JTextField receiptDateIssuedPicker;
-    private javax.swing.JTextField txtAddress;
-    private javax.swing.JTextField txtAmount;
-    private javax.swing.JTextField txtHospital;
-    private javax.swing.JTextField txtHospitalAddress;
-    public javax.swing.JTextField txtParentGuardian;
-    private javax.swing.JTextField txtParentGuardian2;
-    private javax.swing.JTextField txtPatientStudent;
-    private javax.swing.JTextField txtPlaceIssued;
-    private javax.swing.JFormattedTextField txtReceiptNo;
-    // End of variables declaration//GEN-END:variables
 }

@@ -30,6 +30,7 @@ import raven.modal.option.Location;
 import raven.modal.option.Option;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
 
     private static final Logger LOGGER = Logger.getLogger(MyDrawerBuilder.class.getName());
     private final int SHADOW_SIZE = 12;
+    private static DrawerPanel drawerPanelInstance;
 
     public MyDrawerBuilder() {
         super(createSimpleMenuOption());
@@ -49,6 +51,26 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
         lightDarkButtonFooter.addModeChangeListener(isDarkMode -> {
             LOGGER.fine("Light/Dark mode changed to: " + isDarkMode);
             // event for light dark mode changed
+        });
+        
+        // Schedule dashboard expansion and No Landholding selection after the drawer is fully initialized
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(0, e -> {
+                try {
+                    // Show the No Landholding form by default
+                    Form existingForm = FormManager.getActiveForm(FormDashboard.class);
+                    if (existingForm == null) {
+                        Form newForm = AllForms.getForm(FormDashboard.class);
+                        FormManager.showForm(newForm);
+                    } else {
+                        FormManager.showForm(existingForm);
+                    }
+                } catch (Exception ex) {
+                    LOGGER.warning("Failed to show No Landholding form by default: " + ex.getMessage());
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
         });
     }
 
@@ -200,11 +222,11 @@ private static void showPhilHealthModal() {
         MenuItem items[] = new MenuItem[]{
                 new Item("Dashboard", "dashboard.svg")
                         .subMenu("No Landholding", FormDashboard.class)
-                        .subMenu("Total Landholding", FormDashboard2.class),
+                        .subMenu("Total Landholding", FormDashboardTotalLandholding.class),
 //            
 //                new Item("No Landholding", "dashboard.svg", FormDashboard.class),
 //                new Item.Label("------------------------------------------------------"),
-//                new Item("Total Landholding", "dashboard.svg", FormDashboard2.class),
+//                new Item("Total Landholding", "dashboard.svg", FormDashboardTotalLandholding.class),
 //                new Item.Label("Input:"),
 //                new Item("Forms", "forms.svg")
 //                        .subMenu(new Item("Input")
@@ -212,9 +234,14 @@ private static void showPhilHealthModal() {
 //                        )
 ////                        .subMenu("Table", FormTable.class)
 //                        .subMenu("Responsive Layout", FormResponsiveLayout.class),
-                new Item("Hospital", "forms.svg", FormHospital.class),
+                new Item("Input","forms.svg")
+                        .subMenu(new Item("No Landholding")
+                                .subMenu("Hospital", FormHospital.class))
+                        .subMenu(new Item("Total Landholding")
+                                .subMenu("Total Landholding", FormTotalLandholding.class)),
+//                new Item("Hospital", "forms.svg", FormHospital.class),
 //                new Item("PhilHealth", "forms.svg", FormPhilHealth2.class),
-                new Item("Total Landholding", "forms.svg", FormTotalLandholding2.class),
+//                new Item("Total Landholding", "forms.svg", FormTotalLandholding.class),
 //                new Item("Scholarship", "forms.svg", FormScholarship.class),
 //                new Item("Components", "components.svg")
 //                        .subMenu("Modal", FormModal.class)
@@ -286,7 +313,7 @@ private static void showPhilHealthModal() {
 //                    FormManager.showAbout();
 //                    return;
 //                }else 
-                if (i == 5) {
+                if (i == 3) {
                     action.consume();
                     FormManager.logout();
                     return;
@@ -356,12 +383,212 @@ private static void showPhilHealthModal() {
 
     @Override
     public void build(DrawerPanel drawerPanel) {
+        drawerPanelInstance = drawerPanel; // Store the drawer panel reference
         drawerPanel.putClientProperty(FlatClientProperties.STYLE, getDrawerBackgroundStyle());
+        
+        // Expand the dashboard and input items by default with a delay to ensure the drawer is fully rendered
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(0, e -> {
+                try {
+                    // Find and expand the dashboard menu item
+                    expandDashboardMenuItem(drawerPanel);
+                    expandInputMenuItem(drawerPanel);
+                } catch (Exception ex) {
+                    LOGGER.warning("Failed to expand dashboard menu: " + ex.getMessage());
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
+    
+    private static void expandDashboardMenuItem(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Dashboard")) {
+                    // Simulate a click to expand the submenu
+                    button.doClick();
+                    
+                    // After expanding dashboard, select "No Landholding" by default
+                    SwingUtilities.invokeLater(() -> {
+                        Timer timer = new Timer(200, e -> {
+                            selectNoLandholdingItem(container);
+                        });
+                        timer.setRepeats(false);
+                        timer.start();
+                    });
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                expandDashboardMenuItem((Container) comp);
+            }
+        }
+    }
+    
+    private static void expandDashboardMenuItemOnly(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Dashboard")) {
+                    // Simulate a click to expand the submenu ONLY - no auto-selection
+                    button.doClick();
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                expandDashboardMenuItemOnly((Container) comp);
+            }
+        }
+    }
+    
+    private void expandInputMenuItem(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Input")) {
+                    // Simulate a click to expand the submenu
+                    button.doClick();
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                expandInputMenuItem((Container) comp);
+            }
+        }
+    }
+    
+    private static void selectNoLandholdingItem(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("No Landholding")) {
+                    // Simulate a click to select the No Landholding item
+                    button.doClick();
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                selectNoLandholdingItem((Container) comp);
+            }
+        }
+    }
+    
+    public static void selectTotalLandholdingItem(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Total Landholding")) {
+                    // Simulate a click to select the Total Landholding item
+                    button.doClick();
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                selectTotalLandholdingItem((Container) comp);
+            }
+        }
+    }
+    
+    public static void selectTotalLandholdingDashboardItem(Container container) {
+        // First ensure Dashboard is expanded, then select Total Landholding
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(100, e -> {
+                // Step 1: Expand Dashboard if not already expanded
+                expandDashboardMenuItemOnly(container);
+                
+                // Step 2: After a short delay, select Total Landholding
+                Timer selectTimer = new Timer(200, selectEvent -> {
+                    selectTotalLandholdingSubmenu(container);
+                });
+                selectTimer.setRepeats(false);
+                selectTimer.start();
+            });
+            timer.setRepeats(false);
+            timer.start();
+        });
+    }
+    
+    private static boolean isDashboardExpanded(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Dashboard")) {
+                    // Check if the button is selected (expanded)
+                    return button.isSelected();
+                }
+            } else if (comp instanceof Container) {
+                if (isDashboardExpanded((Container) comp)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static void selectTotalLandholdingSubmenu(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                if (button.getText() != null && button.getText().contains("Total Landholding")) {
+                    // Simulate a click to select the Total Landholding Dashboard item
+                    button.doClick();
+                    return;
+                }
+            } else if (comp instanceof Container) {
+                selectTotalLandholdingSubmenu((Container) comp);
+            }
+        }
+    }
+    
+
 
     private static String getDrawerBackgroundStyle() {
         return "" +
                 "[light]background:tint($Panel.background,20%);" +
                 "[dark]background:tint($Panel.background,5%);";
+    }
+    
+    // Static method to get the drawer panel instance
+    public static DrawerPanel getDrawerPanelInstance() {
+        return drawerPanelInstance;
+    }
+    
+    /**
+     * Selects the Total Landholding item in the drawer
+     * @param drawerPanel The drawer panel to work with
+     */
+    public static void selectTotalLandholdingDrawer(DrawerPanel drawerPanel) {
+        drawerPanelInstance = drawerPanel; // Store the drawer panel reference
+        drawerPanel.putClientProperty(FlatClientProperties.STYLE, getDrawerBackgroundStyle());
+        
+        // Expand the dashboard and input items by default with a delay to ensure the drawer is fully rendered
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(0, e -> {
+                try {
+                    // Find and expand the dashboard menu item
+                    selectTotalLandholdingItem(drawerPanel);
+                } catch (Exception ex) {
+                    LOGGER.warning("Failed to expand dashboard menu: " + ex.getMessage());
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        });
+    }
+    
+    public static void selectNoLandholdingDrawer(DrawerPanel drawerPanel) {
+        drawerPanelInstance = drawerPanel; // Store the drawer panel reference
+        drawerPanel.putClientProperty(FlatClientProperties.STYLE, getDrawerBackgroundStyle());
+        
+        // Expand the dashboard and input items by default with a delay to ensure the drawer is fully rendered
+        SwingUtilities.invokeLater(() -> {
+            Timer timer = new Timer(0, e -> {
+                try {
+                    // Find and expand the dashboard menu item
+                    selectNoLandholdingItem(drawerPanel);
+                } catch (Exception ex) {
+                    LOGGER.warning("Failed to expand dashboard menu: " + ex.getMessage());
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
 }

@@ -1,0 +1,156 @@
+Aug 06, 2025 1:03:52 PM assessor.component.report.util.DatabaseSaveHelper fetchBarangays
+FINE: Executing query to fetch barangays: SELECT barangay_name FROM sys_barangay_list
+Aug 06, 2025 1:03:52 PM assessor.component.report.util.DatabaseSaveHelper fetchBarangays
+INFO: Barangays fetched successfully: [POBLACION, BALANGIGAY, BALOCBOCAN, BERSHIBA, BINOONGAN, BOBONG, BOLOCAON, CABALANTIAN, CALAPATON, EAST DALURONG, WEST DALURONG, DIGONGAN, KAHUSAYAN, KALUMIHAN, KAUYONAN, KIMOLONG, KIPILAS, KITAIHON, KITUBO, KIULOM, MAGSAYSAY, MALOBALO, METEBAGAO, LOREGA, PAGAN, PANGANAN, SAGUNDANON, SAN ISIDRO, SAN LORENZO, SINAYSAYAN, SINUDA, STO. ROSARIO, TANDONG, TAWAS, WHITE KULAMAN]
+Aug 06, 2025 1:03:52 PM assessor.component.report.util.DatabaseSaveHelper fetchTypeSet
+FINE: Executing query to fetch typesets: SELECT type FROM report_type
+Aug 06, 2025 1:03:52 PM assessor.component.report.util.DatabaseSaveHelper fetchTypeSet
+INFO: Typesets fetched successfully: [Bailbond, Hospital, No Land Holding, Philhealth, Scholarship, Total Landholding]
+Aug 06, 2025 1:03:54 PM assessor.component.report.util.DatabaseSaveHelper fetchBarangays
+FINE: Executing query to fetch barangays: SELECT barangay_name FROM sys_barangay_list
+Aug 06, 2025 1:03:54 PM assessor.component.report.util.DatabaseSaveHelper fetchBarangays
+INFO: Barangays fetched successfully: [POBLACION, BALANGIGAY, BALOCBOCAN, BERSHIBA, BINOONGAN, BOBONG, BOLOCAON, CABALANTIAN, CALAPATON, EAST DALURONG, WEST DALURONG, DIGONGAN, KAHUSAYAN, KALUMIHAN, KAUYONAN, KIMOLONG, KIPILAS, KITAIHON, KITUBO, KIULOM, MAGSAYSAY, MALOBALO, METEBAGAO, LOREGA, PAGAN, PANGANAN, SAGUNDANON, SAN ISIDRO, SAN LORENZO, SINAYSAYAN, SINUDA, STO. ROSARIO, TANDONG, TAWAS, WHITE KULAMAN]
+Aug 06, 2025 1:03:54 PM assessor.component.report.util.DatabaseSaveHelper fetchTypeSet
+FINE: Executing query to fetch typesets: SELECT type FROM report_type
+Aug 06, 2025 1:03:54 PM assessor.component.report.util.DatabaseSaveHelper fetchTypeSet
+INFO: Typesets fetched successfully: [Bailbond, Hospital, No Land Holding, Philhealth, Scholarship, Total Landholding]
+Aug 06, 2025 1:16:46 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:16:46 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists
+Aug 06, 2025 1:17:12 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:17:12 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists
+Aug 06, 2025 1:17:40 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:17:40 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists
+Aug 06, 2025 1:17:57 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:17:57 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists
+Aug 06, 2025 1:18:10 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:18:10 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper getAssessorName
+FINE: Querying assessor name with ID: 1
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper getAssessorName
+INFO: Assessor found: ROEL H. MOLO, MMREM, REA, REB, LPT
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper saveReport
+INFO: Saving report of type: Total Landholding with data: {owner=JUAN DELA CRUZ, amount_paid=₱300.00, receipt_no=654198, purpose=BIR Purpose, requestor=JUAN DELA CRUZ, spouse=, user_initials=ADMIN, requested_time=13:19:39.316310800, receipt_date_issued=2025-08-06, marital_status=SINGLE, contact_no=09261958643, requested_date=2025-08-06, signatory=ROEL H. MOLO, MMREM, REA, REB, LPT, place_issued=MTO KITAOTAO}
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper buildInsertQuery
+FINE: Generated SQL query: INSERT INTO reports_total_landholding (owner,amount_paid,receipt_no,purpose,requestor,spouse,user_initials,requested_time,receipt_date_issued,marital_status,Type,contact_no,requested_date,objid,signatory,place_issued) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper saveReport
+INFO: Report saved successfully: {owner=JUAN DELA CRUZ, amount_paid=₱300.00, receipt_no=654198, purpose=BIR Purpose, requestor=JUAN DELA CRUZ, spouse=, user_initials=ADMIN, requested_time=13:19:39.316310800, receipt_date_issued=2025-08-06, marital_status=SINGLE, Type=Total Landholding, contact_no=09261958643, requested_date=2025-08-06, objid=T-b275bef2:-e93e, signatory=ROEL H. MOLO, MMREM, REA, REB, LPT, place_issued=MTO KITAOTAO}
+Aug 06, 2025 1:19:39 PM assessor.component.report.util.DatabaseTotalLandholdingHelper saveTableDataWithForeignKey
+INFO: Saved 0 table rows with foreign key T-b275bef2:-e93e
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding formRefresh
+INFO: Refreshing data...
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding lambda$loadData$0
+INFO: Data loaded successfully.
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:22:08 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:22:11 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:22:11 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:22:55 PM assessor.component.chart.CertificateTableTotalLandholding formRefresh
+INFO: Refreshing data...
+Aug 06, 2025 1:22:55 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:22:55 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:22:55 PM assessor.component.chart.CertificateTableTotalLandholding lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Aug 06, 2025 1:27:43 PM assessor.component.chart.CertificateTableTotalLandholding formRefresh
+INFO: Refreshing data...
+Aug 06, 2025 1:27:43 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:27:43 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:27:43 PM assessor.component.chart.CertificateTableTotalLandholding lambda$formRefresh$0
+INFO: Data refreshed successfully.
+Aug 06, 2025 1:28:01 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:28:01 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 1:28:01 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 1:28:01 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding formRefresh
+INFO: Refreshing data...
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding lambda$loadData$0
+INFO: Data loaded successfully.
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 3:09:42 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 06, 2025 3:09:45 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadStart
+INFO: Loading data...
+Aug 06, 2025 3:09:45 PM assessor.component.chart.CertificateTableTotalLandholding$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 9:59:59 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Aug 07, 2025 9:59:59 AM assessor.component.chart.CertificateTable formDispose
+INFO: Disposing form...
+Aug 07, 2025 10:00:00 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:00 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:00 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Aug 07, 2025 10:00:00 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:00 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable formDispose
+INFO: Disposing form...
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable formRefresh
+INFO: Refreshing data...
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:01 AM assessor.component.chart.CertificateTable lambda$loadData$0
+INFO: Data loaded successfully.
+Aug 07, 2025 10:00:02 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:02 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:02 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:02 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:11 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:11 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:11 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:11 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:14 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:14 AM assessor.component.chart.CertificateTable$2 onLoadStart
+INFO: Loading data...
+Aug 07, 2025 10:00:14 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.
+Aug 07, 2025 10:00:14 AM assessor.component.chart.CertificateTable$2 onLoadComplete
+INFO: Data load complete.

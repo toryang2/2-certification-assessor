@@ -1,0 +1,4 @@
+Aug 06, 2025 1:34:01 PM assessor.component.report.util.DatabaseTotalLandholdingHelper ensureReportTypeExists
+INFO: 'Total Landholding' report type already exists
+Aug 06, 2025 1:34:01 PM assessor.component.report.util.DatabaseTotalLandholdingHelper setupForeignKeyRelationship
+INFO: Foreign key relationship already exists

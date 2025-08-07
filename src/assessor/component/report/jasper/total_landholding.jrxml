@@ -134,7 +134,7 @@ Municipality of Kitaotao]]></text>
 				<expression><![CDATA["This is to CERTIFY further the above-mentioned Tax Declaration is " + "<style isBold=\"true\">" + "LATEST/CURRENT AND EXISTING" + "</style>" + " in our office.\n\n" +
 
 "This CERTIFICATION is being issued upon request of " + "<style isBold=\"true\">" + ( $F{requestor} != null && $F{requestor}.equals($F{owner}) ? "the above name" : $F{requestor} ) + "</style> " + 
-" as " + $F{purpose} + ".\n\n" +
+" as documentary requirements for " + $F{purpose} + ".\n\n" +
 
 "Done and Given this " + 
 	( ($F{requested_date} != null) ? 

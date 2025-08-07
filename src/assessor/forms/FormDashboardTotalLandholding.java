@@ -28,7 +28,7 @@ import java.util.logging.*;
 import javax.swing.text.AbstractDocument;
 
 @SystemForm(name = "Dashboard", description = "dashboard form display some details")
-public class FormDashboard2 extends Form {
+public class FormDashboardTotalLandholding extends Form {
     
     private final DataChangeNotifier.DataChangeListener dataChangeListener = new DataChangeNotifier.DataChangeListener() {
         @Override
@@ -38,7 +38,7 @@ public class FormDashboard2 extends Form {
         }
     };
     
-    public FormDashboard2() {
+    public FormDashboardTotalLandholding() {
         init();
         DataChangeNotifier.getInstance().addListener(dataChangeListener);
         applyUppercaseFilterToTextFields();
@@ -55,7 +55,6 @@ public class FormDashboard2 extends Form {
         createTitle();
         createPanelLayout();
         createCard();
-        createFilterPanel();
         createChart();
         formRefresh();
 //        createOtherChart();
@@ -122,7 +121,7 @@ public class FormDashboard2 extends Form {
     } catch (Exception e) {
         // Fallback to sample data if there's an error
         cardBox.setValueAt(0, "1,205", "+305 clients served", "+25%", true);
-        Logger.getLogger(FormDashboard2.class.getName())
+        Logger.getLogger(FormDashboardTotalLandholding.class.getName())
             .log(Level.SEVERE, "Error loading dashboard data", e);
     }
 
@@ -188,14 +187,15 @@ public class FormDashboard2 extends Form {
         panelLayout.add(panel);
     }
 
-        private void applyUppercaseFilterToTextFields() {
+    private void applyUppercaseFilterToTextFields() {
         // Create an instance of the UppercaseDocumentFilter
         UppercaseDocumentFilter uppercaseFilter = new UppercaseDocumentFilter();
 
         // Apply the filter to all relevant text fields
         JTextField[] textFields = {
-            filterPatientField,
-            filterHospitalField
+            filterRequestorField,
+            filterOwnerField,
+            filterSpouseField
         };
 
         for (JTextField textField : textFields) {
@@ -203,13 +203,17 @@ public class FormDashboard2 extends Form {
         }
     }
     
-        // New: filter panel goes below cardbox, but above the chart
-    private void createFilterPanel() {
+    private JPanel createFilterPanelContent() {
         JPanel filterPanel = new JPanel(new MigLayout("insets 5 8 5 0", "[][]10[][]10[][]10[][]", "[]"));
         filterPanel.setOpaque(false);
-
-        JLabel labelPatient = new JLabel("Patient:");
-        filterPatientField = new JTextField(12);
+        
+        JLabel labelTitle = new JLabel("Filter:");
+        JLabel labelRequestor = new JLabel("Requestor:");
+        filterRequestorField = new JTextField(12);
+        JLabel labelOwner = new JLabel("Owner:");
+        filterOwnerField = new JTextField(12);
+        JLabel labelSpouse = new JLabel("Spouse:");
+        filterSpouseField = new JTextField(12);
         JLabel labelBarangay = new JLabel("Barangay:");
         filterBarangayField = new JComboBox<>();
         filterBarangayField.setEditable(false);
@@ -219,8 +223,6 @@ public class FormDashboard2 extends Form {
                 filterBarangayField.addItem(barangay);
             }
         });
-        JLabel labelHospital = new JLabel("Hospital:");
-        filterHospitalField = new JTextField(12);
         JLabel labelType = new JLabel("Type:");
         filterTypeField = new JComboBox<>();
         filterTypeField.setEditable(false);
@@ -230,17 +232,21 @@ public class FormDashboard2 extends Form {
                 filterTypeField.addItem(typeset);
             }
         });
-
-        filterPanel.add(labelPatient);
-        filterPanel.add(filterPatientField);
+        
+        // Apply uppercase filter to text fields
+        applyUppercaseFilterToTextFields();
+        
+        filterPanel.add(labelTitle, "wrap");
         filterPanel.add(labelBarangay);
-        filterPanel.add(filterBarangayField);
-        filterPanel.add(labelHospital);
-        filterPanel.add(filterHospitalField);
+        filterPanel.add(filterBarangayField, "w 150");
         filterPanel.add(labelType);
-        filterPanel.add(filterTypeField);
-
-        panelLayout.add(filterPanel);
+        filterPanel.add(filterTypeField, "w 150");
+        filterPanel.add(labelRequestor);
+        filterPanel.add(filterRequestorField, "w 150");
+        filterPanel.add(labelOwner);
+        filterPanel.add(filterOwnerField, "w 150");
+        filterPanel.add(labelSpouse);
+        filterPanel.add(filterSpouseField, "w 150");
 
         // --- Filter logic: update on any change in the fields ---
         javax.swing.event.DocumentListener filterListener = new javax.swing.event.DocumentListener() {
@@ -250,40 +256,52 @@ public class FormDashboard2 extends Form {
             private void filter() {
                 if (certificateTable != null) {
                     certificateTable.setMultiColumnFilter(
-                        filterPatientField.getText(),
+                        filterOwnerField.getText(),
                         getSelectedBarangay(),
-                        filterHospitalField.getText(),
+                        filterSpouseField.getText(),
+                        filterRequestorField.getText(),
                         getSelectedTypeSet()
                     );
                 }
             }
         };
-        filterPatientField.getDocument().addDocumentListener(filterListener);
-        filterHospitalField.getDocument().addDocumentListener(filterListener);
+        filterRequestorField.getDocument().addDocumentListener(filterListener);
+        filterOwnerField.getDocument().addDocumentListener(filterListener);
+        filterSpouseField.getDocument().addDocumentListener(filterListener);
         
         // ComboBox filter listener
         filterBarangayField.addActionListener(e -> {
             if (certificateTable != null) {
                 certificateTable.setMultiColumnFilter(
-                    filterPatientField.getText(),
+                    filterOwnerField.getText(),
                     getSelectedBarangay(),
-                    filterHospitalField.getText(),
+                    filterSpouseField.getText(),
+                    filterRequestorField.getText(),
                     getSelectedTypeSet()
                 );
             }
         });
         
-                // ComboBox filter listener
+        // ComboBox filter listener
         filterTypeField.addActionListener(e -> {
             if (certificateTable != null) {
                 certificateTable.setMultiColumnFilter(
-                    filterPatientField.getText(),
+                    filterOwnerField.getText(),
                     getSelectedBarangay(),
-                    filterHospitalField.getText(),
+                    filterSpouseField.getText(),
+                    filterRequestorField.getText(),
                     getSelectedTypeSet()
                 );
             }
         });
+        
+        return filterPanel;
+    }
+
+    private void createFilterPanel() {
+        // This method is now deprecated - use createFilterPanelContent() instead
+        JPanel filterPanel = createFilterPanelContent();
+        panelLayout.add(filterPanel);
     }
     
     private String getSelectedBarangay() {
@@ -297,13 +315,15 @@ public class FormDashboard2 extends Form {
     }
     
     public static void resetFilters() {
-        FormDashboard2 dashboard = (FormDashboard2) FormManager.getActiveForm(FormDashboard2.class);
+        FormDashboardTotalLandholding dashboard = (FormDashboardTotalLandholding) FormManager.getActiveForm(FormDashboardTotalLandholding.class);
         if (dashboard != null) {
             // Reset Patient and Hospital fields
-            if (dashboard.filterPatientField != null)
-                dashboard.filterPatientField.setText("");
-            if (dashboard.filterHospitalField != null)
-                dashboard.filterHospitalField.setText("");
+            if (dashboard.filterRequestorField != null)
+                dashboard.filterRequestorField.setText("");
+            if (dashboard.filterOwnerField != null)
+                dashboard.filterOwnerField.setText("");
+            if (dashboard.filterSpouseField != null)
+                dashboard.filterSpouseField.setText("");
 
             // Reset Barangay ComboBox
             if (dashboard.filterBarangayField != null && dashboard.filterBarangayField instanceof JComboBox) {
@@ -320,13 +340,21 @@ public class FormDashboard2 extends Form {
     }
 
 private void createChart() {
-    JPanel panel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
-
-        certificateTable = new CertificateTableTotalLandholding();
-        FormManager.showForm(certificateTable);
+    JPanel panel = new JPanel(new BorderLayout());
     
-    panel.add(certificateTable, "grow, push");
-
+    // Create the chart panel
+    JPanel chartPanel = new JPanel(new MigLayout("fill,wrap", "[fill]", "[grow, push]"));
+    certificateTable = new CertificateTableTotalLandholding();
+    FormManager.showForm(certificateTable);
+    chartPanel.add(certificateTable, "grow, push");
+    
+    // Create the filter panel
+    JPanel filterPanel = createFilterPanelContent();
+    
+    // Add both panels to the main panel - chart takes center, filter takes south
+    panel.add(chartPanel, BorderLayout.CENTER);
+    panel.add(filterPanel, BorderLayout.SOUTH);
+    
     panelLayout.add(panel, "grow, push");
 }
 
@@ -336,8 +364,8 @@ private void createChart() {
 
     private JPanel panelLayout;
     private CardBox cardBox;
-    private JTextField filterPatientField, filterHospitalField;
-    private CertificateTableTotalLandholding certificateTable;
+    private JTextField filterOwnerField, filterSpouseField, filterRequestorField;
+    public CertificateTableTotalLandholding certificateTable;
     private JComboBox<String> filterBarangayField, filterTypeField;
 
     private TimeSeriesChart timeSeriesChart;

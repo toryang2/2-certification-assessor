@@ -8,6 +8,9 @@ import assessor.auth.SessionManager;
 import assessor.component.chart.*;
 import assessor.component.report.util.*;
 import static assessor.component.report.util.DatabaseSaveHelper.saveAutocompleteValue;
+import assessor.forms.FormDashboard;
+import assessor.forms.FormDashboardTotalLandholding;
+import assessor.menu.MyDrawerBuilder;
 import assessor.system.*;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.GridBagLayout;
@@ -27,7 +30,11 @@ import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
 import java.util.logging.*;
+import raven.modal.Drawer;
+import raven.modal.Toast;
 import raven.modal.component.SimpleModalBorder;
+import raven.modal.drawer.DrawerPanel;
+import raven.modal.toast.option.ToastOption;
 
 /**
  *
@@ -70,8 +77,7 @@ public class FormHospital extends Form {
             txtPatientStudent,
             txtAddress,
             txtHospital,
-            txtHospitalAddress,
-            txtPlaceIssued
+            txtHospitalAddress
         };
 
         for (JTextField textField : textFields) {
@@ -94,7 +100,7 @@ public class FormHospital extends Form {
     
     private void init() {
         txtContactNo.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "09XXXXXXXXX");
-        txtPlaceIssued.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "MTO KITAOTAO");
+        txtPlaceIssued.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "MTO, Kitaotao, Bukidnon");
         ((AbstractDocument) txtContactNo.getDocument()).setDocumentFilter(new NumericDocumentFilter());
     }
     
@@ -705,6 +711,71 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
                 try {
                     logger.log(Level.INFO, "Table is ready. Generating report...");
                     certificateTable.handleReportGeneration(recordId);
+                                        
+                    // After report generation, switch to dashboard and highlight it
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            // Get or create FormDashboardTotalLandholding
+                            final FormDashboard dashboard = FormManager.getActiveForm(FormDashboard.class) != null ? 
+                                FormManager.getActiveForm(FormDashboard.class) : new FormDashboard();
+                            
+                            // Show the dashboard form
+                            
+                            FormManager.showForm(dashboard);
+                            
+                            // Refresh the dashboard to show latest data
+                            dashboard.formRefresh();
+                            
+                            // Select the latest row in the table (the newly saved record)
+                            Timer selectionTimer = new Timer(500, e -> {
+                                if (dashboard.certificateTable != null && dashboard.certificateTable.certificationTable != null) {
+                                    JTable table = dashboard.certificateTable.certificationTable;
+                                    if (table.getRowCount() > 0) {
+                                        // Select the first row (latest record since data is ordered by ID DESC)
+                                        table.setRowSelectionInterval(0, 0);
+                                        table.scrollRectToVisible(table.getCellRect(0, 0, true));
+                                    }
+                                }
+                            });
+                            selectionTimer.setRepeats(false);
+                            selectionTimer.start();
+                            
+                            // Ensure Dashboard is expanded before highlighting
+                            SwingUtilities.invokeLater(() -> {
+                                Timer drawerTimer = new Timer(100, e -> {
+                                    try {
+                                        // Get the drawer panel and select Total Landholding
+                                        DrawerPanel drawerPanel = MyDrawerBuilder.getDrawerPanelInstance();
+                                        if (drawerPanel != null) {
+                                            MyDrawerBuilder.selectNoLandholdingDrawer(drawerPanel);
+                                        }
+                                    } catch (Exception ex) {
+                                        logger.log(Level.WARNING, "Could not select Total Landholding: " + ex.getMessage());
+                                    }
+                                });
+                                drawerTimer.setRepeats(false);
+                                drawerTimer.start();
+                            });
+                            
+                            // Highlight the dashboard in the drawer (let automatic highlighting work)
+                            Drawer.setSelectedItemClass(FormDashboardTotalLandholding.class);
+                            
+                            logger.log(Level.INFO, "Successfully switched to FormDashboard and highlighted in drawer");
+                            
+                            // Show success toast message
+                            ToastOption option = Toast.createOption()
+                                .setAnimationEnabled(true)
+                                .setAutoClose(true)
+                                .setCloseOnClick(true);
+                            
+                            // Use the main frame as parent to avoid null parent error
+                            Toast.show(FormManager.getFrame(), Toast.Type.SUCCESS, 
+                                "Data saved successfully! Report generated and redirected to dashboard.", 
+                                option);
+                        } catch (Exception ex) {
+                            logger.log(Level.SEVERE, "Error switching to dashboard: " + ex.getMessage(), ex);
+                        }
+                    });
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, "Error generating report for record ID: " + recordId, ex);
                     JOptionPane.showMessageDialog(this,
@@ -732,7 +803,7 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         // Add signatory
         String signatory = DatabaseSaveHelper.getAssessorName(1);
         if (signatory != null) {
-            reportData.put("Signatory", signatory);
+            reportData.put("signatory", signatory);
             logger.log(Level.INFO, "Signatory found: {0}", signatory);
         } else {
             logger.log(Level.WARNING, "No default assessor configured");
@@ -743,40 +814,40 @@ new AutocompleteSupport(txtPlaceIssued, "txtPlaceIssued");
         }
 
         // Add marital status
-        reportData.put("MaritalStatus", getMaritalStatus());
+        reportData.put("marital_status", getMaritalStatus());
 
         // Add text fields
-        reportData.put("ParentGuardian", txtParentGuardian.getText());
-        reportData.put("ParentGuardian2", txtParentGuardian2.getText());
-        reportData.put("Patient", txtPatientStudent.getText());
-        reportData.put("Barangay", comboAddress.getSelectedItem());
-        reportData.put("Hospital", txtHospital.getText());
-        reportData.put("HospitalAddress", txtHospitalAddress.getText());
-        reportData.put("PlaceIssued", txtPlaceIssued.getText());
+        reportData.put("parent_guardian", txtParentGuardian.getText());
+        reportData.put("parent_guardian_2", txtParentGuardian2.getText());
+        reportData.put("patient", txtPatientStudent.getText());
+        reportData.put("barangay", comboAddress.getSelectedItem());
+        reportData.put("hospital", txtHospital.getText());
+        reportData.put("hospital_address", txtHospitalAddress.getText());
+        reportData.put("place_issued", txtPlaceIssued.getText());
         reportData.put("contact_no", txtContactNo.getText());
 
         // Add parent sex
-        reportData.put("ParentSexIfSingle", getParentSex());
+        reportData.put("parent_sex_if_single", getParentSex());
 
         // Add relationship
-        reportData.put("Relationship", getRelationship());
+        reportData.put("relationship", getRelationship());
 
         // Add amount paid
-        reportData.put("AmountPaid", getAmountPaid());
+        reportData.put("amount_paid", getAmountPaid());
 
         // Add receipt number
-        reportData.put("ReceiptNo", getReceiptNumber());
+        reportData.put("receipt_no", getReceiptNumber());
 
         // Add dates
-        reportData.put("CertificationDate", LocalDate.now());
-        reportData.put("CertificationTime", LocalTime.now());
+        reportData.put("certification_date", LocalDate.now());
+        reportData.put("certification_time", LocalTime.now());
         if (datePicker.getSelectedDate() != null) {
-            reportData.put("ReceiptDateIssued", datePicker.getSelectedDate());
+            reportData.put("receipt_date_issued", datePicker.getSelectedDate());
         }
 
         String userInitials = SessionManager.getInstance().getUserInitials();
         if (userInitials != null) {
-            reportData.put("userInitials", userInitials);
+            reportData.put("user_initials", userInitials);
         } else {
             logger.log(Level.WARNING, "User initial not found");
         }
